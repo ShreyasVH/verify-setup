@@ -3,3 +3,5 @@ node_modules
 .DS_Store
 .idea
 npmInstall.log
+verifyResponses.json
+verifyResponsesFiltered.json

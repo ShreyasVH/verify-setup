@@ -31,6 +31,12 @@ const fs = require('fs');
     const postgresVersion = '16.4';
     const mongoVersion = '7.3.4';
 
+    let portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
+    const elasticsearchPort = parseInt(portResponse.stdout);
+    const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for elasticsearch startup');
+    await waitForPort(elasticsearchPort, '127.0.0.1', 30000);
+
     const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for haproxy startup');
     await waitForPort(haproxyPort, '127.0.0.1', 30000);
@@ -41,17 +47,11 @@ const fs = require('fs');
     console.log('Waiting for mysql startup');
     await waitForPort(mysqlPort, '127.0.0.1', 30000);
 
-    let portResponse = await execPromise(`grep 'port = ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/postgres/${postgresVersion}/postgresql.conf | awk '{print $3}'`);
+    portResponse = await execPromise(`grep 'port = ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/postgres/${postgresVersion}/postgresql.conf | awk '{print $3}'`);
     const postgresPort = parseInt(portResponse.stdout);
     const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for postgres startup');
     await waitForPort(postgresPort, '127.0.0.1', 30000);
-
-    portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
-    const elasticsearchPort = parseInt(portResponse.stdout);
-    const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
-    console.log('Waiting for elasticsearch startup');
-    await waitForPort(elasticsearchPort, '127.0.0.1', 30000);
 
     portResponse = await execPromise(`grep 'port: ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
     const mongoPort = parseInt(portResponse.stdout);
