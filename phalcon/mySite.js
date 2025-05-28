@@ -28,10 +28,10 @@ const verify = async () => {
     await myApiJavaStart();
     await sleep(30000);
 
-    let { stdout, stderr } = await execPromise('cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')');
+    let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
     const port = parseInt(stdout);
 
-    const deployResponse = await execPromise('cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && zsh deploy.sh');
+    const deployResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && bash deploy.sh"');
 
     console.log('Waiting for my-site-php startup');
     await waitForPort(port, '127.0.0.1', 30000);
@@ -116,7 +116,7 @@ const verify = async () => {
     }
     await browser.close();
 
-    const stopResponse = await execPromise('cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && zsh stop.sh');
+    const stopResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && bash stop.sh"');
 
     await myApiJavaStop();
 

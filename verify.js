@@ -31,31 +31,31 @@ const fs = require('fs');
     const postgresVersion = '16.4';
     const mongoVersion = '7.3.4';
 
-    const haproxyDeployResponse = await execPromise(`cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && zsh start.sh`);
+    const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for haproxy startup');
     await waitForPort(haproxyPort, '127.0.0.1', 30000);
 
     let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
     const mysqlPort = parseInt(stdout);
-    const mysqlDeployResponse = await execPromise(`cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && zsh start.sh`);
+    const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for mysql startup');
     await waitForPort(mysqlPort, '127.0.0.1', 30000);
 
     let portResponse = await execPromise(`grep 'port = ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/postgres/${postgresVersion}/postgresql.conf | awk '{print $3}'`);
     const postgresPort = parseInt(portResponse.stdout);
-    const postgresDeployResponse = await execPromise(`cd $HOME/programs/postgres/${postgresVersion} && source .envrc && zsh start.sh`);
+    const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for postgres startup');
     await waitForPort(postgresPort, '127.0.0.1', 30000);
 
     portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
     const elasticsearchPort = parseInt(portResponse.stdout);
-    const elasticsearchDeployResponse = await execPromise(`cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && zsh start.sh`);
+    const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for elasticsearch startup');
     await waitForPort(elasticsearchPort, '127.0.0.1', 30000);
 
     portResponse = await execPromise(`grep 'port: ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
     const mongoPort = parseInt(portResponse.stdout);
-    const mongoDeployResponse = await execPromise(`cd $HOME/programs/mongo/${mongoVersion} && source .envrc && zsh start.sh`);
+    const mongoDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for mongo startup');
     await waitForPort(mongoPort, '127.0.0.1', 30000);
 
@@ -99,11 +99,11 @@ const fs = require('fs');
     // svelte kit
     // vue
 
-    const haproxyStopResponse = await execPromise(`cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && zsh stop.sh`);
-    const mysqlStopResponse = await execPromise(`cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && zsh stop.sh`);
-    const elasticSearchStopResponse = await execPromise(`cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && zsh stop.sh`);
-    const postgresStopResponse = await execPromise(`cd $HOME/programs/postgres/${postgresVersion} && source .envrc && zsh stop.sh`);
-    const mongoStopResponse = await execPromise(`cd $HOME/programs/mongo/${mongoVersion} && source .envrc && zsh stop.sh`);
+    const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
+    const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
+    const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+    const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
+    const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
