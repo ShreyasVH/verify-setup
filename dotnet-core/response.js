@@ -32,7 +32,7 @@ const verify = async () => {
         let data = response.data;
         const booksBefore = data.data.length;
         let proofFilePath = path.resolve(__dirname, '../outputProofs/dotnetCoreResponseBefore.json');
-        const payloadForProof = {
+        let payloadForProof = {
             status: response.status,
             data: response.data
         };
