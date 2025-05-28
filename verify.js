@@ -19,6 +19,7 @@ const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
 const { waitForPort } = require('./utils');
+const fs = require('fs');
 
 
 (async () => {
@@ -107,4 +108,6 @@ const { waitForPort } = require('./utils');
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
     console.log(filteredResponses);
+    fs.writeFileSync('verifyResponses.json', JSON.stringify(responses, null, ' '));
+    fs.writeFileSync('verifyResponsesFiltered.json', JSON.stringify(filteredResponses, null, ' '));
 })();
