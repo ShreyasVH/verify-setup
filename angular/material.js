@@ -10,10 +10,10 @@ const verifyHTML = () => {
 
 const verify = async () => {
     let isSuccess = false;
-    let { stdout, stderr } = await execPromise('cd $HOME/workspace/myProjects/js/angular/angular-material-ui && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')');
+    let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/angular/angular-material-ui && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
     const port = parseInt(stdout);
 
-    const deployResponse = await execPromise('cd $HOME/workspace/myProjects/js/angular/angular-material-ui && source .envrc && zsh deploy.sh');
+    const deployResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/angular/angular-material-ui && source .envrc && bash deploy.sh"');
 
     console.log('Waiting for angular material startup');
     await waitForPort(port, '127.0.0.1', 30000);
@@ -46,7 +46,7 @@ const verify = async () => {
     }
     await browser.close();
 
-    const stopResponse = await execPromise('cd $HOME/workspace/myProjects/js/angular/angular-material-ui && source .envrc && zsh stop.sh');
+    const stopResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/angular/angular-material-ui && source .envrc && bash stop.sh"');
 
     return isSuccess;
 };

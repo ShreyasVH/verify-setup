@@ -4,10 +4,10 @@ const execPromise = util.promisify(exec);
 const { waitForPort, sleep } = require('../utils');
 
 const start = async () => {
-    let { stdout, stderr } = await execPromise('cd $HOME/workspace/myProjects/php/phalcon/my-file-upload && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')');
+    let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-file-upload && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
     const port = parseInt(stdout);
 
-    const deployResponse = await execPromise('cd $HOME/workspace/myProjects/php/phalcon/my-file-upload && source .envrc && zsh deploy.sh');
+    const deployResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-file-upload && source .envrc && bash deploy.sh"');
 
     console.log('Waiting for my-file-upload startup');
     await waitForPort(port, '127.0.0.1', 30000);
@@ -15,7 +15,7 @@ const start = async () => {
 };
 
 const stop = async () => {
-    const stopResponse = await execPromise('cd $HOME/workspace/myProjects/php/phalcon/my-file-upload && source .envrc && zsh stop.sh');
+    const stopResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-file-upload && source .envrc && bash stop.sh"');
 };
 
 exports.start = start;
