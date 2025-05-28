@@ -44,6 +44,7 @@ const verify = async () => {
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+        await page.waitForSelector('.cols-4 button');
         await page.screenshot({
           path: 'outputProofs/angularCric.png',
         });

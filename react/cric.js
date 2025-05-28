@@ -44,6 +44,7 @@ const verify = async () => {
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+        await page.waitForSelector('.MuiGrid-grid-md-4 button');
         await page.screenshot({
           path: 'outputProofs/reactCric.png',
         });
