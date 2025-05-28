@@ -3,6 +3,8 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 const { waitForPort, sleep } = require('../utils');
 const { get } = require('../api');
+const fs = require('fs');
+const path = require('path');
 
 const start = async () => {
     let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/c-sharp/dotnet-core/dotnet-core-skeleton && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
@@ -30,10 +32,16 @@ const verify = async () => {
         const response = await get(url);
         const data = response.data;
         isSuccess = data.input && data.input === inputValue;
+        const proofFilePath = path.resolve(__dirname, '../outputProofs/dotnetCoreSkeleton.json');
+        const payloadForProof = {
+            status: response.status,
+            data: response.data
+        };
+        fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
         await stop();
     } catch (e) {
-
+        console.log(e);
     }
 
     return isSuccess;

@@ -3,6 +3,8 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 const { waitForPort, sleep } = require('../utils');
 const { get } = require('../api');
+const fs = require('fs');
+const path = require('path');
 
 const start = async () => {
     let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/c-sharp/dotnet-core/dotnet-core-error-handling && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
@@ -32,6 +34,12 @@ const verify = async () => {
         const response = e.response;
         const data = response.data;
         isSuccess = e.status === 404 && data.success === false;
+        const proofFilePath = path.resolve(__dirname, '../outputProofs/dotnetCoreErrors.json');
+        const payloadForProof = {
+            status: e.status,
+            data: response.data
+        };
+        fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
     }
 
 

@@ -55,6 +55,9 @@ const verify = async () => {
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+        await page.screenshot({
+          path: 'outputProofs/mySitePhpMovieDashboard.png',
+        });
 
         const isDashboardSuccess = await page.evaluate(verifyMovieDashboardHTML);
         isSuccess = isSuccess && isDashboardSuccess;
@@ -71,6 +74,9 @@ const verify = async () => {
         await page.goto(url, {
             waitUntil: 'networkidle2',
             timeout: 0
+        });
+        await page.screenshot({
+          path: 'outputProofs/mySitePhpMovieBrowse.png',
         });
 
         const isBrowseSuccess = await page.evaluate(verifyMovieBrowseHTML);
@@ -89,6 +95,9 @@ const verify = async () => {
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+        await page.screenshot({
+          path: 'outputProofs/mySitePhpSongDashboard.png',
+        });
 
         const isSongsDashboardSuccess = await page.evaluate(verifySongsDashboardHTML);
         isSuccess = isSuccess && isSongsDashboardSuccess;
@@ -105,6 +114,9 @@ const verify = async () => {
         await page.goto(url, {
             waitUntil: 'networkidle2',
             timeout: 0
+        });
+        await page.screenshot({
+          path: 'outputProofs/mySitePhpSongBrowse.png',
         });
 
         const isSongsBrowseSuccess = await page.evaluate(verifySongsBrowseHTML);

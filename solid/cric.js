@@ -38,11 +38,15 @@ const verify = async () => {
         const url = 'http://cric.solid.com';
 
         const page = await browser.newPage();
+        await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
             waitUntil: 'networkidle2',
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+        await page.screenshot({
+          path: 'outputProofs/solidCric.png',
+        });
 
         isSuccess = await page.evaluate(verifyHTML);
 
