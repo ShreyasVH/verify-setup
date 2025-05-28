@@ -49,6 +49,7 @@ const verify = async () => {
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
         const isDashboardSuccess = await page.evaluate(verifyDashboardHTML);
+        // console.log(isDashboardSuccess);
         isSuccess = isSuccess && isDashboardSuccess;
 
         await page.close();
@@ -64,8 +65,10 @@ const verify = async () => {
             waitUntil: 'networkidle2',
             timeout: 0
         });
+        await page.waitForSelector('img');
 
         const isBrowseSuccess = await page.evaluate(verifyBrowseHTML);
+        // console.log(isBrowseSuccess);
         isSuccess = isSuccess && isBrowseSuccess;
 
         await page.close();
