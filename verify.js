@@ -16,6 +16,7 @@ const verifyAngularCric = require('./angular/cric').verify;
 const verifySolidCric = require('./solid/cric').verify;
 const verifySvelteKitCric = require('./svelte-kit/cric').verify;
 const verifyExpressSkeleton = require('./express/skeleton').verify;
+const verifyExpressCors = require('./express/cors').verify;
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
@@ -82,6 +83,7 @@ const fs = require('fs');
 
     // express
     responses['expressSkeleton'] = await verifyExpressSkeleton();
+    responses['expressCors'] = await verifyExpressCors();
 
     // house expenses
     responses['houseExpensesReact'] = await verifyHouseExpensesReact();
