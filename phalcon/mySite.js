@@ -50,6 +50,7 @@ const verify = async () => {
         const url = 'http://my-site-php.phalcon.com/movies/dashboard';
 
         const page = await browser.newPage();
+        await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
             waitUntil: 'networkidle2',
             timeout: 0
@@ -71,6 +72,7 @@ const verify = async () => {
         const url = 'http://my-site-php.phalcon.com/movies/browseMovies?order=id DESC';
 
         const page = await browser.newPage();
+        await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
             waitUntil: 'networkidle2',
             timeout: 0
@@ -90,6 +92,7 @@ const verify = async () => {
         const url = 'http://my-site-php.phalcon.com/songs/dashboard';
 
         const page = await browser.newPage();
+        await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
             waitUntil: 'networkidle2',
             timeout: 0
@@ -111,6 +114,7 @@ const verify = async () => {
         const url = 'http://my-site-php.phalcon.com/songs/browseSongs';
 
         const page = await browser.newPage();
+        await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
             waitUntil: 'networkidle2',
             timeout: 0
