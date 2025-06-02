@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const getPort = async () => {
-    const kibanaVersion = '8.15.0';
+    const kibanaVersion = process.env.KIBANA_VERSION;
     let { stdout, stderr } = await execPromise(`grep 'server.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/kibana/${kibanaVersion}/kibana.yml | awk '{print $2}'`);
     return parseInt(stdout);
 }

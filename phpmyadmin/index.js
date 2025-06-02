@@ -7,10 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const getPort = async () => {
-    const phpmyadminVersion = '5.2.1';
-    // let { stdout, stderr } = await execPromise(`grep 'server.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/kibana/${kibanaVersion}/kibana.yml | awk '{print $2}'`);
-    // return parseInt(stdout);
-    return 9100;
+    return process.env.PHPMYADMIN_PORT;
 }
 
 const start = async () => {

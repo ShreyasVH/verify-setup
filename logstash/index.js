@@ -11,7 +11,7 @@ const elasticsearch = require('../elasticsearch');
 const puppeteer = require('puppeteer');
 
 const getPort = async () => {
-    const logstashVersion = '8.15.0';
+    const logstashVersion = process.env.LOGSTASH_VERSION;
     let { stdout, stderr } = await execPromise(`grep 'api.http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/logstash/${logstashVersion}/logstash.yml | awk '{print $2}'`);
     return parseInt(stdout);
 }
@@ -40,8 +40,8 @@ const verify = async () => {
     const elasticsearchPort = await elasticsearch.getPort();
 
     try {
-        const username = 'elastic';
-        const password = 'password'
+        const username = process.env.ELASTIC_USERNAME;
+        const password = process.env.ELASTIC_PASSWORD;
         const url = `https://${username}:${password}@localhost:${elasticsearchPort}/_cat/indices?format=json`;
         let response = await get(url);
         let data = response.data;

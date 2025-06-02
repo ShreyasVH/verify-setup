@@ -27,11 +27,11 @@ const fs = require('fs');
 (async () => {
     const responses = {};
     const haproxyPort = 80;
-    const haproxyVersion = '3.0.3';
-    const mysqlVersion = '9.0.1';
-    const elasticSearchVersion = '8.15.0';
-    const postgresVersion = '16.4';
-    const mongoVersion = '7.3.4';
+    const haproxyVersion = process.env.HAPROXY_VERSION;
+    const mysqlVersion = process.env.MYSQL_VERSION;
+    const elasticSearchVersion = process.env.ELASTICSEARCH_VERSION;
+    const postgresVersion = process.env.POSTGRES_VERSION;
+    const mongoVersion = process.env.MONGO_VERSION;
 
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
     let portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
