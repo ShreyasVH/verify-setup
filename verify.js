@@ -15,6 +15,8 @@ const verifyVueCric = require('./vue/cric').verify;
 const verifyAngularCric = require('./angular/cric').verify;
 const verifySolidCric = require('./solid/cric').verify;
 const verifySvelteKitCric = require('./svelte-kit/cric').verify;
+const verifyKibana = require('./kiabana').verify;
+const verifyLogstash = require('./logstash').verify;
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
@@ -32,7 +34,7 @@ const fs = require('fs');
     const mongoVersion = '7.3.4';
 
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
-    let portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
+    let portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
     const elasticsearchPort = parseInt(portResponse.stdout);
     const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for elasticsearch startup');
@@ -44,27 +46,28 @@ const fs = require('fs');
     await waitForPort(haproxyPort, '127.0.0.1', 30000);
 
     // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
-    let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
+    let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/workspace/myProjects/config-samples/${process.env.OS}/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
     const mysqlPort = parseInt(stdout);
     const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for mysql startup');
     await waitForPort(mysqlPort, '127.0.0.1', 30000);
 
     // await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
-    portResponse = await execPromise(`grep 'port = ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/postgres/${postgresVersion}/postgresql.conf | awk '{print $3}'`);
+    portResponse = await execPromise(`grep 'port = ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/postgres/${postgresVersion}/postgresql.conf | awk '{print $3}'`);
     const postgresPort = parseInt(portResponse.stdout);
     const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for postgres startup');
     await waitForPort(postgresPort, '127.0.0.1', 30000);
 
     // await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
-    portResponse = await execPromise(`grep 'port: ' $HOME/workspace/myProjects/config-samples/${process.env.INSTALL_OS_FOLDER}/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
+    portResponse = await execPromise(`grep 'port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
     const mongoPort = parseInt(portResponse.stdout);
     const mongoDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for mongo startup');
     await waitForPort(mongoPort, '127.0.0.1', 30000);
 
-
+    responses['kibana'] = await verifyKibana();
+    responses['logstash'] = await verifyLogstash();
 
     // angular
     responses['angularSkeleton'] = await verifySkeleton();
@@ -78,8 +81,6 @@ const fs = require('fs');
     responses['dotnetCoreMigrations'] = await verifyDotnetCoreMigrations();
     responses['dotnetCoreErrors'] = await verifyDotnetCoreErrors();
     responses['dotnetCoreResponse'] = await verifyDotnetCoreResponse();
-
-    // express
 
     // house expenses
     responses['houseExpensesReact'] = await verifyHouseExpensesReact();
