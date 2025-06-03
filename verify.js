@@ -66,8 +66,8 @@ const fs = require('fs');
     console.log('Waiting for mongo startup');
     await waitForPort(mongoPort, '127.0.0.1', 30000);
 
-    responses['kibana'] = await verifyKibana();
     responses['logstash'] = await verifyLogstash();
+    responses['kibana'] = await verifyKibana();
 
     // angular
     responses['angularSkeleton'] = await verifySkeleton();
