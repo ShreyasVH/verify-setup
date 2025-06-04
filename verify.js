@@ -37,31 +37,31 @@ const fs = require('fs');
     const postgresVersion = process.env.POSTGRES_VERSION;
     const mongoVersion = process.env.MONGO_VERSION;
 
-    // // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
-    // let portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
-    // const elasticsearchPort = parseInt(portResponse.stdout);
-    // const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for elasticsearch startup');
-    // await waitForPort(elasticsearchPort, '127.0.0.1', 30000);
+    // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+    let portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
+    const elasticsearchPort = parseInt(portResponse.stdout);
+    const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for elasticsearch startup');
+    await waitForPort(elasticsearchPort, '127.0.0.1', 30000);
 
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
     const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for haproxy startup');
     await waitForPort(haproxyPort, '127.0.0.1', 30000);
 
-    // // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
-    // let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/workspace/myProjects/config-samples/${process.env.OS}/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
-    // const mysqlPort = parseInt(stdout);
-    // const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for mysql startup');
-    // await waitForPort(mysqlPort, '127.0.0.1', 30000);
-    //
-    // // await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
-    // portResponse = await execPromise(`grep 'port = ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/postgres/${postgresVersion}/postgresql.conf | awk '{print $3}'`);
-    // const postgresPort = parseInt(portResponse.stdout);
-    // const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for postgres startup');
-    // await waitForPort(postgresPort, '127.0.0.1', 30000);
+    // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
+    let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/workspace/myProjects/config-samples/${process.env.OS}/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
+    const mysqlPort = parseInt(stdout);
+    const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for mysql startup');
+    await waitForPort(mysqlPort, '127.0.0.1', 30000);
+
+    // await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
+    portResponse = await execPromise(`grep 'port = ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/postgres/${postgresVersion}/postgresql.conf | awk '{print $3}'`);
+    const postgresPort = parseInt(portResponse.stdout);
+    const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for postgres startup');
+    await waitForPort(postgresPort, '127.0.0.1', 30000);
 
     // await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
@@ -70,41 +70,41 @@ const fs = require('fs');
     console.log('Waiting for mongo startup');
     await waitForPort(mongoPort, '127.0.0.1', 30000);
 
-    // responses['logstash'] = await verifyLogstash();
-    // responses['kibana'] = await verifyKibana();
-    //
-    // // angular
-    // responses['angularSkeleton'] = await verifySkeleton();
-    // responses['angularRouter'] = await verifyRouter();
-    // responses['angularMaterial'] = await verifyMaterial();
-    //
-    // // dotnet-core
-    // responses['dotnetCoreSkeleton'] = await verifyDotnetCoreSkeleton();
-    // responses['dotnetCoreCors'] = await verifyDotnetCoreCors();
-    // responses['dotnetCoreMssql'] = await verifyDotnetCoreMssql();
-    // responses['dotnetCoreMigrations'] = await verifyDotnetCoreMigrations();
-    // responses['dotnetCoreErrors'] = await verifyDotnetCoreErrors();
-    // responses['dotnetCoreResponse'] = await verifyDotnetCoreResponse();
+    responses['logstash'] = await verifyLogstash();
+    responses['kibana'] = await verifyKibana();
 
-    // // express
-    // responses['expressSkeleton'] = await verifyExpressSkeleton();
-    // responses['expressCors'] = await verifyExpressCors();
-    // responses['expressMongoDb'] = await verifyExpressMongoDb();
+    // angular
+    responses['angularSkeleton'] = await verifySkeleton();
+    responses['angularRouter'] = await verifyRouter();
+    responses['angularMaterial'] = await verifyMaterial();
+
+    // dotnet-core
+    responses['dotnetCoreSkeleton'] = await verifyDotnetCoreSkeleton();
+    responses['dotnetCoreCors'] = await verifyDotnetCoreCors();
+    responses['dotnetCoreMssql'] = await verifyDotnetCoreMssql();
+    responses['dotnetCoreMigrations'] = await verifyDotnetCoreMigrations();
+    responses['dotnetCoreErrors'] = await verifyDotnetCoreErrors();
+    responses['dotnetCoreResponse'] = await verifyDotnetCoreResponse();
+
+    // express
+    responses['expressSkeleton'] = await verifyExpressSkeleton();
+    responses['expressCors'] = await verifyExpressCors();
+    responses['expressMongoDb'] = await verifyExpressMongoDb();
     responses['expressMigrations'] = await verifyExpressMigrations();
 
-    // // house expenses
-    // responses['houseExpensesReact'] = await verifyHouseExpensesReact();
-    //
-    // // cric
-    // responses['reactCric'] = await verifyReactCric();
-    // responses['vueCric'] = await verifyVueCric();
-    // responses['angularCric'] = await verifyAngularCric();
-    // responses['solidCric'] = await verifySolidCric();
-    // responses['svelteKitCric'] = await verifySvelteKitCric();
-    //
-    // // my-site
-    // responses['mySiteReact'] = await verifyMySiteReact();
-    // responses['mySitePhp'] = await verifyMySitePhp();
+    // house expenses
+    responses['houseExpensesReact'] = await verifyHouseExpensesReact();
+
+    // cric
+    responses['reactCric'] = await verifyReactCric();
+    responses['vueCric'] = await verifyVueCric();
+    responses['angularCric'] = await verifyAngularCric();
+    responses['solidCric'] = await verifySolidCric();
+    responses['svelteKitCric'] = await verifySvelteKitCric();
+
+    // my-site
+    responses['mySiteReact'] = await verifyMySiteReact();
+    responses['mySitePhp'] = await verifyMySitePhp();
 
     // phalcon
     // interceptor
@@ -116,9 +116,9 @@ const fs = require('fs');
     // vue
 
     const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
-    // const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
-    // const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
-    // const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
+    const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
+    const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+    const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
     const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
