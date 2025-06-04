@@ -18,7 +18,7 @@ const verify = async () => {
     let isSuccess = true;
 
     await myApiJavaStart();
-    await sleep(30000);
+    await sleep(5000);
 
     let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/react/my-site-react && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
     const port = parseInt(stdout);

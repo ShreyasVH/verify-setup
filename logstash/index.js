@@ -23,7 +23,7 @@ const start = async () => {
 
     console.log('Waiting for logstash startup');
     await waitForPort(port, '127.0.0.1', 30000);
-    await sleep(30000);
+    await sleep(5000);
 };
 
 const stop = async () => {
@@ -91,7 +91,7 @@ const verify = async () => {
         }
         await browser.close();
 
-        await sleep(30000);
+        await sleep(5000);
 
         response = await get(url);
         data = response.data;

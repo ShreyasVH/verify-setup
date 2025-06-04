@@ -14,7 +14,7 @@ const verify = async () => {
     let isSuccess = false;
 
     await apiStart();
-    await sleep(30000);
+    await sleep(5000);
 
     let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/vue/vue-cric && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
     const port = parseInt(stdout);
