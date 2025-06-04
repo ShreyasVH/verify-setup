@@ -91,7 +91,7 @@ const verify = async () => {
         }
         await browser.close();
 
-        await sleep(5000);
+        await sleep(30000);
 
         response = await get(url);
         data = response.data;
