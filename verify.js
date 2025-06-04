@@ -20,6 +20,7 @@ const verifyLogstash = require('./logstash').verify;
 const verifyExpressSkeleton = require('./express/skeleton').verify;
 const verifyExpressCors = require('./express/cors').verify;
 const verifyExpressMongoDb = require('./express/mongodb').verify;
+const verifyExpressMigrations = require('./express/migrations').verify;
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
@@ -88,7 +89,8 @@ const fs = require('fs');
     // // express
     // responses['expressSkeleton'] = await verifyExpressSkeleton();
     // responses['expressCors'] = await verifyExpressCors();
-    responses['expressMongoDb'] = await verifyExpressMongoDb();
+    // responses['expressMongoDb'] = await verifyExpressMongoDb();
+    responses['expressMigrations'] = await verifyExpressMigrations();
 
     // // house expenses
     // responses['houseExpensesReact'] = await verifyHouseExpensesReact();
