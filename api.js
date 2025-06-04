@@ -1,4 +1,12 @@
 const axios = require('axios');
+const https = require('https');
+const fs = require('fs');
+
+const cert = fs.readFileSync(`${process.env.HOME}/workspace/myProjects/ssl/rootCA.crt`);
+
+const httpsAgent = new https.Agent({
+    ca: cert, // Trust this cert
+});
 
 const get = async (url, additionalHeaders = {}) => {
     let defaultHeaders = {
@@ -60,7 +68,7 @@ const del = (url, additionalHeaders = {}) => {
     });
 };
 
-const execute = options => (axios(options));
+const execute = options => (axios(Object.assign(options, { httpsAgent })));
 
 exports.get = get;
 exports.post = post;

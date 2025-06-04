@@ -1,0 +1,17 @@
+#node 18.16.0 path
+export PATH=
+
+export OS=
+
+export MYSQL_VERSION=
+export ELASTICSEARCH_VERSION=
+export POSTGRES_VERSION=
+export HAPROXY_VERSION=
+export MONGO_VERSION=
+export KIBANA_VERSION=
+export LOGSTASH_VERSION=
+
+export ELASTIC_USERNAME=
+export ELASTIC_PASSWORD=
+
+export PHPMYADMIN_PORT=
