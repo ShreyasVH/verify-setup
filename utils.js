@@ -47,7 +47,15 @@ const waitForPort = async (port, host = 'localhost', timeout = 10000, interval =
 
 const sleep = async (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
+};
+
+const ucFirst = word => word[0].toUpperCase() + word.substring(1);
+
+const getCamelCaseForRepoName = (repoName) => {
+    const nameParts = repoName.split('-');
+    return nameParts.map((word, index) => ((index === 0) ? word : ucFirst(word))).join('');
 }
 
 exports.waitForPort = waitForPort;
 exports.sleep = sleep;
+exports.getCamelCaseForRepoName = getCamelCaseForRepoName;

@@ -24,6 +24,7 @@ const verifyExpressMigrations = require('./express/migrations').verify;
 const verifyExpressResponse = require('./express/response').verify;
 const verifyExpressErrors = require('./express/errors').verify;
 const verifyExpressSwagger = require('./express/swagger').verify;
+const verifyPhalconSkeleton = require('./phalcon/skeleton').verify;
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
@@ -113,6 +114,8 @@ const fs = require('fs');
     responses['mySitePhp'] = await verifyMySitePhp();
 
     // phalcon
+    responses['phalconSkeleton'] = await verifyPhalconSkeleton();
+
     // interceptor
     // react
     // react native
