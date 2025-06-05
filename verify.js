@@ -25,6 +25,7 @@ const verifyExpressResponse = require('./express/response').verify;
 const verifyExpressErrors = require('./express/errors').verify;
 const verifyExpressSwagger = require('./express/swagger').verify;
 const verifyPhalconSkeleton = require('./phalcon/skeleton').verify;
+const verifyPhalconMysql = require('./phalcon/mysql').verify;
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
@@ -115,6 +116,7 @@ const fs = require('fs');
 
     // phalcon
     responses['phalconSkeleton'] = await verifyPhalconSkeleton();
+    responses['phalconMysql'] = await verifyPhalconMysql();
 
     // interceptor
     // react
