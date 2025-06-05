@@ -17,6 +17,13 @@ const verifySolidCric = require('./solid/cric').verify;
 const verifySvelteKitCric = require('./svelte-kit/cric').verify;
 const verifyKibana = require('./kiabana').verify;
 const verifyLogstash = require('./logstash').verify;
+const verifyExpressSkeleton = require('./express/skeleton').verify;
+const verifyExpressCors = require('./express/cors').verify;
+const verifyExpressMongoDb = require('./express/mongodb').verify;
+const verifyExpressMigrations = require('./express/migrations').verify;
+const verifyExpressResponse = require('./express/response').verify;
+const verifyExpressErrors = require('./express/errors').verify;
+const verifyExpressSwagger = require('./express/swagger').verify;
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
@@ -81,6 +88,15 @@ const fs = require('fs');
     responses['dotnetCoreMigrations'] = await verifyDotnetCoreMigrations();
     responses['dotnetCoreErrors'] = await verifyDotnetCoreErrors();
     responses['dotnetCoreResponse'] = await verifyDotnetCoreResponse();
+
+    // express
+    responses['expressSkeleton'] = await verifyExpressSkeleton();
+    responses['expressCors'] = await verifyExpressCors();
+    responses['expressMongoDb'] = await verifyExpressMongoDb();
+    responses['expressMigrations'] = await verifyExpressMigrations();
+    responses['expressResponse'] = await verifyExpressResponse();
+    responses['expressErrors'] = await verifyExpressErrors();
+    responses['expressSwagger'] = await verifyExpressSwagger();
 
     // house expenses
     responses['houseExpensesReact'] = await verifyHouseExpensesReact();
