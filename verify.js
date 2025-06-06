@@ -30,6 +30,7 @@ const verifyPhalconMysql = require('./phalcon/mysql').verify;
 const verifyPhalconMigrations = require('./phalcon/migrations').verify;
 const verifyPhalconResponse = require('./phalcon/response').verify;
 const verifyPhalconErrors = require('./phalcon/errors').verify;
+const verifyPhalconSwagger = require('./phalcon/swagger').verify;
 
 const { exec } = require('child_process');
 const util = require('util');
@@ -125,6 +126,7 @@ const fs = require('fs');
     responses['phalconMigrations'] = await verifyPhalconMigrations();
     responses['phalconResponse'] = await verifyPhalconResponse();
     responses['phalconErrors'] = await verifyPhalconErrors();
+    responses['phalconSwagger'] = await verifyPhalconSwagger();
 
     // interceptor
     // react
