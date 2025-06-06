@@ -28,6 +28,7 @@ const verifyExpressSwagger = require('./express/swagger').verify;
 const verifyPhalconSkeleton = require('./phalcon/skeleton').verify;
 const verifyPhalconMysql = require('./phalcon/mysql').verify;
 const verifyPhalconMigrations = require('./phalcon/migrations').verify;
+const verifyPhalconResponse = require('./phalcon/response').verify;
 
 const { exec } = require('child_process');
 const util = require('util');
@@ -70,7 +71,7 @@ const fs = require('fs');
     const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for postgres startup');
     await waitForPort(postgresPort, '127.0.0.1', 30000);
-    
+
     // await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
     const mongoPort = parseInt(portResponse.stdout);
@@ -80,12 +81,12 @@ const fs = require('fs');
 
     responses['logstash'] = await verifyLogstash();
     responses['kibana'] = await verifyKibana();
-    
+
     // angular
     responses['angularSkeleton'] = await verifySkeleton();
     responses['angularRouter'] = await verifyRouter();
     responses['angularMaterial'] = await verifyMaterial();
-    
+
     // dotnet-core
     responses['dotnetCoreSkeleton'] = await verifyDotnetCoreSkeleton();
     responses['dotnetCoreCors'] = await verifyDotnetCoreCors();
@@ -93,7 +94,7 @@ const fs = require('fs');
     responses['dotnetCoreMigrations'] = await verifyDotnetCoreMigrations();
     responses['dotnetCoreErrors'] = await verifyDotnetCoreErrors();
     responses['dotnetCoreResponse'] = await verifyDotnetCoreResponse();
-    
+
     // express
     responses['expressSkeleton'] = await verifyExpressSkeleton();
     responses['expressCors'] = await verifyExpressCors();
@@ -102,25 +103,26 @@ const fs = require('fs');
     responses['expressResponse'] = await verifyExpressResponse();
     responses['expressErrors'] = await verifyExpressErrors();
     responses['expressSwagger'] = await verifyExpressSwagger();
-    
+
     // house expenses
     responses['houseExpensesReact'] = await verifyHouseExpensesReact();
-    
+
     // cric
     responses['reactCric'] = await verifyReactCric();
     responses['vueCric'] = await verifyVueCric();
     responses['angularCric'] = await verifyAngularCric();
     responses['solidCric'] = await verifySolidCric();
     responses['svelteKitCric'] = await verifySvelteKitCric();
-    
+
     // my-site
     responses['mySiteReact'] = await verifyMySiteReact();
     responses['mySitePhp'] = await verifyMySitePhp();
-    
+
     // phalcon
     responses['phalconSkeleton'] = await verifyPhalconSkeleton();
     responses['phalconMysql'] = await verifyPhalconMysql();
     responses['phalconMigrations'] = await verifyPhalconMigrations();
+    responses['phalconResponse'] = await verifyPhalconResponse();
 
     // interceptor
     // react
