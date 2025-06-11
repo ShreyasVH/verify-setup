@@ -60,6 +60,7 @@ const verify = async () => {
         await page.close();
     } catch (err) {
         console.error('Error:', err);
+        isSuccess = false;
     }
 
     try {
@@ -83,6 +84,7 @@ const verify = async () => {
         await page.close();
     } catch (err) {
         console.error('Error:', err);
+        isSuccess = false;
     }
     await browser.close();
 
