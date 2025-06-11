@@ -83,6 +83,11 @@ const fs = require('fs');
     console.log('Waiting for mongo startup');
     await waitForPort(mongoPort, '127.0.0.1', 30000);
 
+    const mssqlPort = process.env.MSSQL_PORT;
+    const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
+    console.log('Waiting for mssql startup');
+    await waitForPort(mongoPort, '127.0.0.1', 30000);
+
     responses['logstash'] = await verifyLogstash();
     responses['kibana'] = await verifyKibana();
 
@@ -145,6 +150,7 @@ const fs = require('fs');
     const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
     const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
     const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
+    const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);

@@ -64,7 +64,7 @@ const verify = async () => {
 
         await stop();
     } catch (e) {
-
+        console.log(e);
     }
 
     return isSuccess;
