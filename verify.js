@@ -34,6 +34,7 @@ const verifyPhalconSwagger = require('./phalcon/swagger').verify;
 
 const verifySpringbootSkeleton = require('./spring-boot/skeleton').verify;
 const verifySpringbootSwagger = require('./spring-boot/swagger').verify;
+const verifySpringbootPostgres = require('./spring-boot/postgres').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 
 const { exec } = require('child_process');
@@ -52,17 +53,17 @@ const fs = require('fs');
     const postgresVersion = process.env.POSTGRES_VERSION;
     const mongoVersion = process.env.MONGO_VERSION;
 
+    // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
+    const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for haproxy startup');
+    await waitForPort(haproxyPort, '127.0.0.1', 30000);
+
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
     let portResponse = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/elasticsearch/${elasticSearchVersion}/elasticsearch.yml | awk '{print $2}'`);
     const elasticsearchPort = parseInt(portResponse.stdout);
     const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for elasticsearch startup');
     await waitForPort(elasticsearchPort, '127.0.0.1', 30000);
-
-    // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
-    const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
-    console.log('Waiting for haproxy startup');
-    await waitForPort(haproxyPort, '127.0.0.1', 30000);
 
     // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
     let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/workspace/myProjects/config-samples/${process.env.OS}/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
@@ -144,6 +145,7 @@ const fs = require('fs');
     // spring boot
     responses['springbootSkeleton'] = await verifySpringbootSkeleton();
     responses['springbootSwagger'] = await verifySpringbootSwagger();
+    responses['springbootPostgres'] = await verifySpringbootPostgres();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
