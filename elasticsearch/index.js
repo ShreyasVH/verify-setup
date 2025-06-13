@@ -10,7 +10,7 @@ const phpmyadminStop = require('../phpmyadmin').stop;
 
 const getPort = async () => {
     const elasticsearchVersion = process.env.ELASTICSEARCH_VERSION;
-    let { stdout, stderr } = await execPromise(`grep 'http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/elasticsearch/${elasticsearchVersion}/elasticsearch.yml | awk '{print $2}'`);
+    let { stdout, stderr } = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticsearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
     return parseInt(stdout);
 }
 
