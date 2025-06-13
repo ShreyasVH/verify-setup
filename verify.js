@@ -36,6 +36,7 @@ const verifySpringbootSkeleton = require('./spring-boot/skeleton').verify;
 const verifySpringbootSwagger = require('./spring-boot/swagger').verify;
 const verifySpringbootPostgres = require('./spring-boot/postgres').verify;
 const verifySpringbootMysql = require('./spring-boot/mysql').verify;
+const verifySpringbootMigrations = require('./spring-boot/migrations').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 
 const { exec } = require('child_process');
@@ -90,7 +91,7 @@ const fs = require('fs');
     const mssqlPort = process.env.MSSQL_PORT;
     const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
     console.log('Waiting for mssql startup');
-    await waitForPort(mongoPort, '127.0.0.1', 30000);
+    await waitForPort(mssqlPort, '127.0.0.1', 30000);
 
     responses['logstash'] = await verifyLogstash();
     responses['kibana'] = await verifyKibana();
@@ -148,6 +149,7 @@ const fs = require('fs');
     responses['springbootSwagger'] = await verifySpringbootSwagger();
     responses['springbootPostgres'] = await verifySpringbootPostgres();
     responses['springbootMysql'] = await verifySpringbootMysql();
+    responses['springbootMigrations'] = await verifySpringbootMigrations();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
