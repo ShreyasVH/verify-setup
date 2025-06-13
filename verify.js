@@ -35,6 +35,7 @@ const verifyPhalconSwagger = require('./phalcon/swagger').verify;
 const verifySpringbootSkeleton = require('./spring-boot/skeleton').verify;
 const verifySpringbootSwagger = require('./spring-boot/swagger').verify;
 const verifySpringbootPostgres = require('./spring-boot/postgres').verify;
+const verifySpringbootMysql = require('./spring-boot/mysql').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 
 const { exec } = require('child_process');
@@ -146,6 +147,7 @@ const fs = require('fs');
     responses['springbootSkeleton'] = await verifySpringbootSkeleton();
     responses['springbootSwagger'] = await verifySpringbootSwagger();
     responses['springbootPostgres'] = await verifySpringbootPostgres();
+    responses['springbootMysql'] = await verifySpringbootMysql();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
