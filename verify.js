@@ -39,6 +39,7 @@ const verifySpringbootMysql = require('./spring-boot/mysql').verify;
 const verifySpringbootMigrations = require('./spring-boot/migrations').verify;
 const verifySpringbootResponse = require('./spring-boot/response').verify;
 const verifySpringbootErrors = require('./spring-boot/errors').verify;
+const verifySpringbootHttps = require('./spring-boot/https').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 
 const { exec } = require('child_process');
@@ -154,6 +155,7 @@ const fs = require('fs');
     responses['springbootMigrations'] = await verifySpringbootMigrations();
     responses['springbootResponse'] = await verifySpringbootResponse();
     responses['springbootErrors'] = await verifySpringbootErrors();
+    responses['springbootHttps'] = await verifySpringbootHttps();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
