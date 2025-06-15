@@ -40,6 +40,7 @@ const verifySpringbootMigrations = require('./spring-boot/migrations').verify;
 const verifySpringbootResponse = require('./spring-boot/response').verify;
 const verifySpringbootErrors = require('./spring-boot/errors').verify;
 const verifySpringbootHttps = require('./spring-boot/https').verify;
+const verifySpringbootDocker = require('./spring-boot/docker').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 
 const { exec } = require('child_process');
@@ -156,6 +157,7 @@ const fs = require('fs');
     responses['springbootResponse'] = await verifySpringbootResponse();
     responses['springbootErrors'] = await verifySpringbootErrors();
     responses['springbootHttps'] = await verifySpringbootHttps();
+    responses['springbootDocker'] = await verifySpringbootDocker();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
