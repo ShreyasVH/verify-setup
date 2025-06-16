@@ -91,7 +91,7 @@ const verify = async () => {
         }
         await browser.close();
 
-        await sleep(30000);
+        await sleep(20000);
 
         response = await get(url);
         data = response.data;
@@ -106,11 +106,16 @@ const verify = async () => {
         };
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
-        let logDocsAfter = 0;
-        if (indexMap.hasOwnProperty(indexName)) {
-            logDocsAfter = parseInt(indexMap[indexName]['docs.count']);
+        let tries = 0;
+        const maxTries = 5;
+        while (!isSuccess && tries <= maxTries) {
+            let logDocsAfter = 0;
+            if (indexMap.hasOwnProperty(indexName)) {
+                logDocsAfter = parseInt(indexMap[indexName]['docs.count']);
+            }
+            isSuccess = logDocsAfter > logDocsBefore;
+            tries++;
         }
-        isSuccess = logDocsAfter > logDocsBefore;
     } catch (e) {
         console.log(e);
     }
