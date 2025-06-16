@@ -43,6 +43,10 @@ const verify = async () => {
                 timeout: 0
             });
 
+            await basePage.waitForSelector('input[name="email"]', {
+                timeout: 0
+            });
+
             await basePage.screenshot({
                 path: 'outputProofs/langfuseSignin.png',
             });
