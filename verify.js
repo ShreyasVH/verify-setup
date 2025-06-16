@@ -42,6 +42,7 @@ const verifySpringbootErrors = require('./spring-boot/errors').verify;
 const verifySpringbootHttps = require('./spring-boot/https').verify;
 const verifySpringbootDocker = require('./spring-boot/docker').verify;
 const verifySpringbootHttpClient = require('./spring-boot/httpClient').verify;
+const verifySpringbootSentry = require('./spring-boot/sentry').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 const springbootCors = require('./spring-boot/cors');
 
@@ -160,6 +161,7 @@ const fs = require('fs');
     responses['springbootErrors'] = await verifySpringbootErrors();
     responses['springbootHttps'] = await verifySpringbootHttps();
     responses['springbootDocker'] = await verifySpringbootDocker();
+    responses['springbootSentry'] = await verifySpringbootSentry();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit

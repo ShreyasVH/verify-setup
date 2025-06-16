@@ -6,6 +6,7 @@ const cert = fs.readFileSync(`${process.env.HOME}/workspace/myProjects/ssl/rootC
 
 const httpsAgent = new https.Agent({
     ca: cert, // Trust this cert
+    rejectUnauthorized: false
 });
 
 const get = async (url, additionalHeaders = {}) => {
