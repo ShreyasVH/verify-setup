@@ -41,7 +41,9 @@ const verifySpringbootResponse = require('./spring-boot/response').verify;
 const verifySpringbootErrors = require('./spring-boot/errors').verify;
 const verifySpringbootHttps = require('./spring-boot/https').verify;
 const verifySpringbootDocker = require('./spring-boot/docker').verify;
+const verifySpringbootHttpClient = require('./spring-boot/httpClient').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
+const springbootCors = require('./spring-boot/cors');
 
 const { exec } = require('child_process');
 const util = require('util');
@@ -162,6 +164,12 @@ const fs = require('fs');
 
     // svelte kit
     // vue
+
+    await springbootCors.start();
+
+    responses['springbootHttpClient'] = await verifySpringbootHttpClient();
+
+    await springbootCors.stop();
 
     const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
     const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
