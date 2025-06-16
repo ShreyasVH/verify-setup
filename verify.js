@@ -17,6 +17,7 @@ const verifySolidCric = require('./solid/cric').verify;
 const verifySvelteKitCric = require('./svelte-kit/cric').verify;
 const verifyKibana = require('./kiabana').verify;
 const verifyLogstash = require('./logstash').verify;
+const verifyLangfuse = require('./langfuse/client').verify;
 const verifyExpressSkeleton = require('./express/skeleton').verify;
 const verifyExpressCors = require('./express/cors').verify;
 const verifyExpressMongoDb = require('./express/mongodb').verify;
@@ -90,6 +91,7 @@ const fs = require('fs');
 
     responses['logstash'] = await verifyLogstash();
     responses['kibana'] = await verifyKibana();
+    responses['langfuse'] = await verifyLangfuse();
 
     // angular
     responses['angularSkeleton'] = await verifySkeleton();
