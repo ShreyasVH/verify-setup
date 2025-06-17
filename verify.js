@@ -46,6 +46,7 @@ const verifySpringbootHttpClient = require('./spring-boot/httpClient').verify;
 const verifySpringbootSentry = require('./spring-boot/sentry').verify;
 const verifySpringbootElasticsearch = require('./spring-boot/elasticsearch').verify;
 const verifySpringbootPostgresAuditLog = require('./spring-boot/postgresAuditLog').verify;
+const verifySpringbootRmq = require('./spring-boot/rmq').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 const springbootCors = require('./spring-boot/cors');
 
@@ -64,6 +65,7 @@ const fs = require('fs');
     const elasticSearchVersion = process.env.ELASTICSEARCH_VERSION;
     const postgresVersion = process.env.POSTGRES_VERSION;
     const mongoVersion = process.env.MONGO_VERSION;
+    const rmqVersion = process.env.RMQ_VERSION;
 
     let portResponse = '';
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
@@ -103,6 +105,13 @@ const fs = require('fs');
     const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
     console.log('Waiting for mssql startup');
     await waitForPort(mssqlPort, '127.0.0.1', 30000);
+
+    // await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
+    portResponse = await execPromise(`grep 'listeners.tcp.default = ' $HOME/programs/rmq/${rmqVersion}/etc/rabbitmq/rabbitmq.conf | awk '{print $3}'`);
+    const rmqPort = parseInt(portResponse.stdout);
+    const rmqDeployResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for mongo startup');
+    await waitForPort(rmqPort, '127.0.0.1', 30000);
 
     responses['logstash'] = await verifyLogstash();
     responses['kibana'] = await verifyKibana();
@@ -169,6 +178,7 @@ const fs = require('fs');
     responses['springbootSentry'] = await verifySpringbootSentry();
     responses['springbootElasticsearch'] = await verifySpringbootElasticsearch();
     responses['springbootPostgresAuditLog'] = await verifySpringbootPostgresAuditLog();
+    responses['springbootRmq'] = await verifySpringbootRmq();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
@@ -186,6 +196,7 @@ const fs = require('fs');
     const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
     const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
     const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
+    const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);

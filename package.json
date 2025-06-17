@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.8",
     "axios": "^1.9.0",
     "postgres": "^3.4.7",
     "puppeteer": "^24.9.0"
