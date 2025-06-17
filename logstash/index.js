@@ -12,7 +12,7 @@ const puppeteer = require('puppeteer');
 
 const getPort = async () => {
     const logstashVersion = process.env.LOGSTASH_VERSION;
-    let { stdout, stderr } = await execPromise(`grep 'api.http.port: ' $HOME/workspace/myProjects/config-samples/${process.env.OS}/logstash/${logstashVersion}/logstash.yml | awk '{print $2}'`);
+    let { stdout, stderr } = await execPromise(`grep 'api.http.port: ' $HOME/programs/logstash/${logstashVersion}/config/logstash.yml | awk '{print $2}'`);
     return parseInt(stdout);
 }
 
