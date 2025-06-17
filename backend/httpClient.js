@@ -35,7 +35,7 @@ const verify = async (domain, language, framework, repoName) => {
         console.log(e);
     }
 
-    // await stop(language, framework, repoName);
+    await stop(language, framework, repoName);
 
     return isSuccess;
 };
