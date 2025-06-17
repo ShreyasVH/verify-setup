@@ -45,6 +45,7 @@ const verifySpringbootDocker = require('./spring-boot/docker').verify;
 const verifySpringbootHttpClient = require('./spring-boot/httpClient').verify;
 const verifySpringbootSentry = require('./spring-boot/sentry').verify;
 const verifySpringbootElasticsearch = require('./spring-boot/elasticsearch').verify;
+const verifySpringbootPostgresAuditLog = require('./spring-boot/postgresAuditLog').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 const springbootCors = require('./spring-boot/cors');
 
@@ -64,13 +65,14 @@ const fs = require('fs');
     const postgresVersion = process.env.POSTGRES_VERSION;
     const mongoVersion = process.env.MONGO_VERSION;
 
+    let portResponse = '';
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
     const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for haproxy startup');
     await waitForPort(haproxyPort, '127.0.0.1', 30000);
 
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
-    let portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
+    portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
     const elasticsearchPort = parseInt(portResponse.stdout);
     const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for elasticsearch startup');
@@ -166,6 +168,7 @@ const fs = require('fs');
     responses['springbootDocker'] = await verifySpringbootDocker();
     responses['springbootSentry'] = await verifySpringbootSentry();
     responses['springbootElasticsearch'] = await verifySpringbootElasticsearch();
+    responses['springbootPostgresAuditLog'] = await verifySpringbootPostgresAuditLog();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
