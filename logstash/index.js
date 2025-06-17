@@ -91,24 +91,25 @@ const verify = async () => {
         }
         await browser.close();
 
-        await sleep(20000);
-
-        response = await get(url);
-        data = response.data;
-        indexMap = data.reduce((obj, current) => {
-            obj[current.index] = current;
-            return obj;
-        }, {});
-        proofFilePath = path.resolve(__dirname, '../outputProofs/logstashAfter.json');
-        payloadForProof = {
-            status: response.status,
-            data: response.data
-        };
-        fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
-
         let tries = 0;
         const maxTries = 5;
         while (!isSuccess && tries <= maxTries) {
+            console.log('waiting for logs to reach elastic');
+            await sleep(20000);
+
+            response = await get(url);
+            data = response.data;
+            indexMap = data.reduce((obj, current) => {
+                obj[current.index] = current;
+                return obj;
+            }, {});
+            proofFilePath = path.resolve(__dirname, '../outputProofs/logstashAfter.json');
+            payloadForProof = {
+                status: response.status,
+                data: response.data
+            };
+            fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
+
             let logDocsAfter = 0;
             if (indexMap.hasOwnProperty(indexName)) {
                 logDocsAfter = parseInt(indexMap[indexName]['docs.count']);
