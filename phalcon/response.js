@@ -3,10 +3,10 @@ const backend = require('../backend/response');
 const language = 'php';
 const framework = 'phalcon';
 const repoName = 'phalcon-response-handling';
-const domain = 'response.phalcon.com';
+const domain = 'https://response.phalcon.com';
 
 const start = async () => {
-    await backend.start(language, framework, repoName);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {

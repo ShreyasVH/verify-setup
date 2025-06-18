@@ -3,26 +3,25 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 const { waitForPort, sleep } = require('../utils');
 const puppeteer = require('puppeteer');
+const backend = require('../backend/common');
+
+const language = 'java';
+const framework = 'springboot';
+const repoName = 'spring-boot-sheets-data-sync';
+const domain = 'https://sheets-data-sync-jobrunr.springboot.com';
+
+const start = async () => {
+    await backend.start(language, framework, repoName, domain);
+};
+
+const stop = async () => {
+    await backend.stop(language, framework, repoName);
+};
 
 const getDebugPort = async () => {
     let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/java/springboot/spring-boot-sheets-data-sync && source .envrc && (grep \'JOB_RUNNER_PORT=\' .envrc | awk -F= \'{print $2}\')"');
     return parseInt(stdout);
 }
-
-const start = async () => {
-    let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/java/springboot/spring-boot-sheets-data-sync && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
-    const port = parseInt(stdout);
-
-    const deployResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/java/springboot/spring-boot-sheets-data-sync && source .envrc && bash deploy.sh"');
-
-    console.log('Waiting for spring-boot-sheets-data-sync startup');
-    await waitForPort(port, '127.0.0.1', 30000);
-    await sleep(5000);
-};
-
-const stop = async () => {
-    const stopResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/java/springboot/spring-boot-sheets-data-sync && source .envrc && bash stop.sh"');
-};
 
 const verifyHTML = () => {
     return [...document.querySelectorAll('table tbody tr')].length === 2;
@@ -43,7 +42,7 @@ const verify = async () => {
         ignoreHTTPSErrors: true
     });
     try {
-        const url = 'https://sheets-data-sync-jobrunr.springboot.com/dashboard/recurring-jobs';
+        const url = `${domain}/dashboard/recurring-jobs`;
 
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });

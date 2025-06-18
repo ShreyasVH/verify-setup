@@ -1,27 +1,24 @@
 const puppeteer = require('puppeteer');
-const { exec } = require('child_process');
-const util = require('util');
-const execPromise = util.promisify(exec);
-const { waitForPort, sleep, getCamelCaseForRepoName } = require('../utils');
+const { getCamelCaseForRepoName } = require('../utils');
 const common = require('./common');
 
-const verifyHTML = () => {
-    return [...document.querySelectorAll('#swagger-ui')].length === 1;
-
-};
-
-const start = async (language, framework, repoName) => {
-    await common.start(language, framework, repoName);
+const start = async (language, framework, repoName, domain) => {
+    await common.start(language, framework, repoName, domain);
 };
 
 const stop = async (language, framework, repoName) => {
     await common.stop(language, framework, repoName);
 };
 
+const verifyHTML = () => {
+    return [...document.querySelectorAll('#swagger-ui')].length === 1;
+
+};
+
 const verify = async (domain, language, framework, repoName, swaggerUrl) => {
     let isSuccess = false;
 
-    await start(language, framework, repoName);
+    await start(language, framework, repoName, domain);
 
     const browser  = await puppeteer.launch({
         headless: true,
@@ -34,7 +31,7 @@ const verify = async (domain, language, framework, repoName, swaggerUrl) => {
         ignoreHTTPSErrors: true
     });
     try {
-        const url = `https://${domain}${swaggerUrl}`;
+        const url = `${domain}${swaggerUrl}`;
 
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
@@ -60,4 +57,6 @@ const verify = async (domain, language, framework, repoName, swaggerUrl) => {
     return isSuccess;
 };
 
+exports.start = start;
+exports.stop = stop;
 exports.verify = verify;

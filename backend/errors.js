@@ -1,14 +1,11 @@
-const { exec } = require('child_process');
-const util = require('util');
-const execPromise = util.promisify(exec);
-const { waitForPort, sleep, getCamelCaseForRepoName } = require('../utils');
+const { getCamelCaseForRepoName } = require('../utils');
 const { get } = require('../api');
 const fs = require('fs');
 const path = require('path');
 const common = require('./common');
 
-const start = async (language, framework, repoName) => {
-    await common.start(language, framework, repoName);
+const start = async (language, framework, repoName, domain) => {
+    await common.start(language, framework, repoName, domain);
 };
 
 const stop = async (language, framework, repoName) => {
@@ -18,9 +15,9 @@ const stop = async (language, framework, repoName) => {
 const verify = async (domain, language, framework, repoName) => {
     let isSuccess = false;
 
-    await start(language, framework, repoName);
+    await start(language, framework, repoName, domain);
 
-    const url = `https://${domain}/v1/books/1`;
+    const url = `${domain}/v1/books/1`;
     try {
         await get(url);
     } catch (e) {

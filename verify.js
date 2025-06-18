@@ -35,10 +35,12 @@ const verifyPhalconSwagger = require('./phalcon/swagger').verify;
 
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 
+const myApiJava = require('./play/myApi');
+
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
-const { waitForPort } = require('./utils');
+const { waitForPort, waitForHttpPort } = require('./utils');
 const fs = require('fs');
 
 
@@ -51,43 +53,47 @@ const fs = require('fs');
     const postgresVersion = process.env.POSTGRES_VERSION;
     const mongoVersion = process.env.MONGO_VERSION;
 
+    let portResponse = '';
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
-    let portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
+    portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
     const elasticsearchPort = parseInt(portResponse.stdout);
     const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for elasticsearch startup');
-    await waitForPort(elasticsearchPort, '127.0.0.1', 30000);
+    await waitForPort(elasticsearchPort, '127.0.0.1', 30000, 10);
+    const username = process.env.ELASTIC_USERNAME;
+    const password = process.env.ELASTIC_PASSWORD;
+    await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10);
 
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
     const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for haproxy startup');
-    await waitForPort(haproxyPort, '127.0.0.1', 30000);
+    await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
 
     // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
     let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/programs/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
     const mysqlPort = parseInt(stdout);
     const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for mysql startup');
-    await waitForPort(mysqlPort, '127.0.0.1', 30000);
+    await waitForPort(mysqlPort, '127.0.0.1', 30000, 10);
 
     // await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'port = ' $HOME/programs/postgres/${postgresVersion}/data/postgresql.conf | awk '{print $3}'`);
     const postgresPort = parseInt(portResponse.stdout);
     const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for postgres startup');
-    await waitForPort(postgresPort, '127.0.0.1', 30000);
+    await waitForPort(postgresPort, '127.0.0.1', 30000, 10);
 
     // await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'port: ' $HOME/programs/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
     const mongoPort = parseInt(portResponse.stdout);
     const mongoDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for mongo startup');
-    await waitForPort(mongoPort, '127.0.0.1', 30000);
+    await waitForPort(mongoPort, '127.0.0.1', 30000, 10);
 
     const mssqlPort = process.env.MSSQL_PORT;
     const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
     console.log('Waiting for mssql startup');
-    await waitForPort(mongoPort, '127.0.0.1', 30000);
+    await waitForPort(mssqlPort, '127.0.0.1', 30000, 10);
 
     // responses['logstash'] = await verifyLogstash();
     // responses['kibana'] = await verifyKibana();
@@ -126,8 +132,12 @@ const fs = require('fs');
     responses['svelteKitCric'] = await verifySvelteKitCric();
 
     // my-site
+    await myApiJava.start();
+
     responses['mySiteReact'] = await verifyMySiteReact();
     responses['mySitePhp'] = await verifyMySitePhp();
+
+    await myApiJava.stop();
 
     // // phalcon
     // responses['phalconSkeleton'] = await verifyPhalconSkeleton();
