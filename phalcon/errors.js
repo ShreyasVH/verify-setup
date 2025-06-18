@@ -3,10 +3,10 @@ const backend = require('../backend/errors');
 const language = 'php';
 const framework = 'phalcon';
 const repoName = 'phalcon-error-handling';
-const domain = 'errors.phalcon.com';
+const domain = 'https://errors.phalcon.com';
 
 const start = async () => {
-    await backend.start(language, framework, repoName);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {

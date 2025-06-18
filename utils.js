@@ -2,32 +2,7 @@ const net = require('net');
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
-
-// function waitForPort(port, host = 'localhost', timeout = 10000, interval = 500) {
-//     return new Promise((resolve, reject) => {
-//         const start = Date.now();
-//
-//         const checkPort = () => {
-//             const socket = net.connect(port, host);
-//             socket.once('connect', () => {
-//                 console.log('connect');
-//                 socket.end();
-//                 resolve(true);
-//             });
-//             socket.once('error', (err) => {
-//                 socket.destroy();
-//                 console.log('error', err.message);
-//                 if (Date.now() - start > timeout) {
-//                     reject(new Error(`Timed out waiting for port ${port}`));
-//                 } else {
-//                     setTimeout(checkPort, interval);
-//                 }
-//             });
-//         };
-//
-//         checkPort();
-//     });
-// }
+const { get } = require('./api');
 
 const waitForPort = async (port, host = 'localhost', timeout = 10000, interval = 500) => {
     let isRunning = false;
@@ -54,8 +29,31 @@ const ucFirst = word => word[0].toUpperCase() + word.substring(1);
 const getCamelCaseForRepoName = (repoName) => {
     const nameParts = repoName.split('-');
     return nameParts.map((word, index) => ((index === 0) ? word : ucFirst(word))).join('');
-}
+};
+
+const waitForHttpPort = async (url, interval = 1000) => {
+    while (true) {
+        try {
+            const response = await get(url);
+            if ([200].includes(response.status)) {
+                break;
+            }
+        } catch (e) {
+            try {
+                // console.log(e);
+                if ([404].includes(e.response.status)) {
+                    break;
+                }
+            } catch (ex) {
+                // console.log(ex);
+                // break;
+            }
+        }
+        await sleep(interval);
+    }
+};
 
 exports.waitForPort = waitForPort;
 exports.sleep = sleep;
 exports.getCamelCaseForRepoName = getCamelCaseForRepoName;
+exports.waitForHttpPort = waitForHttpPort;

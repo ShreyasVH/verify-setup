@@ -1,12 +1,13 @@
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
-const { waitForPort, sleep } = require('../utils');
+const { waitForPort, sleep, waitForHttpPort } = require('../utils');
 const { get } = require('../api');
 const fs = require('fs');
 const path = require('path');
 const phpmyadminStart = require('../phpmyadmin').start;
 const phpmyadminStop = require('../phpmyadmin').stop;
+const phpmyadminDomain = require('../phpmyadmin').domain;
 const elasticsearch = require('../elasticsearch');
 const puppeteer = require('puppeteer');
 
@@ -22,8 +23,7 @@ const start = async () => {
     const deployResponse = await execPromise('bash -c "cd $HOME/programs/logstash && bash start.sh"');
 
     console.log('Waiting for logstash startup');
-    await waitForPort(port, '127.0.0.1', 30000);
-    await sleep(30000);
+    await waitForPort(port, '127.0.0.1', 30000, 10);
 };
 
 const stop = async () => {
@@ -57,9 +57,9 @@ const verify = async () => {
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
         const date = new Date();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const indexName = `mysql-logs-${date.getFullYear()}.${month}.${day}`;
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const indexName = `mysql-logs-${date.getUTCFullYear()}.${month}.${day}`;
         let logDocsBefore = 0;
         if (indexMap.hasOwnProperty(indexName)) {
             logDocsBefore = parseInt(indexMap[indexName]['docs.count']);
@@ -76,7 +76,7 @@ const verify = async () => {
             ignoreHTTPSErrors: true
         });
         try {
-            const phpmyadminUrl = 'https://phpmyadmin.php.com/index.php?server=7'
+            const phpmyadminUrl = `${phpmyadminDomain}/index.php?server=7`;
 
             const page = await browser.newPage();
             await page.setViewport({ width: 1920, height: 1080 });
@@ -91,26 +91,32 @@ const verify = async () => {
         }
         await browser.close();
 
-        await sleep(30000);
+        let tries = 0;
+        const maxTries = 5;
+        while (!isSuccess && tries <= maxTries) {
+            console.log('waiting for logs to reach elastic');
+            await sleep(20000);
 
-        response = await get(url);
-        data = response.data;
-        indexMap = data.reduce((obj, current) => {
-            obj[current.index] = current;
-            return obj;
-        }, {});
-        proofFilePath = path.resolve(__dirname, '../outputProofs/logstashAfter.json');
-        payloadForProof = {
-            status: response.status,
-            data: response.data
-        };
-        fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
+            response = await get(url);
+            data = response.data;
+            indexMap = data.reduce((obj, current) => {
+                obj[current.index] = current;
+                return obj;
+            }, {});
+            proofFilePath = path.resolve(__dirname, '../outputProofs/logstashAfter.json');
+            payloadForProof = {
+                status: response.status,
+                data: response.data
+            };
+            fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
-        let logDocsAfter = 0;
-        if (indexMap.hasOwnProperty(indexName)) {
-            logDocsAfter = parseInt(indexMap[indexName]['docs.count']);
+            let logDocsAfter = 0;
+            if (indexMap.hasOwnProperty(indexName)) {
+                logDocsAfter = parseInt(indexMap[indexName]['docs.count']);
+            }
+            isSuccess = logDocsAfter > logDocsBefore;
+            tries++;
         }
-        isSuccess = logDocsAfter > logDocsBefore;
     } catch (e) {
         console.log(e);
     }
