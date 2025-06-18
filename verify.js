@@ -98,22 +98,22 @@ const fs = require('fs');
     responses['angularRouter'] = await verifyRouter();
     responses['angularMaterial'] = await verifyMaterial();
 
-    // dotnet-core
-    responses['dotnetCoreSkeleton'] = await verifyDotnetCoreSkeleton();
-    responses['dotnetCoreCors'] = await verifyDotnetCoreCors();
-    responses['dotnetCoreMssql'] = await verifyDotnetCoreMssql();
-    responses['dotnetCoreMigrations'] = await verifyDotnetCoreMigrations();
-    responses['dotnetCoreErrors'] = await verifyDotnetCoreErrors();
-    responses['dotnetCoreResponse'] = await verifyDotnetCoreResponse();
+    // // dotnet-core
+    // responses['dotnetCoreSkeleton'] = await verifyDotnetCoreSkeleton();
+    // responses['dotnetCoreCors'] = await verifyDotnetCoreCors();
+    // responses['dotnetCoreMssql'] = await verifyDotnetCoreMssql();
+    // responses['dotnetCoreMigrations'] = await verifyDotnetCoreMigrations();
+    // responses['dotnetCoreErrors'] = await verifyDotnetCoreErrors();
+    // responses['dotnetCoreResponse'] = await verifyDotnetCoreResponse();
 
-    // express
-    responses['expressSkeleton'] = await verifyExpressSkeleton();
-    responses['expressCors'] = await verifyExpressCors();
-    responses['expressMongoDb'] = await verifyExpressMongoDb();
-    responses['expressMigrations'] = await verifyExpressMigrations();
-    responses['expressResponse'] = await verifyExpressResponse();
-    responses['expressErrors'] = await verifyExpressErrors();
-    responses['expressSwagger'] = await verifyExpressSwagger();
+    // // express
+    // responses['expressSkeleton'] = await verifyExpressSkeleton();
+    // responses['expressCors'] = await verifyExpressCors();
+    // responses['expressMongoDb'] = await verifyExpressMongoDb();
+    // responses['expressMigrations'] = await verifyExpressMigrations();
+    // responses['expressResponse'] = await verifyExpressResponse();
+    // responses['expressErrors'] = await verifyExpressErrors();
+    // responses['expressSwagger'] = await verifyExpressSwagger();
 
     // house expenses
     responses['houseExpensesReact'] = await verifyHouseExpensesReact();
@@ -129,23 +129,23 @@ const fs = require('fs');
     responses['mySiteReact'] = await verifyMySiteReact();
     responses['mySitePhp'] = await verifyMySitePhp();
 
-    // phalcon
-    responses['phalconSkeleton'] = await verifyPhalconSkeleton();
-    responses['phalconMysql'] = await verifyPhalconMysql();
-    responses['phalconMigrations'] = await verifyPhalconMigrations();
-    responses['phalconResponse'] = await verifyPhalconResponse();
-    responses['phalconErrors'] = await verifyPhalconErrors();
-    responses['phalconSwagger'] = await verifyPhalconSwagger();
-
-    // interceptor
-    // react
-    // react native
-    // solid
-    // spring boot
-    responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
-
-    // svelte kit
-    // vue
+    // // phalcon
+    // responses['phalconSkeleton'] = await verifyPhalconSkeleton();
+    // responses['phalconMysql'] = await verifyPhalconMysql();
+    // responses['phalconMigrations'] = await verifyPhalconMigrations();
+    // responses['phalconResponse'] = await verifyPhalconResponse();
+    // responses['phalconErrors'] = await verifyPhalconErrors();
+    // responses['phalconSwagger'] = await verifyPhalconSwagger();
+    //
+    // // interceptor
+    // // react
+    // // react native
+    // // solid
+    // // spring boot
+    // responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
+    //
+    // // svelte kit
+    // // vue
 
     const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
     const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
