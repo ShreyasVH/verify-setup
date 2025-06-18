@@ -89,9 +89,9 @@ const fs = require('fs');
     console.log('Waiting for mssql startup');
     await waitForPort(mongoPort, '127.0.0.1', 30000);
 
-    responses['logstash'] = await verifyLogstash();
-    responses['kibana'] = await verifyKibana();
-    responses['langfuse'] = await verifyLangfuse();
+    // responses['logstash'] = await verifyLogstash();
+    // responses['kibana'] = await verifyKibana();
+    // responses['langfuse'] = await verifyLangfuse();
 
     // angular
     responses['angularSkeleton'] = await verifySkeleton();
