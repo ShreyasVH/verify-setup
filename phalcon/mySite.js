@@ -1,10 +1,18 @@
 const puppeteer = require('puppeteer');
-const { exec } = require('child_process');
-const util = require('util');
-const execPromise = util.promisify(exec);
-const { waitForPort, sleep } = require('../utils');
-const myApiJavaStart = require('../play/myApi').start;
-const myApiJavaStop = require('../play/myApi').stop;
+const frontend = require('../frontend/common');
+
+const language = 'php';
+const framework = 'phalcon';
+const repoName = 'my-site-php';
+const domain = 'https://my-site-php.phalcon.com';
+
+const start = async () => {
+    await frontend.start(language, framework, repoName, domain);
+};
+
+const stop = async () => {
+    await frontend.stop(language, framework, repoName);
+};
 
 const verifyMovieDashboardHTML = () => {
     return [...document.querySelectorAll('table tbody tr')].length === 6;
@@ -25,17 +33,8 @@ const verifySongsBrowseHTML = () => {
 const verify = async () => {
     let isSuccess = true;
 
-    await myApiJavaStart();
-    await sleep(30000);
+    await start();
 
-    let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
-    const port = parseInt(stdout);
-
-    const deployResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && bash deploy.sh"');
-
-    console.log('Waiting for my-site-php startup');
-    await waitForPort(port, '127.0.0.1', 30000);
-    await sleep(5000);
     const browser  = await puppeteer.launch({
         headless: true,
         devtools: true,
@@ -47,7 +46,7 @@ const verify = async () => {
         ignoreHTTPSErrors: true
     });
     try {
-        const url = 'http://my-site-php.phalcon.com/movies/dashboard';
+        const url = `${domain}/movies/dashboard`;
 
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
@@ -66,10 +65,11 @@ const verify = async () => {
         await page.close();
     } catch (err) {
         console.error('Error:', err);
+        isSuccess = false;
     }
 
     try {
-        const url = 'http://my-site-php.phalcon.com/movies/browseMovies?order=id DESC';
+        const url = `${domain}/movies/browseMovies?order=id DESC`;
 
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
@@ -87,9 +87,10 @@ const verify = async () => {
         await page.close();
     } catch (err) {
         console.error('Error:', err);
+        isSuccess = false;
     }
     try {
-        const url = 'http://my-site-php.phalcon.com/songs/dashboard';
+        const url = `${domain}/songs/dashboard`;
 
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
@@ -108,10 +109,11 @@ const verify = async () => {
         await page.close();
     } catch (err) {
         console.error('Error:', err);
+        isSuccess = false;
     }
 
     try {
-        const url = 'http://my-site-php.phalcon.com/songs/browseSongs';
+        const url = `${domain}/songs/browseSongs`;
 
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
@@ -129,12 +131,11 @@ const verify = async () => {
         await page.close();
     } catch (err) {
         console.error('Error:', err);
+        isSuccess = false;
     }
     await browser.close();
 
-    const stopResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/php/phalcon/my-site-php && source .envrc && bash stop.sh"');
-
-    await myApiJavaStop();
+    await stop();
 
     return isSuccess;
 };

@@ -1,14 +1,11 @@
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
-const { waitForPort, sleep } = require('../utils');
+const { waitForPort, sleep, waitForHttpPort } = require('../utils');
 const { get } = require('../api');
 const fs = require('fs');
 const path = require('path');
-const phpmyadminStart = require('../phpmyadmin').start;
-const phpmyadminStop = require('../phpmyadmin').stop;
 const elasticsearch = require('../elasticsearch');
-const puppeteer = require('puppeteer');
 
 const getPort = async () => {
     const logstashVersion = process.env.LOGSTASH_VERSION;
@@ -22,8 +19,8 @@ const start = async () => {
     const deployResponse = await execPromise('bash -c "cd $HOME/programs/logstash && bash start.sh"');
 
     console.log('Waiting for logstash startup');
-    await waitForPort(port, '127.0.0.1', 30000);
-    await sleep(30000);
+    await waitForPort(port, '127.0.0.1', 30000, 10);
+    await waitForHttpPort(`http:localhost:${port}`, 10);
 };
 
 const stop = async () => {
@@ -35,7 +32,6 @@ const verify = async () => {
     let isSuccess = false;
 
     await start();
-    await phpmyadminStart();
 
     const elasticsearchPort = await elasticsearch.getPort();
 
@@ -57,65 +53,49 @@ const verify = async () => {
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
         const date = new Date();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const indexName = `mysql-logs-${date.getFullYear()}.${month}.${day}`;
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const indexName = `custom-logs-${date.getUTCFullYear()}.${month}.${day}`;
         let logDocsBefore = 0;
         if (indexMap.hasOwnProperty(indexName)) {
             logDocsBefore = parseInt(indexMap[indexName]['docs.count']);
         }
 
-        const browser  = await puppeteer.launch({
-            headless: true,
-            devtools: true,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--ignore-certificate-errors'
-            ],
-            ignoreHTTPSErrors: true
-        });
-        try {
-            const phpmyadminUrl = 'https://phpmyadmin.php.com/index.php?server=7'
+        const fd = fs.openSync(`${process.env.HOME}/custom.log`, 'a');
+        fs.writeSync(fd, 'abc\n');
+        fs.fsyncSync(fd);
+        fs.closeSync(fd);
 
-            const page = await browser.newPage();
-            await page.setViewport({ width: 1920, height: 1080 });
-            await page.goto(phpmyadminUrl, {
-                waitUntil: 'networkidle2',
-                timeout: 0
-            });
-            page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-            await page.close();
-        } catch (err) {
-            console.error('Error:', err);
+        let tries = 0;
+        const maxTries = 10;
+        while (!isSuccess && tries <= maxTries) {
+            console.log('\twaiting for logs to reach elastic');
+            await sleep(1000);
+
+            response = await get(url);
+            data = response.data;
+            indexMap = data.reduce((obj, current) => {
+                obj[current.index] = current;
+                return obj;
+            }, {});
+            proofFilePath = path.resolve(__dirname, '../outputProofs/logstashAfter.json');
+            payloadForProof = {
+                status: response.status,
+                data: response.data
+            };
+            fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
+
+            let logDocsAfter = 0;
+            if (indexMap.hasOwnProperty(indexName)) {
+                logDocsAfter = parseInt(indexMap[indexName]['docs.count']);
+            }
+            isSuccess = logDocsAfter === (logDocsBefore + 1);
+            tries++;
         }
-        await browser.close();
-
-        await sleep(30000);
-
-        response = await get(url);
-        data = response.data;
-        indexMap = data.reduce((obj, current) => {
-            obj[current.index] = current;
-            return obj;
-        }, {});
-        proofFilePath = path.resolve(__dirname, '../outputProofs/logstashAfter.json');
-        payloadForProof = {
-            status: response.status,
-            data: response.data
-        };
-        fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
-
-        let logDocsAfter = 0;
-        if (indexMap.hasOwnProperty(indexName)) {
-            logDocsAfter = parseInt(indexMap[indexName]['docs.count']);
-        }
-        isSuccess = logDocsAfter > logDocsBefore;
     } catch (e) {
         console.log(e);
     }
 
-    await phpmyadminStop();
     await stop();
 
     return isSuccess;
