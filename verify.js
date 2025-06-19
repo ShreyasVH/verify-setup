@@ -146,14 +146,14 @@ const fs = require('fs');
     responses['phalconResponse'] = await verifyPhalconResponse();
     responses['phalconErrors'] = await verifyPhalconErrors();
     responses['phalconSwagger'] = await verifyPhalconSwagger();
-    
+
     // interceptor
     // react
     // react native
     // solid
     // spring boot
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
-    
+
     // svelte kit
     // vue
 
