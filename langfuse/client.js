@@ -1,4 +1,4 @@
-const { start, stop } = require('./server');
+const { start, stop, domain } = require('./server');
 const puppeteer = require('puppeteer');
 const { exec } = require('child_process');
 const util = require('util');
@@ -33,7 +33,7 @@ const verify = async () => {
             ignoreHTTPSErrors: true
         });
         try {
-            const baseUrl = 'https://langfuse.local.com'
+            const baseUrl = `${domain}`
 
             const signInPage = `${baseUrl}/auth/sign-in`;
             const basePage = await browser.newPage();
@@ -74,24 +74,29 @@ const verify = async () => {
 
             const clientResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/node/node-langfuse-client && source .envrc && bash sendTrace.sh"');
 
-            console.log('Waiting for client trace to reach server');
-            await sleep(10000);
+            let tries = 0;
+            const maxTries = 5;
+            while (!isSuccess && tries <= maxTries) {
+                console.log('Waiting for client trace to reach server');
+                await sleep(10000);
 
-            await tracesPage.goto(tracingUrl, {
-                waitUntil: 'networkidle2',
-                timeout: 0
-            });
-            await tracesPage.screenshot({
-                path: 'outputProofs/tracesAfter.png',
-            });
+                await tracesPage.goto(tracingUrl, {
+                    waitUntil: 'networkidle2',
+                    timeout: 0
+                });
+                await tracesPage.screenshot({
+                    path: 'outputProofs/tracesAfter.png',
+                });
 
-            const traceCountAfter = await tracesPage.evaluate(getTraceCountHTML);
+                const traceCountAfter = await tracesPage.evaluate(getTraceCountHTML);
 
-            await tracesPage.close();
+                await tracesPage.close();
 
-            await basePage.close();
+                await basePage.close();
 
-            isSuccess = traceCountAfter === (traceCountBefore + 1);
+                isSuccess = traceCountAfter === (traceCountBefore + 1);
+                tries++;
+            }
         } catch (err) {
             console.error('Error:', err);
         }

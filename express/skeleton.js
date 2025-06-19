@@ -1,24 +1,19 @@
-const { exec } = require('child_process');
-const util = require('util');
-const execPromise = util.promisify(exec);
-const { waitForPort, sleep } = require('../utils');
 const { get } = require('../api');
 const fs = require('fs');
 const path = require('path');
+const backend = require('../backend/common');
+
+const language = 'js';
+const framework = 'express';
+const repoName = 'express-skeleton';
+const domain = 'https://skeleton.express.com';
 
 const start = async () => {
-    let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/express/express-skeleton && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"');
-    const port = parseInt(stdout);
-
-    const deployResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/express/express-skeleton && source .envrc && bash deploy.sh"');
-
-    console.log('Waiting for express skeleton startup');
-    await waitForPort(port, '127.0.0.1', 30000);
-    await sleep(5000);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {
-    const stopResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/express/express-skeleton && source .envrc && bash stop.sh"');
+    await backend.stop(language, framework, repoName);
 };
 
 const verify = async () => {
@@ -28,7 +23,7 @@ const verify = async () => {
         await start();
 
         const inputValue = 'abc';
-        const url = `http://skeleton.express.com/api?input=${inputValue}`;
+        const url = `${domain}/api?input=${inputValue}`;
         const response = await get(url);
         const data = response.data;
         isSuccess = data.input && data.input === inputValue;

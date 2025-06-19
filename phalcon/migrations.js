@@ -3,10 +3,10 @@ const backend = require('../backend/db');
 const language = 'php';
 const framework = 'phalcon';
 const repoName = 'phalcon-migrations';
-const domain = 'migrations.phalcon.com';
+const domain = 'https://migrations.phalcon.com';
 
 const start = async () => {
-    await backend.start(language, framework, repoName);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {

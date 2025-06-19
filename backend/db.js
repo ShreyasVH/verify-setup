@@ -1,33 +1,24 @@
-const { exec } = require('child_process');
-const util = require('util');
-const execPromise = util.promisify(exec);
-const { waitForPort, sleep, getCamelCaseForRepoName } = require('../utils');
+const { getCamelCaseForRepoName } = require('../utils');
 const { get, post } = require('../api');
 const fs = require('fs');
 const path = require('path');
 
-const start = async (language, framework, repoName) => {
-    let { stdout, stderr } = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && (grep \'PORT=\' .envrc | awk -F= \'{print $2}\')"`);
-    const port = parseInt(stdout);
+const common = require('./common');
 
-    const deployResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && bash deploy.sh"`);
-
-    console.log(`Waiting for ${repoName} startup`);
-    await waitForPort(port, '127.0.0.1', 30000);
-    await sleep(5000);
+const start = async (language, framework, repoName, domain) => {
+    await common.start(language, framework, repoName, domain);
 };
 
 const stop = async (language, framework, repoName) => {
-    const stopResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && bash stop.sh"`);
+    await common.stop(language, framework, repoName);
 };
 
-const verify = async (domainName, language, framework, repoName) => {
+const verify = async (domain, language, framework, repoName) => {
     let isSuccess = false;
 
     try {
-        await start(language, framework, repoName);
+        await start(language, framework, repoName, domain);
 
-        const domain = `https://${domainName}`;
         const url = `${domain}/v1/books`;
         let response = await get(url);
         let data = response.data;
