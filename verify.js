@@ -95,9 +95,9 @@ const fs = require('fs');
     console.log('Waiting for mssql startup');
     await waitForPort(mssqlPort, '127.0.0.1', 30000, 10);
 
-    // responses['logstash'] = await verifyLogstash();
-    // responses['kibana'] = await verifyKibana();
-    // responses['langfuse'] = await verifyLangfuse();
+    responses['logstash'] = await verifyLogstash();
+    responses['kibana'] = await verifyKibana();
+    responses['langfuse'] = await verifyLangfuse();
 
     // angular
     responses['angularSkeleton'] = await verifySkeleton();
