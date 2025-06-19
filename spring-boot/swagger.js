@@ -3,11 +3,11 @@ const backend = require('../backend/swagger');
 const language = 'java';
 const framework = 'springboot';
 const repoName = 'spring-boot-swagger';
-const domain = 'swagger.springboot.com';
+const domain = 'https://swagger.springboot.com';
 const swaggerUrl = '/swagger-ui/index.html';
 
 const start = async () => {
-    await backend.start(language, framework, repoName);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {

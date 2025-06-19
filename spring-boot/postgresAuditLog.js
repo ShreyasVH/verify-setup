@@ -8,10 +8,10 @@ const postgresUtils = require('../postgresUtils');
 const language = 'java';
 const framework = 'springboot';
 const repoName = 'spring-boot-postgres-audit-log';
-const domain = 'audit.springboot.com';
+const domain = 'https://audit.springboot.com';
 
 const start = async () => {
-    await backend.start(language, framework, repoName);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {
@@ -34,7 +34,7 @@ const verify = async () => {
         let proofFilePath = path.resolve(__dirname, `../outputProofs/${getCamelCaseForRepoName(repoName)}Before.json`);
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
-        const createUrl = `https://${domain}/v1/books`;
+        const createUrl = `${domain}/v1/books`;
         const payload = {
             'name': 'abc',
             'author': 'def'
@@ -50,7 +50,7 @@ const verify = async () => {
         let tries = 0;
         const maxTries = 3;
         while (!isSuccess && tries < maxTries) {
-            console.log('Waiting for audit logs');
+            console.log('\tWaiting for audit logs');
             await sleep(20000);
 
             const rowsAfter = await postgresUtils.select(process.env.POSTGRES_DB_BOOK_STORE_AUDIT_SPRINGBOOT, 'SELECT count(*) as count FROM books_AUD');

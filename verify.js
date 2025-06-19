@@ -115,7 +115,7 @@ const fs = require('fs');
     portResponse = await execPromise(`grep 'listeners.tcp.default = ' $HOME/programs/rmq/${rmqVersion}/etc/rabbitmq/rabbitmq.conf | awk '{print $3}'`);
     const rmqPort = parseInt(portResponse.stdout);
     const rmqDeployResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash start.sh"`);
-    console.log('Waiting for mongo startup');
+    console.log('Waiting for rmq startup');
     await waitForPort(rmqPort, '127.0.0.1', 30000, 10);
 
     responses['logstash'] = await verifyLogstash();

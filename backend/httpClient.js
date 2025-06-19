@@ -6,8 +6,8 @@ const fs = require('fs');
 const path = require('path');
 
 
-const start = async (language, framework, repoName) => {
-    await common.start(language, framework, repoName);
+const start = async (language, framework, repoName, domain) => {
+    await common.start(language, framework, repoName, domain);
 };
 
 const stop = async (language, framework, repoName) => {
@@ -17,10 +17,10 @@ const stop = async (language, framework, repoName) => {
 const verify = async (domain, language, framework, repoName) => {
     let isSuccess = false;
 
-    await start(language, framework, repoName);
+    await start(language, framework, repoName, domain);
 
     try {
-        const url = `https://${domain}/get`;
+        const url = `${domain}/get`;
         const inputValue = 'abc';
         const response = await get(url);
         const data = response.data;
@@ -41,3 +41,5 @@ const verify = async (domain, language, framework, repoName) => {
 };
 
 exports.verify = verify;
+exports.start = start;
+exports.stop = stop;

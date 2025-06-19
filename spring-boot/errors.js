@@ -3,10 +3,10 @@ const backend = require('../backend/errors');
 const language = 'java';
 const framework = 'springboot';
 const repoName = 'spring-boot-error-handling';
-const domain = 'errors.springboot.com';
+const domain = 'https://errors.springboot.com';
 
 const start = async () => {
-    await backend.start(language, framework, repoName);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {

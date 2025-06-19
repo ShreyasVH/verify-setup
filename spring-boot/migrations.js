@@ -3,10 +3,10 @@ const backend = require('../backend/db');
 const language = 'java';
 const framework = 'springboot';
 const repoName = 'spring-boot-migrations';
-const domain = 'migrations.springboot.com';
+const domain = 'https://migrations.springboot.com';
 
 const start = async () => {
-    await backend.start(language, framework, repoName);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {

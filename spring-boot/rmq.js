@@ -8,10 +8,10 @@ const rmqUtils = require('../rmqUtils');
 const language = 'java';
 const framework = 'springboot';
 const repoName = 'spring-boot-rmq';
-const domain = 'rmq.springboot.com';
+const domain = 'https://rmq.springboot.com';
 
 const start = async () => {
-    await backend.start(language, framework, repoName);
+    await backend.start(language, framework, repoName, domain);
 };
 
 const stop = async () => {
@@ -30,7 +30,7 @@ const verify = async () => {
         let proofFilePath = path.resolve(__dirname, `../outputProofs/${getCamelCaseForRepoName(repoName)}Before.json`);
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
-        const publishUrl = `https://${domain}/publish`;
+        const publishUrl = `${domain}/publish`;
         const payload = {
             'exchange': process.env.RMQ_EXCHANGE_DIRECT,
             'key': process.env.RMQ_KEY_UNCONSUMED,
@@ -50,7 +50,7 @@ const verify = async () => {
         let tries = 0;
         const maxTries = 3;
         while (!isSuccess && tries < maxTries) {
-            console.log('Waiting for event consumption');
+            console.log('\tWaiting for event consumption');
             await sleep(20000);
 
             const countAfter = await rmqUtils.getMessageCount(process.env.RMQ_QUEUE_UNCONSUMED);
