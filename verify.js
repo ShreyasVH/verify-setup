@@ -51,6 +51,7 @@ const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').v
 const springbootCors = require('./spring-boot/cors');
 
 const verifySolidSkeleton  = require('./solid/skeleton').verify;
+const verifySolidRouter  = require('./solid/router').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -177,6 +178,7 @@ const fs = require('fs');
     // react native
     // solid
     responses['solidSkeleton'] = await verifySolidSkeleton();
+    responses['solidRouter'] = await verifySolidRouter();
 
     // spring boot
     responses['springbootSkeleton'] = await verifySpringbootSkeleton();
