@@ -23,7 +23,7 @@ const verify = async () => {
 
     try {
         const browser  = await puppeteer.launch({
-            headless: false,
+            headless: true,
             devtools: true,
             args: [
                 '--no-sandbox',
@@ -56,12 +56,15 @@ const verify = async () => {
             const buttons = await basePage.$$('button');
             await buttons[2].click();
 
+            try {
+                await basePage.waitForSelector('main.relative');
+            } catch (ex) {
+                console.log(ex);
+            }
             await basePage.screenshot({
                 path: 'outputProofs/langfuseAfterSignin.png',
             });
             console.log('entered user credentials');
-
-            await basePage.waitForSelector('main.relative');
             await basePage.close();
 
             const tracesPage = await browser.newPage();

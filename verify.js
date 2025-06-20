@@ -80,7 +80,7 @@ const fs = require('fs');
     const elasticsearchPort = parseInt(portResponse.stdout);
     const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for elasticsearch startup');
-    await waitForPort(elasticsearchPort, '127.0.0.1', 30000);
+    await waitForPort(elasticsearchPort, '127.0.0.1', 30000, 10);
     const username = process.env.ELASTIC_USERNAME;
     const password = process.env.ELASTIC_PASSWORD;
     await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10);
