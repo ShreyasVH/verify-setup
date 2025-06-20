@@ -23,7 +23,7 @@ const verify = async () => {
 
     try {
         const browser  = await puppeteer.launch({
-            headless: true,
+            headless: false,
             devtools: true,
             args: [
                 '--no-sandbox',

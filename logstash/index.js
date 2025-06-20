@@ -67,7 +67,7 @@ const verify = async () => {
         fs.closeSync(fd);
 
         let tries = 0;
-        const maxTries = 40;
+        const maxTries = 100;
         while (!isSuccess && tries <= maxTries) {
             console.log('\twaiting for logs to reach elastic');
             await sleep(1000);

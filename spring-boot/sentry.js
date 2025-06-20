@@ -45,10 +45,10 @@ const verify = async () => {
         const apiResponse = get(url);
 
         let tries = 0;
-        const maxTries = 3;
+        const maxTries = 100;
         while (!isSuccess && tries <= maxTries) {
             console.log('\tWaiting for event to reach sentry');
-            await sleep(20000);
+            await sleep(1000);
 
             sentryResponse = await get(eventsUrl, headers);
             let eventsAfter = 0;
