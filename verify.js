@@ -50,6 +50,8 @@ const verifySpringbootRmq = require('./spring-boot/rmq').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 const springbootCors = require('./spring-boot/cors');
 
+const verifySolidSkeleton  = require('./solid/skeleton').verify;
+
 const myApiJava = require('./play/myApi');
 
 const { exec } = require('child_process');
@@ -174,6 +176,8 @@ const fs = require('fs');
     // react
     // react native
     // solid
+    responses['solidSkeleton'] = await verifySolidSkeleton();
+
     // spring boot
     responses['springbootSkeleton'] = await verifySpringbootSkeleton();
     responses['springbootSwagger'] = await verifySpringbootSwagger();
