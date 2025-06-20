@@ -56,7 +56,16 @@ const verify = async () => {
             const buttons = await basePage.$$('button');
             await buttons[2].click();
 
-            await basePage.waitForSelector('main.relative');
+            try {
+                await basePage.waitForSelector('main.relative');
+            } catch (ex) {
+                console.log(ex);
+            }
+            await basePage.screenshot({
+                path: 'outputProofs/langfuseAfterSignin.png',
+            });
+            console.log('entered user credentials');
+            await basePage.close();
 
             const tracesPage = await browser.newPage();
             const tracingUrl = `${baseUrl}/project/${process.env.LANGFUSE_PROJECT_ID}/traces`;
@@ -75,10 +84,10 @@ const verify = async () => {
             const clientResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/node/node-langfuse-client && source .envrc && bash sendTrace.sh"');
 
             let tries = 0;
-            const maxTries = 5;
+            const maxTries = 40;
             while (!isSuccess && tries <= maxTries) {
-                console.log('Waiting for client trace to reach server');
-                await sleep(10000);
+                console.log('\tWaiting for client trace to reach server');
+                await sleep(1000);
 
                 await tracesPage.goto(tracingUrl, {
                     waitUntil: 'networkidle2',
@@ -90,13 +99,11 @@ const verify = async () => {
 
                 const traceCountAfter = await tracesPage.evaluate(getTraceCountHTML);
 
-                await tracesPage.close();
-
-                await basePage.close();
-
                 isSuccess = traceCountAfter === (traceCountBefore + 1);
                 tries++;
             }
+
+            await tracesPage.close();
         } catch (err) {
             console.error('Error:', err);
         }

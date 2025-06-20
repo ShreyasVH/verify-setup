@@ -6,3 +6,4 @@ npmInstall.log
 verifyResponses.json
 verifyResponsesFiltered.json
 outputProofs
+test.js

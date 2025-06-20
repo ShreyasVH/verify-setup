@@ -33,7 +33,22 @@ const verifyPhalconResponse = require('./phalcon/response').verify;
 const verifyPhalconErrors = require('./phalcon/errors').verify;
 const verifyPhalconSwagger = require('./phalcon/swagger').verify;
 
+const verifySpringbootSkeleton = require('./spring-boot/skeleton').verify;
+const verifySpringbootSwagger = require('./spring-boot/swagger').verify;
+const verifySpringbootPostgres = require('./spring-boot/postgres').verify;
+const verifySpringbootMysql = require('./spring-boot/mysql').verify;
+const verifySpringbootMigrations = require('./spring-boot/migrations').verify;
+const verifySpringbootResponse = require('./spring-boot/response').verify;
+const verifySpringbootErrors = require('./spring-boot/errors').verify;
+const verifySpringbootHttps = require('./spring-boot/https').verify;
+const verifySpringbootDocker = require('./spring-boot/docker').verify;
+const verifySpringbootHttpClient = require('./spring-boot/httpClient').verify;
+const verifySpringbootSentry = require('./spring-boot/sentry').verify;
+const verifySpringbootElasticsearch = require('./spring-boot/elasticsearch').verify;
+const verifySpringbootPostgresAuditLog = require('./spring-boot/postgresAuditLog').verify;
+const verifySpringbootRmq = require('./spring-boot/rmq').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
+const springbootCors = require('./spring-boot/cors');
 
 const myApiJava = require('./play/myApi');
 
@@ -52,8 +67,14 @@ const fs = require('fs');
     const elasticSearchVersion = process.env.ELASTICSEARCH_VERSION;
     const postgresVersion = process.env.POSTGRES_VERSION;
     const mongoVersion = process.env.MONGO_VERSION;
+    const rmqVersion = process.env.RMQ_VERSION;
 
     let portResponse = '';
+    // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
+    const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for haproxy startup');
+    await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
+
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
     const elasticsearchPort = parseInt(portResponse.stdout);
@@ -63,11 +84,6 @@ const fs = require('fs');
     const username = process.env.ELASTIC_USERNAME;
     const password = process.env.ELASTIC_PASSWORD;
     await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10);
-
-    // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
-    const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
-    console.log('Waiting for haproxy startup');
-    await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
 
     // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
     let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/programs/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
@@ -94,6 +110,13 @@ const fs = require('fs');
     const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
     console.log('Waiting for mssql startup');
     await waitForPort(mssqlPort, '127.0.0.1', 30000, 10);
+
+    // await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
+    portResponse = await execPromise(`grep 'listeners.tcp.default = ' $HOME/programs/rmq/${rmqVersion}/etc/rabbitmq/rabbitmq.conf | awk '{print $3}'`);
+    const rmqPort = parseInt(portResponse.stdout);
+    const rmqDeployResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for rmq startup');
+    await waitForPort(rmqPort, '127.0.0.1', 30000, 10);
 
     responses['logstash'] = await verifyLogstash();
     responses['kibana'] = await verifyKibana();
@@ -152,10 +175,29 @@ const fs = require('fs');
     // react native
     // solid
     // spring boot
+    responses['springbootSkeleton'] = await verifySpringbootSkeleton();
+    responses['springbootSwagger'] = await verifySpringbootSwagger();
+    responses['springbootPostgres'] = await verifySpringbootPostgres();
+    responses['springbootMysql'] = await verifySpringbootMysql();
+    responses['springbootMigrations'] = await verifySpringbootMigrations();
+    responses['springbootResponse'] = await verifySpringbootResponse();
+    responses['springbootErrors'] = await verifySpringbootErrors();
+    responses['springbootHttps'] = await verifySpringbootHttps();
+    responses['springbootDocker'] = await verifySpringbootDocker();
+    responses['springbootSentry'] = await verifySpringbootSentry();
+    responses['springbootElasticsearch'] = await verifySpringbootElasticsearch();
+    responses['springbootPostgresAuditLog'] = await verifySpringbootPostgresAuditLog();
+    responses['springbootRmq'] = await verifySpringbootRmq();
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
     // vue
+
+    await springbootCors.start();
+
+    responses['springbootHttpClient'] = await verifySpringbootHttpClient();
+
+    await springbootCors.stop();
 
     const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
     const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
@@ -163,6 +205,7 @@ const fs = require('fs');
     const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
     const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
     const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
+    const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
