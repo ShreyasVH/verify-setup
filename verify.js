@@ -1,6 +1,7 @@
 const verifySkeleton  = require('./angular/skeleton').verify;
 const verifyRouter  = require('./angular/router').verify;
 const verifyMaterial  = require('./angular/material').verify;
+const verifyAngularHttpClient  = require('./angular/httpClient').verify;
 const verifyDotnetCoreSkeleton = require('./dotnet-core/skeleton').verify;
 const verifyDotnetCoreCors = require('./dotnet-core/cors').verify;
 const verifyDotnetCoreMssql = require('./dotnet-core/mssql').verify;
@@ -49,10 +50,15 @@ const verifySpringbootPostgresAuditLog = require('./spring-boot/postgresAuditLog
 const verifySpringbootRmq = require('./spring-boot/rmq').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 const springbootCors = require('./spring-boot/cors');
+const playCors = require('./play/cors');
+const phalconCors = require('./phalcon/cors');
+const expressCors = require('./express/cors');
+const dotnetCoreCors = require('./dotnet-core/cors');
 
 const verifySolidSkeleton  = require('./solid/skeleton').verify;
 const verifySolidRouter  = require('./solid/router').verify;
 const verifySolidMaterial  = require('./solid/material').verify;
+const verifySolidHttpClient  = require('./solid/httpClient').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -201,11 +207,21 @@ const fs = require('fs');
     // svelte kit
     // vue
 
+    await playCors.start();
     await springbootCors.start();
+    await phalconCors.start();
+    await expressCors.start();
+    await dotnetCoreCors.start();
 
     responses['springbootHttpClient'] = await verifySpringbootHttpClient();
+    responses['angularHttpClient'] = await verifyAngularHttpClient();
+    responses['solidHttpClient'] = await verifySolidHttpClient();
 
+    await playCors.stop();
     await springbootCors.stop();
+    await phalconCors.stop();
+    await expressCors.stop();
+    await dotnetCoreCors.stop();
 
     const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
     const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
