@@ -52,6 +52,7 @@ const springbootCors = require('./spring-boot/cors');
 
 const verifySolidSkeleton  = require('./solid/skeleton').verify;
 const verifySolidRouter  = require('./solid/router').verify;
+const verifySolidMaterial  = require('./solid/material').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -179,6 +180,7 @@ const fs = require('fs');
     // solid
     responses['solidSkeleton'] = await verifySolidSkeleton();
     responses['solidRouter'] = await verifySolidRouter();
+    responses['solidMaterial'] = await verifySolidMaterial();
 
     // spring boot
     responses['springbootSkeleton'] = await verifySpringbootSkeleton();
