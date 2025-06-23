@@ -62,6 +62,7 @@ const verifySolidHttpClient  = require('./solid/httpClient').verify;
 
 const verifySvelteKitSkeleton  = require('./svelte-kit/skeleton').verify;
 const verifySvelteKitRouter  = require('./svelte-kit/router').verify;
+const verifySvelteKitMaterial  = require('./svelte-kit/material').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -210,6 +211,7 @@ const fs = require('fs');
     // svelte kit
     responses['svelteKitSkeleton'] = await verifySvelteKitSkeleton();
     responses['svelteKitRouter'] = await verifySvelteKitRouter();
+    responses['svelteKitMaterial'] = await verifySvelteKitMaterial();
 
     // vue
 
