@@ -60,6 +60,8 @@ const verifySolidRouter  = require('./solid/router').verify;
 const verifySolidMaterial  = require('./solid/material').verify;
 const verifySolidHttpClient  = require('./solid/httpClient').verify;
 
+const verifySvelteKitSkeleton  = require('./svelte-kit/skeleton').verify;
+
 const myApiJava = require('./play/myApi');
 
 const { exec } = require('child_process');
@@ -205,6 +207,8 @@ const fs = require('fs');
     responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
 
     // svelte kit
+    responses['svelteKitSkeleton'] = await verifySvelteKitSkeleton();
+
     // vue
 
     await playCors.start();
