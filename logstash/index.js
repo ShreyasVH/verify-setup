@@ -61,7 +61,7 @@ const verify = async () => {
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
         const fd = fs.openSync(`${process.env.HOME}/custom.log`, 'a');
-        fs.writeSync(fd, `${date.toLocaleString()}\n`);
+        fs.writeSync(fd, `${date.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}\n`);
         fs.fsyncSync(fd);
         fs.closeSync(fd);
 
