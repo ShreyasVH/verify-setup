@@ -63,6 +63,7 @@ const verifySolidHttpClient  = require('./solid/httpClient').verify;
 const verifySvelteKitSkeleton  = require('./svelte-kit/skeleton').verify;
 const verifySvelteKitRouter  = require('./svelte-kit/router').verify;
 const verifySvelteKitMaterial  = require('./svelte-kit/material').verify;
+const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -224,6 +225,7 @@ const fs = require('fs');
     responses['springbootHttpClient'] = await verifySpringbootHttpClient();
     responses['angularHttpClient'] = await verifyAngularHttpClient();
     responses['solidHttpClient'] = await verifySolidHttpClient();
+    responses['svelteKitHttpClient'] = await verifySvelteKitHttpClient();
 
     await playCors.stop();
     await springbootCors.stop();

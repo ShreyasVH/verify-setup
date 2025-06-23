@@ -45,12 +45,6 @@ const verify = async () => {
             obj[current.index] = current;
             return obj;
         }, {});
-        let proofFilePath = path.resolve(__dirname, '../outputProofs/logstashBefore.json');
-        let payloadForProof = {
-            status: response.status,
-            data: response.data
-        };
-        fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
         const date = new Date();
         const month = String(date.getUTCMonth() + 1).padStart(2, '0');
@@ -60,9 +54,14 @@ const verify = async () => {
         if (indexMap.hasOwnProperty(indexName)) {
             logDocsBefore = parseInt(indexMap[indexName]['docs.count']);
         }
+        let proofFilePath = path.resolve(__dirname, '../outputProofs/logstashBefore.json');
+        let payloadForProof = {
+            logs: logDocsBefore
+        };
+        fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
         const fd = fs.openSync(`${process.env.HOME}/custom.log`, 'a');
-        fs.writeSync(fd, 'abc\n');
+        fs.writeSync(fd, `${date.toLocaleString()}\n`);
         fs.fsyncSync(fd);
         fs.closeSync(fd);
 
@@ -78,17 +77,16 @@ const verify = async () => {
                 obj[current.index] = current;
                 return obj;
             }, {});
-            proofFilePath = path.resolve(__dirname, '../outputProofs/logstashAfter.json');
-            payloadForProof = {
-                status: response.status,
-                data: response.data
-            };
-            fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
             let logDocsAfter = 0;
             if (indexMap.hasOwnProperty(indexName)) {
                 logDocsAfter = parseInt(indexMap[indexName]['docs.count']);
             }
+            proofFilePath = path.resolve(__dirname, '../outputProofs/logstashAfter.json');
+            payloadForProof = {
+                logs: logDocsAfter
+            };
+            fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
             isSuccess = logDocsAfter === (logDocsBefore + 1);
             tries++;
         }
