@@ -65,6 +65,8 @@ const verifySvelteKitRouter  = require('./svelte-kit/router').verify;
 const verifySvelteKitMaterial  = require('./svelte-kit/material').verify;
 const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
 
+const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
+
 const myApiJava = require('./play/myApi');
 
 const { exec } = require('child_process');
@@ -188,6 +190,8 @@ const fs = require('fs');
     // interceptor
     // react
     // react native
+    responses['reactNativeSkeleton'] = await verifyReactNativeSkeleton();
+
     // solid
     responses['solidSkeleton'] = await verifySolidSkeleton();
     responses['solidRouter'] = await verifySolidRouter();
