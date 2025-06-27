@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const common = require('./common');
+const { getCamelCaseForRepoName } = require('../utils');
 
 const start = async (language, framework, repoName, domain) => {
     await common.start(language, framework, repoName, domain);
@@ -40,7 +41,7 @@ const verify = async (domain, language, framework, repoName) => {
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
         await page.screenshot({
-            path: `outputProofs/${framework}Skeleton.png`,
+            path: `outputProofs/${getCamelCaseForRepoName(repoName)}.png`,
         });
 
         isSuccess = await page.evaluate(verifyHTML);

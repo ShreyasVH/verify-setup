@@ -73,6 +73,7 @@ const verifyVueHttpClient  = require('./vue/httpClient').verify;
 const verifyVueMaterial  = require('./vue/material').verify;
 const verifyVueHttps  = require('./vue/https').verify;
 const verifyVueDocker  = require('./vue/docker').verify;
+const verifyVueCharts  = require('./vue/charts').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -231,6 +232,7 @@ const fs = require('fs');
     responses['vueMaterial'] = await verifyVueMaterial();
     responses['vueHttps'] = await verifyVueHttps();
     responses['vueDocker'] = await verifyVueDocker();
+    responses['vueCharts'] = await verifyVueCharts();
 
     await playCors.start();
     await springbootCors.start();
