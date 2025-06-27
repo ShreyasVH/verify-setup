@@ -67,6 +67,8 @@ const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
 
 const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
 
+const verifyVueSkeleton  = require('./vue/skeleton').verify;
+
 const myApiJava = require('./play/myApi');
 
 const { exec } = require('child_process');
@@ -219,6 +221,7 @@ const fs = require('fs');
     responses['svelteKitMaterial'] = await verifySvelteKitMaterial();
 
     // vue
+    responses['vueSkeleton'] = await verifyVueSkeleton();
 
     await playCors.start();
     await springbootCors.start();
