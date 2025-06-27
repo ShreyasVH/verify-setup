@@ -69,6 +69,7 @@ const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
 
 const verifyVueSkeleton  = require('./vue/skeleton').verify;
 const verifyVueRouter  = require('./vue/router').verify;
+const verifyVueHttpClient  = require('./vue/httpClient').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -235,6 +236,7 @@ const fs = require('fs');
     responses['angularHttpClient'] = await verifyAngularHttpClient();
     responses['solidHttpClient'] = await verifySolidHttpClient();
     responses['svelteKitHttpClient'] = await verifySvelteKitHttpClient();
+    responses['vueHttpClient'] = await verifyVueHttpClient();
 
     await playCors.stop();
     await springbootCors.stop();
