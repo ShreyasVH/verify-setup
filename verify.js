@@ -67,6 +67,7 @@ const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
 
 const verifyReactSkeleton  = require('./react/skeleton').verify;
 const verifyReactHttpClient  = require('./react/httpClient').verify;
+const verifyReactRouter  = require('./react/router').verify;
 
 const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
 
@@ -201,6 +202,7 @@ const fs = require('fs');
     // interceptor
     // react
     responses['reactSkeleton'] = await verifyReactSkeleton();
+    responses['reactRouter'] = await verifyReactRouter();
 
     // react native
     responses['reactNativeSkeleton'] = await verifyReactNativeSkeleton();
