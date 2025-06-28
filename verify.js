@@ -66,6 +66,7 @@ const verifySvelteKitMaterial  = require('./svelte-kit/material').verify;
 const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
 
 const verifyReactSkeleton  = require('./react/skeleton').verify;
+const verifyReactHttpClient  = require('./react/httpClient').verify;
 
 const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
 
@@ -249,6 +250,7 @@ const fs = require('fs');
     responses['solidHttpClient'] = await verifySolidHttpClient();
     responses['svelteKitHttpClient'] = await verifySvelteKitHttpClient();
     responses['vueHttpClient'] = await verifyVueHttpClient();
+    responses['reactHttpClient'] = await verifyReactHttpClient();
 
     await playCors.stop();
     await springbootCors.stop();
