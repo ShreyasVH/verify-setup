@@ -67,6 +67,14 @@ const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
 
 const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
 
+const verifyVueSkeleton  = require('./vue/skeleton').verify;
+const verifyVueRouter  = require('./vue/router').verify;
+const verifyVueHttpClient  = require('./vue/httpClient').verify;
+const verifyVueMaterial  = require('./vue/material').verify;
+const verifyVueHttps  = require('./vue/https').verify;
+const verifyVueDocker  = require('./vue/docker').verify;
+const verifyVueCharts  = require('./vue/charts').verify;
+
 const myApiJava = require('./play/myApi');
 
 const { exec } = require('child_process');
@@ -219,6 +227,12 @@ const fs = require('fs');
     responses['svelteKitMaterial'] = await verifySvelteKitMaterial();
 
     // vue
+    responses['vueSkeleton'] = await verifyVueSkeleton();
+    responses['vueRouter'] = await verifyVueRouter();
+    responses['vueMaterial'] = await verifyVueMaterial();
+    responses['vueHttps'] = await verifyVueHttps();
+    responses['vueDocker'] = await verifyVueDocker();
+    responses['vueCharts'] = await verifyVueCharts();
 
     await playCors.start();
     await springbootCors.start();
@@ -230,6 +244,7 @@ const fs = require('fs');
     responses['angularHttpClient'] = await verifyAngularHttpClient();
     responses['solidHttpClient'] = await verifySolidHttpClient();
     responses['svelteKitHttpClient'] = await verifySvelteKitHttpClient();
+    responses['vueHttpClient'] = await verifyVueHttpClient();
 
     await playCors.stop();
     await springbootCors.stop();
