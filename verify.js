@@ -72,6 +72,7 @@ const verifyReactMaterial = require('./react/material').verify;
 const verifyReactHttps = require('./react/https').verify;
 const verifyReactCharts = require('./react/charts').verify;
 const verifyReactDocker = require('./react/docker').verify;
+const verifyReactRedux = require('./react/redux').verify;
 
 const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
 
@@ -211,6 +212,7 @@ const fs = require('fs');
     responses['reactHttps'] = await verifyReactHttps();
     responses['reactCharts'] = await verifyReactCharts();
     responses['reactDocker'] = await verifyReactDocker();
+    responses['reactRedux'] = await verifyReactRedux();
 
     // react native
     responses['reactNativeSkeleton'] = await verifyReactNativeSkeleton();
