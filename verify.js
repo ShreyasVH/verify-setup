@@ -65,6 +65,15 @@ const verifySvelteKitRouter  = require('./svelte-kit/router').verify;
 const verifySvelteKitMaterial  = require('./svelte-kit/material').verify;
 const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
 
+const verifyReactSkeleton  = require('./react/skeleton').verify;
+const verifyReactHttpClient  = require('./react/httpClient').verify;
+const verifyReactRouter  = require('./react/router').verify;
+const verifyReactMaterial = require('./react/material').verify;
+const verifyReactHttps = require('./react/https').verify;
+const verifyReactCharts = require('./react/charts').verify;
+const verifyReactDocker = require('./react/docker').verify;
+const verifyReactRedux = require('./react/redux').verify;
+
 const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
 
 const verifyVueSkeleton  = require('./vue/skeleton').verify;
@@ -197,6 +206,14 @@ const fs = require('fs');
 
     // interceptor
     // react
+    responses['reactSkeleton'] = await verifyReactSkeleton();
+    responses['reactRouter'] = await verifyReactRouter();
+    responses['reactMaterial'] = await verifyReactMaterial();
+    responses['reactHttps'] = await verifyReactHttps();
+    responses['reactCharts'] = await verifyReactCharts();
+    responses['reactDocker'] = await verifyReactDocker();
+    responses['reactRedux'] = await verifyReactRedux();
+
     // react native
     responses['reactNativeSkeleton'] = await verifyReactNativeSkeleton();
 
@@ -245,6 +262,7 @@ const fs = require('fs');
     responses['solidHttpClient'] = await verifySolidHttpClient();
     responses['svelteKitHttpClient'] = await verifySvelteKitHttpClient();
     responses['vueHttpClient'] = await verifyVueHttpClient();
+    responses['reactHttpClient'] = await verifyReactHttpClient();
 
     await playCors.stop();
     await springbootCors.stop();
