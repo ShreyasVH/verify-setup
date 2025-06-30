@@ -89,6 +89,7 @@ const verifyPlaySwagger  = require('./play/swagger').verify;
 const verifyPlayMysql  = require('./play/mysql').verify;
 const verifyPlayMigrations  = require('./play/migrations').verify;
 const verifyPlayResponse  = require('./play/response').verify;
+const verifyPlayErrors  = require('./play/errors').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -216,6 +217,7 @@ const fs = require('fs');
     responses['playMysql'] = await verifyPlayMysql();
     responses['playMigrations'] = await verifyPlayMigrations();
     responses['playResponse'] = await verifyPlayResponse();
+    responses['playErrors'] = await verifyPlayErrors();
 
     // interceptor
     // react
