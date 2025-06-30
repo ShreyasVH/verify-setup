@@ -84,6 +84,8 @@ const verifyVueHttps  = require('./vue/https').verify;
 const verifyVueDocker  = require('./vue/docker').verify;
 const verifyVueCharts  = require('./vue/charts').verify;
 
+const verifyPlaySkeleton  = require('./play/skeleton').verify;
+
 const myApiJava = require('./play/myApi');
 
 const { exec } = require('child_process');
@@ -203,6 +205,9 @@ const fs = require('fs');
     responses['phalconResponse'] = await verifyPhalconResponse();
     responses['phalconErrors'] = await verifyPhalconErrors();
     responses['phalconSwagger'] = await verifyPhalconSwagger();
+
+    // phalcon
+    responses['playSkeleton'] = await verifyPlaySkeleton();
 
     // interceptor
     // react
