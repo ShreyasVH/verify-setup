@@ -5,25 +5,20 @@ const fs = require('fs');
 const path = require('path');
 const rmqUtils = require('../rmqUtils');
 
-const language = 'java';
-const framework = 'springboot';
-const repoName = 'spring-boot-rmq';
-const domain = 'https://rmq.springboot.com';
-
-const start = async () => {
+const start = async (language, framework, repoName, domain) => {
     await backend.start(language, framework, repoName, domain);
 };
 
-const stop = async () => {
+const stop = async (language, framework, repoName) => {
     await backend.stop(language, framework, repoName);
 };
 
-const verify = async () => {
-    await start();
+const verify = async (domain, language, framework, repoName, exchangeName, key, queueName) => {
+    await start(language, framework, repoName, domain);
     let isSuccess = false;
 
     try {
-        const countBefore = await rmqUtils.getMessageCount(process.env.RMQ_QUEUE_UNCONSUMED_SPRINGBOOT);
+        const countBefore = await rmqUtils.getMessageCount(queueName);
         let payloadForProof = {
             'count': countBefore
         };
@@ -32,8 +27,8 @@ const verify = async () => {
 
         const publishUrl = `${domain}/publish`;
         const payload = {
-            'exchange': process.env.RMQ_EXCHANGE_DIRECT_SPRINGBOOT,
-            'key': process.env.RMQ_KEY_UNCONSUMED_SPRINGBOOT,
+            'exchange': exchangeName,
+            'key': key,
             'payload': {
                 'a': 'A',
                 'b': 'B'
@@ -48,12 +43,12 @@ const verify = async () => {
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
         let tries = 0;
-        const maxTries = 3;
+        const maxTries = 40;
         while (!isSuccess && tries < maxTries) {
             console.log('\tWaiting for event consumption');
-            await sleep(20000);
+            await sleep(1000);
 
-            const countAfter = await rmqUtils.getMessageCount(process.env.RMQ_QUEUE_UNCONSUMED_SPRINGBOOT);
+            const countAfter = await rmqUtils.getMessageCount(queueName);
             payloadForProof = {
                 'count': countAfter
             };
@@ -67,7 +62,7 @@ const verify = async () => {
         console.log(e);
     }
 
-    await stop();
+    await stop(language, framework, repoName);
 
     return isSuccess;
 }
