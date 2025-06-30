@@ -91,6 +91,7 @@ const verifyPlayMigrations  = require('./play/migrations').verify;
 const verifyPlayResponse  = require('./play/response').verify;
 const verifyPlayErrors  = require('./play/errors').verify;
 const verifyPlayHttpClient  = require('./play/httpClient').verify;
+const verifyPlayHttps  = require('./play/https').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -219,6 +220,7 @@ const fs = require('fs');
     responses['playMigrations'] = await verifyPlayMigrations();
     responses['playResponse'] = await verifyPlayResponse();
     responses['playErrors'] = await verifyPlayErrors();
+    responses['playHttps'] = await verifyPlayHttps();
 
     // interceptor
     // react
