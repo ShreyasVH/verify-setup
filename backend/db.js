@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const common = require('./common');
+const { sleep } = require('../utils');
 
 const start = async (language, framework, repoName, domain) => {
     await common.start(language, framework, repoName, domain);
@@ -43,16 +44,23 @@ const verify = async (domain, language, framework, repoName) => {
         };
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
-        response = await get(url);
-        data = response.data;
-        const booksAfter = data.length;
-        isSuccess = booksAfter === (booksBefore + 1);
-        proofFilePath = path.resolve(__dirname, `../outputProofs/${getCamelCaseForRepoName(repoName)}DbAfter.json`);
-        payloadForProof = {
-            status: response.status,
-            data: response.data
-        };
-        fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
+        let tries = 0;
+        const maxTries = 100;
+        while (!isSuccess && tries <= maxTries) {
+            console.log('\tWaiting for item creation');
+            await sleep(1000);
+            response = await get(url);
+            data = response.data;
+            const booksAfter = data.length;
+            isSuccess = booksAfter === (booksBefore + 1);
+            proofFilePath = path.resolve(__dirname, `../outputProofs/${getCamelCaseForRepoName(repoName)}DbAfter.json`);
+            payloadForProof = {
+                status: response.status,
+                data: response.data
+            };
+            fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
+            tries++;
+        }
 
         await stop(language, framework, repoName);
     } catch (e) {

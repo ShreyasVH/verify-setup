@@ -94,6 +94,7 @@ const verifyPlayHttpClient  = require('./play/httpClient').verify;
 const verifyPlayHttps  = require('./play/https').verify;
 const verifyPlayPostgres  = require('./play/postgres').verify;
 const verifyPlaySentry  = require('./play/sentry').verify;
+const verifyPlayElasticsearch  = require('./play/elasticsearch').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -225,6 +226,7 @@ const fs = require('fs');
     responses['playHttps'] = await verifyPlayHttps();
     responses['playPostgres'] = await verifyPlayPostgres();
     responses['playSentry'] = await verifyPlaySentry();
+    responses['playElasticsearch'] = await verifyPlayElasticsearch();
 
     // interceptor
     // react
