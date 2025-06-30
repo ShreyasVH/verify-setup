@@ -90,6 +90,7 @@ const verifyPlayMysql  = require('./play/mysql').verify;
 const verifyPlayMigrations  = require('./play/migrations').verify;
 const verifyPlayResponse  = require('./play/response').verify;
 const verifyPlayErrors  = require('./play/errors').verify;
+const verifyPlayHttpClient  = require('./play/httpClient').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -278,6 +279,7 @@ const fs = require('fs');
     responses['svelteKitHttpClient'] = await verifySvelteKitHttpClient();
     responses['vueHttpClient'] = await verifyVueHttpClient();
     responses['reactHttpClient'] = await verifyReactHttpClient();
+    responses['playHttpClient'] = await verifyPlayHttpClient();
 
     await playCors.stop();
     await springbootCors.stop();
