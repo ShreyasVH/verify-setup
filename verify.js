@@ -85,6 +85,7 @@ const verifyVueDocker  = require('./vue/docker').verify;
 const verifyVueCharts  = require('./vue/charts').verify;
 
 const verifyPlaySkeleton  = require('./play/skeleton').verify;
+const verifyPlaySwagger  = require('./play/swagger').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -208,6 +209,7 @@ const fs = require('fs');
 
     // phalcon
     responses['playSkeleton'] = await verifyPlaySkeleton();
+    responses['playSwagger'] = await verifyPlaySwagger();
 
     // interceptor
     // react
