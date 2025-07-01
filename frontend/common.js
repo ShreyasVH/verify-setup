@@ -4,7 +4,7 @@ const execPromise = util.promisify(exec);
 const { waitForPort, waitForHttpPort } = require('../utils');
 
 const start = async (language, framework, repoName, domain) => {
-    let { stdout, stderr } = await execPromise(`grep 'PORT=' $HOME/workspace/myProjects/${language}/${framework}/${repoName}/.envrc | awk -F= '{print $2}'`);
+    let { stdout, stderr } = await execPromise(`grep ' PORT=' $HOME/workspace/myProjects/${language}/${framework}/${repoName}/.envrc | awk -F= '{print $2}'`);
     const port = parseInt(stdout);
 
     const deployResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && bash deploy.sh"`);
