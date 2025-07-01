@@ -154,123 +154,141 @@ const fs = require('fs');
 
     const startTime = (new Date()).getTime();
 
-    responses['logstash'] = await verifyLogstash();
-    responses['kibana'] = await verifyKibana();
-    responses['langfuse'] = await verifyLangfuse();
-
     // angular
-    responses['angularSkeleton'] = await verifySkeleton();
-    responses['angularRouter'] = await verifyRouter();
-    responses['angularMaterial'] = await verifyMaterial();
+    const promises = [];
 
-    // dotnet-core
-    responses['dotnetCoreSkeleton'] = await verifyDotnetCoreSkeleton();
-    responses['dotnetCoreCors'] = await verifyDotnetCoreCors();
-    responses['dotnetCoreMssql'] = await verifyDotnetCoreMssql();
-    responses['dotnetCoreMigrations'] = await verifyDotnetCoreMigrations();
-    responses['dotnetCoreErrors'] = await verifyDotnetCoreErrors();
-    responses['dotnetCoreResponse'] = await verifyDotnetCoreResponse();
+    promises.push(verifyLogstash().then(isSuccess => ({ key: 'logstash', isSuccess })));
+    promises.push(verifyKibana().then(isSuccess => ({ key: 'kibana', isSuccess })));
+    promises.push(verifyLangfuse().then(isSuccess => ({ key: 'langfuse', isSuccess })));
 
-    // express
-    responses['expressSkeleton'] = await verifyExpressSkeleton();
-    responses['expressCors'] = await verifyExpressCors();
-    responses['expressMongoDb'] = await verifyExpressMongoDb();
-    responses['expressMigrations'] = await verifyExpressMigrations();
-    responses['expressResponse'] = await verifyExpressResponse();
-    responses['expressErrors'] = await verifyExpressErrors();
-    responses['expressSwagger'] = await verifyExpressSwagger();
+    promises.push(verifySkeleton().then(isSuccess => ({ key: 'angularSkeleton', isSuccess })));
+    promises.push(verifyRouter().then(isSuccess => ({ key: 'angularRouter', isSuccess })));
+    promises.push(verifyMaterial().then(isSuccess => ({ key: 'angularMaterial', isSuccess })));
 
-    // house expenses
-    responses['houseExpensesReact'] = await verifyHouseExpensesReact();
+    promises.push(verifyDotnetCoreSkeleton().then(isSuccess => ({ key: 'dotnetCoreSkeleton', isSuccess })));
+    promises.push(verifyDotnetCoreCors().then(isSuccess => ({ key: 'dotnetCoreCors', isSuccess })));
+    promises.push(verifyDotnetCoreMssql().then(isSuccess => ({ key: 'dotnetCoreMssql', isSuccess })));
+    promises.push(verifyDotnetCoreMigrations().then(isSuccess => ({ key: 'dotnetCoreMigrations', isSuccess })));
+    promises.push(verifyDotnetCoreErrors().then(isSuccess => ({ key: 'dotnetCoreErrors', isSuccess })));
+    promises.push(verifyDotnetCoreResponse().then(isSuccess => ({ key: 'dotnetCoreResponse', isSuccess })));
 
-    // cric
-    responses['reactCric'] = await verifyReactCric();
-    responses['vueCric'] = await verifyVueCric();
-    responses['angularCric'] = await verifyAngularCric();
-    responses['solidCric'] = await verifySolidCric();
-    responses['svelteKitCric'] = await verifySvelteKitCric();
+    promises.push(verifyExpressSkeleton().then(isSuccess => ({ key: 'expressSkeleton', isSuccess })));
+    promises.push(verifyExpressCors().then(isSuccess => ({ key: 'expressCors', isSuccess })));
+    promises.push(verifyExpressMongoDb().then(isSuccess => ({ key: 'expressMongoDb', isSuccess })));
+    promises.push(verifyExpressMigrations().then(isSuccess => ({ key: 'expressMigrations', isSuccess })));
+    promises.push(verifyExpressResponse().then(isSuccess => ({ key: 'expressResponse', isSuccess })));
+    promises.push(verifyExpressErrors().then(isSuccess => ({ key: 'expressErrors', isSuccess })));
+    promises.push(verifyExpressSwagger().then(isSuccess => ({ key: 'expressSwagger', isSuccess })));
 
-    // my-site
+    promises.push(verifyHouseExpensesReact().then(isSuccess => ({ key: 'houseExpensesReact', isSuccess })));
+
+    promises.push(verifyReactCric().then(isSuccess => ({ key: 'reactCric', isSuccess})));
+    promises.push(verifyVueCric().then(isSuccess => ({ key: 'vueCric', isSuccess})));
+    promises.push(verifyAngularCric().then(isSuccess => ({ key: 'angularCric', isSuccess})));
+    promises.push(verifySolidCric().then(isSuccess => ({ key: 'solidCric', isSuccess})));
+    promises.push(verifySvelteKitCric().then(isSuccess => ({ key: 'svelteKitCric', isSuccess})));
+
+
+    promises.push(verifyPhalconSkeleton().then(isSuccess => ({ key: 'phalconSkeleton', isSuccess})));
+    promises.push(verifyPhalconMysql().then(isSuccess => ({ key: 'phalconMysql', isSuccess})));
+    promises.push(verifyPhalconMigrations().then(isSuccess => ({ key: 'phalconMigrations', isSuccess})));
+    promises.push(verifyPhalconResponse().then(isSuccess => ({ key: 'phalconResponse', isSuccess})));
+    promises.push(verifyPhalconErrors().then(isSuccess => ({ key: 'phalconErrors', isSuccess})));
+    promises.push(verifyPhalconSwagger().then(isSuccess => ({ key: 'phalconSwagger', isSuccess})));
+
+    promises.push(verifyReactSkeleton().then(isSuccess => ({ key: 'reactSkeleton', isSuccess })));
+    promises.push(verifyReactRouter().then(isSuccess => ({ key: 'reactRouter', isSuccess })));
+    promises.push(verifyReactMaterial().then(isSuccess => ({ key: 'reactMaterial', isSuccess })));
+    promises.push(verifyReactHttps().then(isSuccess => ({ key: 'reactHttps', isSuccess })));
+    promises.push(verifyReactCharts().then(isSuccess => ({ key: 'reactCharts', isSuccess })));
+    promises.push(verifyReactDocker().then(isSuccess => ({ key: 'reactDocker', isSuccess })));
+    promises.push(verifyReactRedux().then(isSuccess => ({ key: 'reactRedux', isSuccess })));
+
+    promises.push(verifyReactNativeSkeleton().then(isSuccess => ({ key: 'reactNativeSkeleton', isSuccess })));
+
+    promises.push(verifySolidSkeleton().then(isSuccess => ({ key: 'solidSkeleton', isSuccess })));
+    promises.push(verifySolidRouter().then(isSuccess => ({ key: 'solidRouter', isSuccess })));
+    promises.push(verifySolidMaterial().then(isSuccess => ({ key: 'solidMaterial', isSuccess })));
+
+    promises.push(verifySpringbootSkeleton().then(isSuccess => ({ key: 'springbootSkeleton', isSuccess })));
+    promises.push(verifySpringbootSwagger().then(isSuccess => ({ key: 'springbootSwagger', isSuccess })));
+    promises.push(verifySpringbootPostgres().then(isSuccess => ({ key: 'springbootPostgres', isSuccess })));
+    promises.push(verifySpringbootMysql().then(isSuccess => ({ key: 'springbootMysql', isSuccess })));
+    promises.push(verifySpringbootMigrations().then(isSuccess => ({ key: 'springbootMigrations', isSuccess })));
+    promises.push(verifySpringbootResponse().then(isSuccess => ({ key: 'springbootResponse', isSuccess })));
+    promises.push(verifySpringbootErrors().then(isSuccess => ({ key: 'springbootErrors', isSuccess })));
+    promises.push(verifySpringbootHttps().then(isSuccess => ({ key: 'springbootHttps', isSuccess })));
+    promises.push(verifySpringbootDocker().then(isSuccess => ({ key: 'springbootDocker', isSuccess })));
+    promises.push(verifySpringbootSentry().then(isSuccess => ({ key: 'springbootSentry', isSuccess })));
+    promises.push(verifySpringbootElasticsearch().then(isSuccess => ({ key: 'springbootElasticsearch', isSuccess })));
+    promises.push(verifySpringbootPostgresAuditLog().then(isSuccess => ({ key: 'springbootPostgresAuditLog', isSuccess })));
+    promises.push(verifySpringbootRmq().then(isSuccess => ({ key: 'springbootRmq', isSuccess })));
+    promises.push(verifySpringbootSheetsDataSync().then(isSuccess => ({ key: 'springbootSheetsDataSync', isSuccess })));
+
+    promises.push(verifySvelteKitSkeleton().then(isSuccess => ({ key: 'svelteKitSkeleton', isSuccess})));
+    promises.push(verifySvelteKitRouter().then(isSuccess => ({ key: 'svelteKitRouter', isSuccess})));
+    promises.push(verifySvelteKitMaterial().then(isSuccess => ({ key: 'svelteKitMaterial', isSuccess})));
+
+    promises.push(verifyVueSkeleton().then(isSuccess => ({ key: 'vueSkeleton', isSuccess})));
+    promises.push(verifyVueRouter().then(isSuccess => ({ key: 'vueRouter', isSuccess})));
+    promises.push(verifyVueMaterial().then(isSuccess => ({ key: 'vueMaterial', isSuccess})));
+    promises.push(verifyVueHttps().then(isSuccess => ({ key: 'vueHttps', isSuccess})));
+    promises.push(verifyVueDocker().then(isSuccess => ({ key: 'vueDocker', isSuccess})));
+    promises.push(verifyVueCharts().then(isSuccess => ({ key: 'vueCharts', isSuccess})));
+
+    const promiseResponses = await Promise.all(promises);
+    for (const responseObject of promiseResponses) {
+        const key = responseObject.key;
+        responses[key] = responseObject.isSuccess;
+    }
+
     await myApiJava.start();
 
-    responses['mySiteReact'] = await verifyMySiteReact();
-    responses['mySitePhp'] = await verifyMySitePhp();
+    const moviePromises = [];
+
+    moviePromises.push(verifyMySiteReact().then(isSuccess => ({ key: 'mySiteReact', isSuccess })));
+    moviePromises.push(verifyMySitePhp().then(isSuccess => ({ key: 'mySitePhp', isSuccess })));
+
+    const movieResponses = await Promise.all(moviePromises);
+    for (const responseObject of movieResponses) {
+        const key = responseObject.key;
+        responses[key] = responseObject.isSuccess;
+    }
 
     await myApiJava.stop();
 
-    // phalcon
-    responses['phalconSkeleton'] = await verifyPhalconSkeleton();
-    responses['phalconMysql'] = await verifyPhalconMysql();
-    responses['phalconMigrations'] = await verifyPhalconMigrations();
-    responses['phalconResponse'] = await verifyPhalconResponse();
-    responses['phalconErrors'] = await verifyPhalconErrors();
-    responses['phalconSwagger'] = await verifyPhalconSwagger();
+    const corsResponses = [];
+    corsResponses.push(playCors.start());
+    corsResponses.push(springbootCors.start());
+    corsResponses.push(phalconCors.start());
+    corsResponses.push(expressCors.start());
+    corsResponses.push(dotnetCoreCors.start());
 
-    // interceptor
-    // react
-    responses['reactSkeleton'] = await verifyReactSkeleton();
-    responses['reactRouter'] = await verifyReactRouter();
-    responses['reactMaterial'] = await verifyReactMaterial();
-    responses['reactHttps'] = await verifyReactHttps();
-    responses['reactCharts'] = await verifyReactCharts();
-    responses['reactDocker'] = await verifyReactDocker();
-    responses['reactRedux'] = await verifyReactRedux();
+    await Promise.all(corsResponses);
 
-    // react native
-    responses['reactNativeSkeleton'] = await verifyReactNativeSkeleton();
+    const httpClientPromises = [];
+    httpClientPromises.push(verifySpringbootHttpClient().then(isSuccess => ({ key: 'springbootHttpClient', isSuccess })));
+    httpClientPromises.push(verifyAngularHttpClient().then(isSuccess => ({ key: 'angularHttpClient', isSuccess })));
+    httpClientPromises.push(verifySolidHttpClient().then(isSuccess => ({ key: 'solidHttpClient', isSuccess })));
+    httpClientPromises.push(verifySvelteKitHttpClient().then(isSuccess => ({ key: 'svelteKitHttpClient', isSuccess })));
+    httpClientPromises.push(verifyVueHttpClient().then(isSuccess => ({ key: 'vueHttpClient', isSuccess })));
+    httpClientPromises.push(verifyReactHttpClient().then(isSuccess => ({ key: 'reactHttpClient', isSuccess })));
 
-    // solid
-    responses['solidSkeleton'] = await verifySolidSkeleton();
-    responses['solidRouter'] = await verifySolidRouter();
-    responses['solidMaterial'] = await verifySolidMaterial();
+    const httpClientResponses = await Promise.all(httpClientPromises);
+    for (const responseObject of httpClientResponses) {
+        const key = responseObject.key;
+        responses[key] = responseObject.isSuccess;
+    }
 
-    // spring boot
-    responses['springbootSkeleton'] = await verifySpringbootSkeleton();
-    responses['springbootSwagger'] = await verifySpringbootSwagger();
-    responses['springbootPostgres'] = await verifySpringbootPostgres();
-    responses['springbootMysql'] = await verifySpringbootMysql();
-    responses['springbootMigrations'] = await verifySpringbootMigrations();
-    responses['springbootResponse'] = await verifySpringbootResponse();
-    responses['springbootErrors'] = await verifySpringbootErrors();
-    responses['springbootHttps'] = await verifySpringbootHttps();
-    responses['springbootDocker'] = await verifySpringbootDocker();
-    responses['springbootSentry'] = await verifySpringbootSentry();
-    responses['springbootElasticsearch'] = await verifySpringbootElasticsearch();
-    responses['springbootPostgresAuditLog'] = await verifySpringbootPostgresAuditLog();
-    responses['springbootRmq'] = await verifySpringbootRmq();
-    responses['springbootSheetsDataSync'] = await verifySpringbootSheetsDataSync();
+    const stopPromises = [];
+    stopPromises.push(playCors.stop());
+    stopPromises.push(springbootCors.stop());
+    stopPromises.push(phalconCors.stop());
+    stopPromises.push(expressCors.stop());
+    stopPromises.push(dotnetCoreCors.stop());
 
-    // svelte kit
-    responses['svelteKitSkeleton'] = await verifySvelteKitSkeleton();
-    responses['svelteKitRouter'] = await verifySvelteKitRouter();
-    responses['svelteKitMaterial'] = await verifySvelteKitMaterial();
+    await Promise.all(stopPromises);
 
-    // vue
-    responses['vueSkeleton'] = await verifyVueSkeleton();
-    responses['vueRouter'] = await verifyVueRouter();
-    responses['vueMaterial'] = await verifyVueMaterial();
-    responses['vueHttps'] = await verifyVueHttps();
-    responses['vueDocker'] = await verifyVueDocker();
-    responses['vueCharts'] = await verifyVueCharts();
-
-    await playCors.start();
-    await springbootCors.start();
-    await phalconCors.start();
-    await expressCors.start();
-    await dotnetCoreCors.start();
-
-    responses['springbootHttpClient'] = await verifySpringbootHttpClient();
-    responses['angularHttpClient'] = await verifyAngularHttpClient();
-    responses['solidHttpClient'] = await verifySolidHttpClient();
-    responses['svelteKitHttpClient'] = await verifySvelteKitHttpClient();
-    responses['vueHttpClient'] = await verifyVueHttpClient();
-    responses['reactHttpClient'] = await verifyReactHttpClient();
-
-    await playCors.stop();
-    await springbootCors.stop();
-    await phalconCors.stop();
-    await expressCors.stop();
-    await dotnetCoreCors.stop();
 
     const endTime = (new Date()).getTime();
     const duration = (endTime - startTime) / 1000;
@@ -289,4 +307,6 @@ const fs = require('fs');
     console.log(filteredResponses);
     fs.writeFileSync('verifyResponses.json', JSON.stringify(responses, null, ' '));
     fs.writeFileSync('verifyResponsesFiltered.json', JSON.stringify(filteredResponses, null, ' '));
+
+
 })();
