@@ -8,8 +8,8 @@ const start = async (language, framework, repoName, domain) => {
     const port = parseInt(stdout);
     console.log(repoName, port);
 
-    // const deployResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && zsh deploy.sh"`);
-    const deployResponse = await execPromise(`bash -c "zsh $HOME/workspace/myProjects/${language}/${framework}/${repoName}/deploy.sh"`);
+    const deployResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && bash deploy.sh"`);
+    // const deployResponse = await execPromise(`bash -c "zsh $HOME/workspace/myProjects/${language}/${framework}/${repoName}/deploy.sh"`);
     console.log(deployResponse);
 
     console.log(`Waiting for ${repoName} startup`);
