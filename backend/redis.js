@@ -30,7 +30,7 @@ const verify = async (domain, language, framework, repoName) => {
 
         const createUrl = `${domain}/api`;
         const payload = {
-            'key': 'abc',
+            'key': (new Date()).getTime(),
             'value': 'def'
         };
         const createResponse = await post(createUrl, payload);
