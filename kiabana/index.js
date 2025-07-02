@@ -19,7 +19,7 @@ const start = async (domain) => {
 
     console.log('Waiting for kibana startup');
     await waitForPort(port, '127.0.0.1', 30000, 10);
-    await waitForHttpPort(`${domain}/api/status`, 10);
+    await waitForHttpPort(`${domain}/api/status`, 10, 60000);
 };
 
 const stop = async () => {
