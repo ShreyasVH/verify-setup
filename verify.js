@@ -96,6 +96,7 @@ const verifyPlayPostgres  = require('./play/postgres').verify;
 const verifyPlaySentry  = require('./play/sentry').verify;
 const verifyPlayElasticsearch  = require('./play/elasticsearch').verify;
 const verifyPlayRmq  = require('./play/rmq').verify;
+const verifyPlayRedis  = require('./play/redis').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -115,6 +116,7 @@ const fs = require('fs');
     const postgresVersion = process.env.POSTGRES_VERSION;
     const mongoVersion = process.env.MONGO_VERSION;
     const rmqVersion = process.env.RMQ_VERSION;
+    const redisVersion = process.env.REDIS_VERSION;
 
     let portResponse = '';
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
@@ -165,6 +167,12 @@ const fs = require('fs');
     console.log('Waiting for rmq startup');
     await waitForPort(rmqPort, '127.0.0.1', 30000, 10);
 
+    portResponse = await execPromise(`grep 'port ' $HOME/programs/redis/${redisVersion}/redis.conf | awk '{print $2}'`);
+    const redisPort = parseInt(portResponse.stdout);
+    const redisDeployResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for redis startup');
+    await waitForPort(redisPort, '127.0.0.1', 30000, 10);
+
     const startTime = (new Date()).getTime();
 
     // angular
@@ -212,6 +220,7 @@ const fs = require('fs');
     promises.push(verifyPlaySentry().then(isSuccess => ({ key: 'playSentry', isSuccess})));
     promises.push(verifyPlayElasticsearch().then(isSuccess => ({ key: 'playElasticsearch', isSuccess})));
     promises.push(verifyPlayRmq().then(isSuccess => ({ key: 'playRmq', isSuccess})));
+    promises.push(verifyPlayRedis().then(isSuccess => ({ key: 'playRedis', isSuccess})));
 
     promises.push(verifyPhalconSkeleton().then(isSuccess => ({ key: 'phalconSkeleton', isSuccess})));
     promises.push(verifyPhalconMysql().then(isSuccess => ({ key: 'phalconMysql', isSuccess})));
@@ -325,6 +334,7 @@ const fs = require('fs');
     const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
     const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
     const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
+    const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
