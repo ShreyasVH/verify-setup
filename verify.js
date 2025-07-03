@@ -135,7 +135,7 @@ const fs = require('fs');
     await waitForPort(elasticsearchPort, '127.0.0.1', 30000, 10);
     const username = process.env.ELASTIC_USERNAME;
     const password = process.env.ELASTIC_PASSWORD;
-    await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10);
+    await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10, 300000);
 
     // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
     let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/programs/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
