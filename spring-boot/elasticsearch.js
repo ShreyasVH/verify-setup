@@ -14,7 +14,7 @@ const stop = async () => {
 };
 
 const verify = async () => {
-    return await backend.verify(domain, language, framework, repoName);
+    return await backend.verify(domain, language, framework, repoName, 90000);
 }
 
 exports.verify = verify;

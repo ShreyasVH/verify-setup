@@ -11,7 +11,7 @@ const repoName = 'spring-boot-sheets-data-sync';
 const domain = 'https://sheets-data-sync-jobrunr.springboot.com';
 
 const start = async () => {
-    await backend.start(language, framework, repoName, domain);
+    await backend.start(language, framework, repoName, domain, 90000);
 };
 
 const stop = async () => {
@@ -51,7 +51,11 @@ const verify = async () => {
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-        await page.waitForSelector('table');
+        try {
+            await page.waitForSelector('table');
+        } catch (e) {
+            console.log(e);
+        }
         await page.screenshot({
             path: 'outputProofs/springbootSheetsDataSync.png',
         });

@@ -118,6 +118,7 @@ const fs = require('fs');
     const mongoVersion = process.env.MONGO_VERSION;
     const rmqVersion = process.env.RMQ_VERSION;
     const redisVersion = process.env.REDIS_VERSION;
+    const promiseBatchSize = 100;
 
     let portResponse = '';
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
@@ -176,7 +177,6 @@ const fs = require('fs');
 
     const startTime = (new Date()).getTime();
 
-    // angular
     const promises = [];
 
     promises.push(verifyLogstash().then(isSuccess => ({ key: 'logstash', isSuccess })));
@@ -271,10 +271,14 @@ const fs = require('fs');
     promises.push(verifyVueDocker().then(isSuccess => ({ key: 'vueDocker', isSuccess})));
     promises.push(verifyVueCharts().then(isSuccess => ({ key: 'vueCharts', isSuccess})));
 
-    const promiseResponses = await Promise.all(promises);
-    for (const responseObject of promiseResponses) {
-        const key = responseObject.key;
-        responses[key] = responseObject.isSuccess;
+    for (let i = 0; i < promises.length; i += promiseBatchSize) {
+        const batchPromises = promises.slice(i, i + promiseBatchSize);
+
+        const promiseResponses = await Promise.all(batchPromises);
+        for (const responseObject of promiseResponses) {
+            const key = responseObject.key;
+            responses[key] = responseObject.isSuccess;
+        }
     }
 
     await myApiJava.start();
