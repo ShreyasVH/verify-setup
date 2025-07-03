@@ -98,6 +98,7 @@ const verifyPlayElasticsearch  = require('./play/elasticsearch').verify;
 const verifyPlayRmq  = require('./play/rmq').verify;
 const verifyPlayRedis  = require('./play/redis').verify;
 const verifyPlayWebHook  = require('./play/webHook').verify;
+const verifyPlayAsync  = require('./play/async').verify;
 
 const myApiJava = require('./play/myApi');
 
@@ -223,6 +224,7 @@ const fs = require('fs');
     promises.push(verifyPlayRmq().then(isSuccess => ({ key: 'playRmq', isSuccess})));
     promises.push(verifyPlayRedis().then(isSuccess => ({ key: 'playRedis', isSuccess})));
     promises.push(verifyPlayWebHook().then(isSuccess => ({ key: 'playWebHook', isSuccess})));
+    promises.push(verifyPlayAsync().then(isSuccess => ({ key: 'playAsync', isSuccess})));
 
     promises.push(verifyPhalconSkeleton().then(isSuccess => ({ key: 'phalconSkeleton', isSuccess})));
     promises.push(verifyPhalconMysql().then(isSuccess => ({ key: 'phalconMysql', isSuccess})));
