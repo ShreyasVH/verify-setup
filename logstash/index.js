@@ -20,7 +20,7 @@ const start = async () => {
 
     console.log('Waiting for logstash startup');
     await waitForPort(port, '127.0.0.1', 30000, 10);
-    await waitForHttpPort(`http:localhost:${port}`, 10);
+    await waitForHttpPort(`http:localhost:${port}`, 10, 120000);
 };
 
 const stop = async () => {
