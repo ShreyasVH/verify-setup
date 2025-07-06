@@ -31,7 +31,7 @@ const getCamelCaseForRepoName = (repoName) => {
     return nameParts.map((word, index) => ((index === 0) ? word : ucFirst(word))).join('');
 };
 
-const waitForHttpPort = async (url, interval = 1000, timeout = 30000) => {
+const waitForHttpPort = async (url, interval = 1000, timeout = 60000) => {
     const start = Date.now();
     while (true && ((Date.now() - start) < timeout)) {
         try {
