@@ -21,7 +21,6 @@ const verify = async (domain, language, framework, repoName) => {
         const url = `${domain}`;
         const response = await get(url);
         const data = response.data;
-        console.log(data);
         isSuccess = data === 'Index repository';
         const proofFilePath = path.resolve(__dirname, `../outputProofs/${getCamelCaseForRepoName(repoName)}.json`);
         const payloadForProof = {

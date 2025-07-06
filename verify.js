@@ -124,7 +124,7 @@ const fs = require('fs');
     const mongoVersion = process.env.MONGO_VERSION;
     const rmqVersion = process.env.RMQ_VERSION;
     const redisVersion = process.env.REDIS_VERSION;
-    const promiseBatchSize = 100;
+    const promiseBatchSize = 70;
 
     let portResponse = '';
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
