@@ -50,6 +50,7 @@ const verifySpringbootPostgresAuditLog = require('./spring-boot/postgresAuditLog
 const verifySpringbootRmq = require('./spring-boot/rmq').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 const verifySpringbootMvc = require('./spring-boot/mvc').verify;
+const verifySpringbootDebug = require('./spring-boot/debug').verify;
 
 const springbootCors = require('./spring-boot/cors');
 const playCors = require('./play/cors');
@@ -268,6 +269,7 @@ const fs = require('fs');
     promises.push(verifySpringbootRmq().then(isSuccess => ({ key: 'springbootRmq', isSuccess })));
     promises.push(verifySpringbootSheetsDataSync().then(isSuccess => ({ key: 'springbootSheetsDataSync', isSuccess })));
     promises.push(verifySpringbootMvc().then(isSuccess => ({ key: 'springbootMvc', isSuccess })));
+    promises.push(verifySpringbootDebug().then(isSuccess => ({ key: 'springbootDebug', isSuccess })));
 
     promises.push(verifySvelteKitSkeleton().then(isSuccess => ({ key: 'svelteKitSkeleton', isSuccess})));
     promises.push(verifySvelteKitRouter().then(isSuccess => ({ key: 'svelteKitRouter', isSuccess})));
