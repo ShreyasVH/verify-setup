@@ -3,7 +3,7 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 const { waitForPort, waitForHttpPort } = require('../utils');
 
-const start = async (language, framework, repoName, domain, waitTimeout = 30000) => {
+const start = async (language, framework, repoName, domain, waitTimeout = 60000) => {
     let { stdout, stderr } = await execPromise(`grep ' PORT=' $HOME/workspace/myProjects/${language}/${framework}/${repoName}/.envrc | awk -F= '{print $2}'`);
     const port = parseInt(stdout);
 

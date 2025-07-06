@@ -6,7 +6,7 @@ const path = require('path');
 const common = require('./common');
 const { sleep } = require('../utils');
 
-const start = async (language, framework, repoName, domain, waitTimeout = 30000) => {
+const start = async (language, framework, repoName, domain, waitTimeout = 60000) => {
     await common.start(language, framework, repoName, domain, waitTimeout);
 };
 
@@ -14,7 +14,7 @@ const stop = async (language, framework, repoName) => {
     await common.stop(language, framework, repoName);
 };
 
-const verify = async (domain, language, framework, repoName, waitTimeout = 30000) => {
+const verify = async (domain, language, framework, repoName, waitTimeout = 60000) => {
     let isSuccess = false;
 
     try {

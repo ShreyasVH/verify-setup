@@ -3,7 +3,7 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 const { waitForPort, waitForHttpPort } = require('../utils');
 
-const start = async (language, framework, repoName, domain, waitTimeout = 30000) => {
+const start = async (language, framework, repoName, domain, waitTimeout = 60000) => {
     const port = await getPort(language, framework, repoName);
 
     const deployResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && bash deploy.sh"`);

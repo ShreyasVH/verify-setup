@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const common = require('./common');
 const { getCamelCaseForRepoName } = require('../utils');
 
-const start = async (language, framework, repoName, domain, waitTimeout = 30000) => {
+const start = async (language, framework, repoName, domain, waitTimeout = 60000) => {
     await common.start(language, framework, repoName, domain, waitTimeout);
 };
 
@@ -14,7 +14,7 @@ const verifyHTML = (buttonClass) => {
     return [...document.querySelectorAll(buttonClass)].length > 0;
 };
 
-const verify = async (domain, language, framework, repoName, buttonClass, waitTimeout = 30000) => {
+const verify = async (domain, language, framework, repoName, buttonClass, waitTimeout = 60000) => {
     let isSuccess = false;
 
     try {
