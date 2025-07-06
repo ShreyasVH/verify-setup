@@ -1,59 +1,51 @@
 const backend = require('../backend/common');
-const { get, post } = require('../api');
+const { get } = require('../api');
 const { sleep, getCamelCaseForRepoName } = require('../utils');
 const fs = require('fs');
 const path = require('path');
-const rmqUtils = require('../rmqUtils');
+const mysqlUtils = require('../utils/mysqlUtils');
 
-const language = 'java';
-const framework = 'springboot';
-const repoName = 'spring-boot-rmq';
-const domain = 'https://rmq.springboot.com';
-
-const start = async () => {
+const start = async (language, framework, repoName, domain) => {
     await backend.start(language, framework, repoName, domain);
 };
 
-const stop = async () => {
+const stop = async (language, framework, repoName) => {
     await backend.stop(language, framework, repoName);
 };
 
-const verify = async () => {
-    await start();
+const verify = async (domain, language, framework, repoName) => {
+    await start(language, framework, repoName, domain);
     let isSuccess = false;
 
     try {
-        const countBefore = await rmqUtils.getMessageCount(process.env.RMQ_QUEUE_UNCONSUMED_SPRINGBOOT);
+        const rowsBefore = await mysqlUtils.select(process.env.MYSQL_DB_WEB_HOOK_PLAY, 'SELECT count(*) as count FROM requests');
+        let countBefore = 0;
+        if (rowsBefore.length > 0) {
+            countBefore = parseInt(rowsBefore[0].count);
+        }
         let payloadForProof = {
             'count': countBefore
         };
         let proofFilePath = path.resolve(__dirname, `../outputProofs/${getCamelCaseForRepoName(repoName)}Before.json`);
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
-        const publishUrl = `${domain}/publish`;
-        const payload = {
-            'exchange': process.env.RMQ_EXCHANGE_DIRECT_SPRINGBOOT,
-            'key': process.env.RMQ_KEY_UNCONSUMED_SPRINGBOOT,
-            'payload': {
-                'a': 'A',
-                'b': 'B'
-            }
-        };
-        const publishResponse = await post(publishUrl, payload);
-        proofFilePath = path.resolve(__dirname, `../outputProofs/${getCamelCaseForRepoName(repoName)}DbCreation.json`);
+        const createUrl = `${domain}/get?input=abc`;
+        const createResponse = await get(createUrl);
+        proofFilePath = path.resolve(__dirname, `../outputProofs/${getCamelCaseForRepoName(repoName)}Creation.json`);
         payloadForProof = {
-            status: publishResponse.status,
-            data: publishResponse.data
+            status: createResponse.status,
+            data: createResponse.data
         };
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
         let tries = 0;
-        const maxTries = 3;
+        const maxTries = 40;
         while (!isSuccess && tries < maxTries) {
-            console.log('\tWaiting for event consumption');
-            await sleep(20000);
-
-            const countAfter = await rmqUtils.getMessageCount(process.env.RMQ_QUEUE_UNCONSUMED_SPRINGBOOT);
+            const rowsAfter = await mysqlUtils.select(process.env.MYSQL_DB_WEB_HOOK_PLAY, 'SELECT count(*) as count FROM requests');
+            let countAfter = 0;
+            if (rowsAfter.length > 0) {
+                countAfter = parseInt(rowsAfter[0].count);
+            }
             payloadForProof = {
                 'count': countAfter
             };
@@ -61,13 +53,15 @@ const verify = async () => {
             fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
             isSuccess = countAfter === (countBefore + 1);
             tries++;
+            console.log('\tWaiting for requests');
+            await sleep(1000);
         }
 
     } catch (e) {
         console.log(e);
     }
 
-    await stop();
+    await stop(language, framework, repoName);
 
     return isSuccess;
 }

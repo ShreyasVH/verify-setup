@@ -1,9 +1,10 @@
-const backend = require('../backend/db');
+const backend = require('../backend/swagger');
 
 const language = 'java';
-const framework = 'springboot';
-const repoName = 'spring-boot-elasticsearch';
-const domain = 'https://elastic.springboot.com';
+const framework = 'play';
+const repoName = 'play-swagger';
+const domain = 'https://swagger.playframework.com';
+const swaggerUrl = '/swagger-ui/index.html';
 
 const start = async () => {
     await backend.start(language, framework, repoName, domain);
@@ -14,7 +15,7 @@ const stop = async () => {
 };
 
 const verify = async () => {
-    return await backend.verify(domain, language, framework, repoName, 90000);
+    return await backend.verify(domain, language, framework, repoName, swaggerUrl);
 }
 
 exports.verify = verify;

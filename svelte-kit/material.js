@@ -7,7 +7,7 @@ const domain = 'https://material.sveltekit.com';
 const buttonClass = '.mdc-button';
 
 const start = async () => {
-    await frontend.start(language, framework, repoName, domain);
+    await frontend.start(language, framework, repoName, domain, 90000);
 };
 
 const stop = async () => {
@@ -15,7 +15,7 @@ const stop = async () => {
 };
 
 const verify = async () => {
-    return await frontend.verify(domain, language, framework, repoName, buttonClass);
+    return await frontend.verify(domain, language, framework, repoName, buttonClass, 90000);
 }
 
 exports.verify = verify;

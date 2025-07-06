@@ -1,9 +1,9 @@
-const backend = require('../backend/db');
+const backend = require('../backend/errors');
 
 const language = 'java';
-const framework = 'springboot';
-const repoName = 'spring-boot-elasticsearch';
-const domain = 'https://elastic.springboot.com';
+const framework = 'play';
+const repoName = 'play-error-handling';
+const domain = 'https://errors.playframework.com';
 
 const start = async () => {
     await backend.start(language, framework, repoName, domain);
@@ -14,7 +14,7 @@ const stop = async () => {
 };
 
 const verify = async () => {
-    return await backend.verify(domain, language, framework, repoName, 90000);
+    return await backend.verify(domain, language, framework, repoName);
 }
 
 exports.verify = verify;
