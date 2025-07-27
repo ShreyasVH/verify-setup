@@ -125,6 +125,7 @@ const fs = require('fs');
     const mongoVersion = process.env.MONGO_VERSION;
     const rmqVersion = process.env.RMQ_VERSION;
     const redisVersion = process.env.REDIS_VERSION;
+    const apacheVersion = process.env.APACHE_VERSION;
     const promiseBatchSize = 70;
 
     let portResponse = '';
@@ -181,6 +182,12 @@ const fs = require('fs');
     const redisDeployResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for redis startup');
     await waitForPort(redisPort, '127.0.0.1', 30000, 10);
+
+    portResponse = await execPromise(`grep 'Listen ' $HOME/programs/apache/${apacheVersion}/conf/httpd.conf | awk '{print $2}'`);
+    const apachePort = parseInt(portResponse.stdout);
+    const apacheDeployResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for apache startup');
+    await waitForPort(apachePort, '127.0.0.1', 30000, 10);
 
     const startTime = (new Date()).getTime();
 
@@ -354,6 +361,7 @@ const fs = require('fs');
     const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
     const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
     const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
+    const apacheStopResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
