@@ -4,7 +4,7 @@ const language = 'js';
 const framework = 'vue';
 const repoName = 'vue-charts-2';
 const domain = 'https://charts.vue.com';
-const buttonClass = '#bar-chart';
+const buttonClass = 'canvas[chart-id="bar-chart"]';
 
 const start = async () => {
     await frontend.start(language, framework, repoName, domain);
