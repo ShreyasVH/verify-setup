@@ -18,8 +18,8 @@ const start = async (domain) => {
     const deployResponse = await execPromise('bash -c "cd $HOME/programs/kibana && bash start.sh"');
 
     console.log('Waiting for kibana startup');
-    await waitForPort(port, '127.0.0.1', 30000, 10);
-    await waitForHttpPort(`${domain}/api/status`, 10, 60000);
+    await waitForPort(port, '127.0.0.1', 120000, 10);
+    await waitForHttpPort(`${domain}/api/status`, 10, 120000);
 };
 
 const stop = async () => {
