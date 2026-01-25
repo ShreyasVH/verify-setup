@@ -19,7 +19,7 @@ const start = async () => {
     const deployResponse = await execPromise('bash -c "cd $HOME/programs/logstash && bash start.sh"');
 
     console.log('Waiting for logstash startup');
-    await waitForPort(port, '127.0.0.1', 30000, 10);
+    await waitForPort(port, '127.0.0.1', 120000, 10);
     await waitForHttpPort(`http:localhost:${port}`, 10, 120000);
 };
 

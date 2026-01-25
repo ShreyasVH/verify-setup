@@ -63,7 +63,7 @@ const verify = async () => {
     }
 
     try {
-        const url = `${domain}/movies/browseMovies?order=id DESC`;
+        const url = `${domain}/movies/browseMovies?order=id Desc`;
 
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
