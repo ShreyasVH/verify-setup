@@ -2,6 +2,7 @@ const verifySkeleton  = require('./angular/skeleton').verify;
 const verifyRouter  = require('./angular/router').verify;
 const verifyMaterial  = require('./angular/material').verify;
 const verifyAngularHttpClient  = require('./angular/httpClient').verify;
+const verifyAngularCharts  = require('./angular/charts').verify;
 const verifyDotnetCoreSkeleton = require('./dotnet-core/skeleton').verify;
 const verifyDotnetCoreCors = require('./dotnet-core/cors').verify;
 const verifyDotnetCoreMssql = require('./dotnet-core/mssql').verify;
@@ -200,6 +201,7 @@ const fs = require('fs');
     promises.push(verifySkeleton().then(isSuccess => ({ key: 'angularSkeleton', isSuccess })));
     promises.push(verifyRouter().then(isSuccess => ({ key: 'angularRouter', isSuccess })));
     promises.push(verifyMaterial().then(isSuccess => ({ key: 'angularMaterial', isSuccess })));
+    promises.push(verifyAngularCharts().then(isSuccess => ({ key: 'angularCharts', isSuccess })));
 
     promises.push(verifyDotnetCoreSkeleton().then(isSuccess => ({ key: 'dotnetCoreSkeleton', isSuccess })));
     promises.push(verifyDotnetCoreCors().then(isSuccess => ({ key: 'dotnetCoreCors', isSuccess })));
