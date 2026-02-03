@@ -69,6 +69,7 @@ const verifySvelteKitSkeleton  = require('./svelte-kit/skeleton').verify;
 const verifySvelteKitRouter  = require('./svelte-kit/router').verify;
 const verifySvelteKitMaterial  = require('./svelte-kit/material').verify;
 const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
+const verifySvelteKitCharts  = require('./svelte-kit/charts').verify;
 
 const verifyReactSkeleton  = require('./react/skeleton').verify;
 const verifyReactHttpClient  = require('./react/httpClient').verify;
@@ -287,6 +288,7 @@ const fs = require('fs');
     promises.push(verifySvelteKitSkeleton().then(isSuccess => ({ key: 'svelteKitSkeleton', isSuccess})));
     promises.push(verifySvelteKitRouter().then(isSuccess => ({ key: 'svelteKitRouter', isSuccess})));
     promises.push(verifySvelteKitMaterial().then(isSuccess => ({ key: 'svelteKitMaterial', isSuccess})));
+    promises.push(verifySvelteKitCharts().then(isSuccess => ({ key: 'svelteKitCharts', isSuccess})));
 
     promises.push(verifyVueSkeleton().then(isSuccess => ({ key: 'vueSkeleton', isSuccess})));
     promises.push(verifyVueRouter().then(isSuccess => ({ key: 'vueRouter', isSuccess})));
