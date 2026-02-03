@@ -63,6 +63,7 @@ const verifySolidSkeleton  = require('./solid/skeleton').verify;
 const verifySolidRouter  = require('./solid/router').verify;
 const verifySolidMaterial  = require('./solid/material').verify;
 const verifySolidHttpClient  = require('./solid/httpClient').verify;
+const verifySolidCharts  = require('./solid/charts').verify;
 
 const verifySvelteKitSkeleton  = require('./svelte-kit/skeleton').verify;
 const verifySvelteKitRouter  = require('./svelte-kit/router').verify;
@@ -264,6 +265,7 @@ const fs = require('fs');
     promises.push(verifySolidSkeleton().then(isSuccess => ({ key: 'solidSkeleton', isSuccess })));
     promises.push(verifySolidRouter().then(isSuccess => ({ key: 'solidRouter', isSuccess })));
     promises.push(verifySolidMaterial().then(isSuccess => ({ key: 'solidMaterial', isSuccess })));
+    promises.push(verifySolidCharts().then(isSuccess => ({ key: 'solidCharts', isSuccess })));
 
     promises.push(verifySpringbootSkeleton().then(isSuccess => ({ key: 'springbootSkeleton', isSuccess })));
     promises.push(verifySpringbootSwagger().then(isSuccess => ({ key: 'springbootSwagger', isSuccess })));
