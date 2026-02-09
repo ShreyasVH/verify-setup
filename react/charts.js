@@ -4,7 +4,7 @@ const language = 'js';
 const framework = 'react';
 const repoName = 'react-charts-2';
 const domain = 'https://charts.react.com';
-const buttonClass = '[chart-id="chartId"]';
+const buttonClass = '[chart-id="barChart"]';
 
 const start = async () => {
     await frontend.start(language, framework, repoName, domain);
