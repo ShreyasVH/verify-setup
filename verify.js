@@ -375,6 +375,7 @@ const fs = require('fs');
     const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
     const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
     const apacheStopResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash stop.sh"`);
+    const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
