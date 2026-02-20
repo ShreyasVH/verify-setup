@@ -52,6 +52,7 @@ const verifySpringbootRmq = require('./spring-boot/rmq').verify;
 const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
 const verifySpringbootMvc = require('./spring-boot/mvc').verify;
 const verifySpringbootDebug = require('./spring-boot/debug').verify;
+const verifySpringbootOracle = require('./spring-boot/oracle').verify;
 
 const springbootCors = require('./spring-boot/cors');
 const playCors = require('./play/cors');
@@ -192,6 +193,11 @@ const fs = require('fs');
     console.log('Waiting for apache startup');
     await waitForPort(apachePort, '127.0.0.1', 30000, 10);
 
+    const oraclePort = process.env.ORACLE_PORT;
+    const oracleDeployResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash start.sh"`);
+    console.log('Waiting for oracle startup');
+    await waitForPort(oraclePort, '127.0.0.1', 30000, 10);
+
     const startTime = (new Date()).getTime();
 
     const promises = [];
@@ -284,6 +290,7 @@ const fs = require('fs');
     promises.push(verifySpringbootSheetsDataSync().then(isSuccess => ({ key: 'springbootSheetsDataSync', isSuccess })));
     promises.push(verifySpringbootMvc().then(isSuccess => ({ key: 'springbootMvc', isSuccess })));
     promises.push(verifySpringbootDebug().then(isSuccess => ({ key: 'springbootDebug', isSuccess })));
+    promises.push(verifySpringbootOracle().then(isSuccess => ({ key: 'springbootOracle', isSuccess })));
 
     promises.push(verifySvelteKitSkeleton().then(isSuccess => ({ key: 'svelteKitSkeleton', isSuccess})));
     promises.push(verifySvelteKitRouter().then(isSuccess => ({ key: 'svelteKitRouter', isSuccess})));
@@ -368,6 +375,7 @@ const fs = require('fs');
     const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
     const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
     const apacheStopResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash stop.sh"`);
+    const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
