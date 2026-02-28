@@ -6,7 +6,8 @@ const { waitForPort, waitForHttpPort } = require('../utils');
 const start = async (language, framework, repoName, domain, waitTimeout = 60000) => {
     const port = await getPort(language, framework, repoName);
 
-    const deployResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && bash deploy.sh"`);
+    const deployResponse = await execPromise(`zsh -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && zsh deploy.sh"`);
+    console.log(deployResponse);
 
     console.log(`Waiting for ${repoName} startup for ${waitTimeout/ 1000} seconds`);
     await waitForPort(port, '127.0.0.1', 30000, 10);
@@ -14,7 +15,8 @@ const start = async (language, framework, repoName, domain, waitTimeout = 60000)
 };
 
 const stop = async (language, framework, repoName) => {
-    const stopResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && bash stop.sh"`);
+    const stopResponse = await execPromise(`zsh -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && zsh stop.sh"`);
+    console.log(stopResponse);
 };
 
 const getPort = async (language, framework, repoName) => {

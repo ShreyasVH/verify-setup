@@ -29,11 +29,10 @@ const verify = async (domain, language, framework, repoName) => {
             data: response.data
         };
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
-
-        await stop(language, framework, repoName);
     } catch (e) {
         console.log(e);
     }
+    await stop(language, framework, repoName);
 
     return isSuccess;
 }
