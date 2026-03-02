@@ -13,8 +13,6 @@ const waitForStart = async (interval = 1000, timeout = 60000) => {
         const jsonResponse = JSON.parse(minikubeResponse.stdout);
 
         if (jsonResponse.Host === 'Running') {
-            console.log(jsonResponse);
-            console.log('minikube started');
             break;
         }
 
@@ -25,7 +23,6 @@ const waitForStart = async (interval = 1000, timeout = 60000) => {
 
 const start = async () => {
     const minikubeResponse = await execPromise(`bash -c "cd $HOME/programs/minikube/${minikubeVersion} && source .envrc && bash start.sh"`);
-    console.log(minikubeResponse);
 
     await waitForStart();
 };
