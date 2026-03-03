@@ -48,9 +48,15 @@ const verify = async () => {
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-        await page.waitForSelector('.year-container button');
+
+        try {
+            await page.waitForSelector('.year-container button');
+        } catch (e) {
+            console.log(e);
+        }
+
         await page.screenshot({
-          path: 'outputProofs/vueCric.png',
+            path: 'outputProofs/vueCric.png',
         });
 
         isSuccess = await page.evaluate(verifyHTML);

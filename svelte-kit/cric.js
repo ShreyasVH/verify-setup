@@ -48,7 +48,12 @@ const verify = async () => {
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-        await page.waitForSelector('.mdc-layout-grid__cell--span-3 button');
+        try {
+            await page.waitForSelector('.mdc-layout-grid__cell--span-3 button');
+        } catch (e) {
+            console.log(e);
+        }
+
         await page.screenshot({
           path: 'outputProofs/svelteCric.png',
         });
