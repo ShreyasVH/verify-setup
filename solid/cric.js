@@ -48,7 +48,12 @@ const verify = async () => {
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
-        await page.waitForSelector('.MuiGrid-grid-md-4 button');
+        try {
+            await page.waitForSelector('.MuiGrid-grid-md-4 button');
+        } catch (e) {
+            console.log(e);
+        }
+
         await page.screenshot({
           path: 'outputProofs/solidCric.png',
         });

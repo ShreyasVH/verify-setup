@@ -18,6 +18,10 @@ const waitForPort = async (port, host = 'localhost', timeout = 10000, interval =
             await sleep(interval);
         }
     }
+
+    if (!isRunning) {
+        console.log(`Could not start at port: ${port}`);
+    }
 }
 
 const sleep = async (ms) => {
@@ -33,16 +37,19 @@ const getCamelCaseForRepoName = (repoName) => {
 
 const waitForHttpPort = async (url, interval = 1000, timeout = 60000) => {
     const start = Date.now();
+    let isRunning = false;
     while (true && ((Date.now() - start) < timeout)) {
         try {
             const response = await get(url);
             if ([200].includes(response.status)) {
+                isRunning = true;
                 break;
             }
         } catch (e) {
             try {
                 // console.log(e);
                 if ([404].includes(e.response.status)) {
+                    isRunning = true;
                     break;
                 }
             } catch (ex) {
@@ -51,6 +58,10 @@ const waitForHttpPort = async (url, interval = 1000, timeout = 60000) => {
             }
         }
         await sleep(interval);
+    }
+
+    if (!isRunning) {
+        console.log(`Could not start for url: ${url}`);
     }
 };
 
