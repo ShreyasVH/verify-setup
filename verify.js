@@ -53,6 +53,7 @@ const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').v
 const verifySpringbootMvc = require('./spring-boot/mvc').verify;
 const verifySpringbootDebug = require('./spring-boot/debug').verify;
 const verifySpringbootOracle = require('./spring-boot/oracle').verify;
+const verifySpringbootKubernates = require('./spring-boot/kubernates').verify;
 
 const springbootCors = require('./spring-boot/cors');
 const playCors = require('./play/cors');
@@ -110,6 +111,8 @@ const verifyPlayMvc  = require('./play/mvc').verify;
 const verifyPlayDebug  = require('./play/debug').verify;
 const verifyPlayDocker  = require('./play/docker').verify;
 
+const { start: startMinikube, stop: stopMinikube } = require('./minikube');
+
 const myApiJava = require('./play/myApi');
 
 const { exec } = require('child_process');
@@ -130,6 +133,7 @@ const fs = require('fs');
     const rmqVersion = process.env.RMQ_VERSION;
     const redisVersion = process.env.REDIS_VERSION;
     const apacheVersion = process.env.APACHE_VERSION;
+    const minikubeVersion = process.env.MINIKUBE_VERSION;
     const promiseBatchSize = 70;
 
     let portResponse = '';
@@ -137,6 +141,8 @@ const fs = require('fs');
     const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for haproxy startup');
     await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
+
+    await startMinikube();
 
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
@@ -291,6 +297,7 @@ const fs = require('fs');
     promises.push(verifySpringbootMvc().then(isSuccess => ({ key: 'springbootMvc', isSuccess })));
     promises.push(verifySpringbootDebug().then(isSuccess => ({ key: 'springbootDebug', isSuccess })));
     promises.push(verifySpringbootOracle().then(isSuccess => ({ key: 'springbootOracle', isSuccess })));
+    promises.push(verifySpringbootKubernates().then(isSuccess => ({ key: 'springbootKubernates', isSuccess })));
 
     promises.push(verifySvelteKitSkeleton().then(isSuccess => ({ key: 'svelteKitSkeleton', isSuccess})));
     promises.push(verifySvelteKitRouter().then(isSuccess => ({ key: 'svelteKitRouter', isSuccess})));
@@ -376,6 +383,7 @@ const fs = require('fs');
     const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
     const apacheStopResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash stop.sh"`);
     const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
+    await stopMinikube();
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
