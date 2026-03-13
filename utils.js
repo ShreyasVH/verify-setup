@@ -22,6 +22,8 @@ const waitForPort = async (port, host = 'localhost', timeout = 10000, interval =
     if (!isRunning) {
         console.log(`Could not start at port: ${port}`);
     }
+
+    return isRunning;
 }
 
 const sleep = async (ms) => {
