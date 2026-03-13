@@ -9,7 +9,11 @@ const start = async (language, framework, repoName, domain, waitTimeout = 60000)
     const deployResponse = await execPromise(`bash -c "cd $HOME/workspace/myProjects/${language}/${framework}/${repoName} && source .envrc && bash deploy.sh"`);
 
     console.log(`Waiting for ${repoName} startup for ${waitTimeout/ 1000} seconds`);
-    await waitForPort(port, '127.0.0.1', 30000, 10);
+    const isRunning = await waitForPort(port, '127.0.0.1', 30000, 10);
+    if(!isRunning)
+    {
+        console.log(deployResponse);
+    }
     await waitForHttpPort(domain, 10, waitTimeout);
 };
 
