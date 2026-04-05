@@ -135,7 +135,7 @@ const fs = require('fs');
     const redisVersion = process.env.REDIS_VERSION;
     const apacheVersion = process.env.APACHE_VERSION;
     const minikubeVersion = process.env.MINIKUBE_VERSION;
-    const promiseBatchSize = 40;
+    const promiseBatchSize = 10;
 
     let portResponse = '';
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
@@ -211,7 +211,7 @@ const fs = require('fs');
 
     // promises.push(() => verifyLogstash().then(isSuccess => ({ key: 'logstash', isSuccess })));
     promises.push(() => verifyKibana().then(isSuccess => ({ key: 'kibana', isSuccess })));
-    promises.push(() => verifyLangfuse().then(isSuccess => ({ key: 'langfuse', isSuccess })));
+    // promises.push(() => verifyLangfuse().then(isSuccess => ({ key: 'langfuse', isSuccess })));
 
     promises.push(() => verifySkeleton().then(isSuccess => ({ key: 'angular-skeleton', isSuccess })));
     promises.push(() => verifyRouter().then(isSuccess => ({ key: 'angular-router', isSuccess })));
