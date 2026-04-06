@@ -211,7 +211,7 @@ const fs = require('fs');
 
     // promises.push(() => verifyLogstash().then(isSuccess => ({ key: 'logstash', isSuccess })));
     promises.push(() => verifyKibana().then(isSuccess => ({ key: 'kibana', isSuccess })));
-    // promises.push(() => verifyLangfuse().then(isSuccess => ({ key: 'langfuse', isSuccess })));
+    promises.push(() => verifyLangfuse().then(isSuccess => ({ key: 'langfuse', isSuccess })));
 
     promises.push(() => verifySkeleton().then(isSuccess => ({ key: 'angular-skeleton', isSuccess })));
     promises.push(() => verifyRouter().then(isSuccess => ({ key: 'angular-router', isSuccess })));
