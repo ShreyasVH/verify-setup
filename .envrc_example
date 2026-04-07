@@ -59,3 +59,5 @@ export MYSQL_PORT=
 export MYSQL_DB_WEB_HOOK_PLAY=
 export MYSQL_USERNAME=
 export MYSQL_PASSWORD=
+
+export PROCESS_COUNT=
