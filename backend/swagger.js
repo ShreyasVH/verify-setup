@@ -26,7 +26,8 @@ const verify = async (domain, language, framework, repoName, swaggerUrl) => {
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
-            '--ignore-certificate-errors'
+            '--ignore-certificate-errors',
+            '--disable-dev-shm-usage'
         ],
         ignoreHTTPSErrors: true
     });
