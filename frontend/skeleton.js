@@ -26,7 +26,8 @@ const verify = async (domain, language, framework, repoName) => {
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--ignore-certificate-errors'
+                '--ignore-certificate-errors',
+                '--disable-dev-shm-usage'
             ],
             ignoreHTTPSErrors: true
         });
@@ -36,7 +37,7 @@ const verify = async (domain, language, framework, repoName) => {
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
-            waitUntil: 'networkidle2',
+            waitUntil: 'domcontentloaded',
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));

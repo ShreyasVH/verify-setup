@@ -23,28 +23,29 @@ const verifyHTML = () => {
 const verify = async () => {
     let isSuccess = false;
 
+    const browser  = await puppeteer.launch({
+        headless: true,
+        devtools: true,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--ignore-certificate-errors',
+            '--disable-dev-shm-usage'
+        ],
+        ignoreHTTPSErrors: true
+    });
+
     try {
         await apiStart();
 
         await start();
-
-        const browser  = await puppeteer.launch({
-            headless: true,
-            devtools: true,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--ignore-certificate-errors'
-            ],
-            ignoreHTTPSErrors: true
-        });
 
         const url = `${domain}`;
 
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
-            waitUntil: 'networkidle2',
+            waitUntil: 'domcontentloaded',
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
@@ -61,15 +62,15 @@ const verify = async () => {
         isSuccess = await page.evaluate(verifyHTML);
 
         await page.close();
-
-        await browser.close();
-
-        await stop();
-
-        await apiStop();
     } catch (err) {
         console.error('Error:', err);
     }
+
+    await browser.close();
+
+    await stop();
+
+    await apiStop();
 
     return isSuccess;
 };

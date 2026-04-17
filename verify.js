@@ -135,7 +135,7 @@ const fs = require('fs');
     const redisVersion = process.env.REDIS_VERSION;
     const apacheVersion = process.env.APACHE_VERSION;
     const minikubeVersion = process.env.MINIKUBE_VERSION;
-    const promiseBatchSize = 40;
+    const promiseBatchSize = parseInt(process.env.PROCESS_COUNT);
 
     let portResponse = '';
     // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);

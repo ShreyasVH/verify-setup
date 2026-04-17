@@ -41,7 +41,8 @@ const verify = async () => {
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
-            '--ignore-certificate-errors'
+            '--ignore-certificate-errors',
+            '--disable-dev-shm-usage'
         ],
         ignoreHTTPSErrors: true
     });
@@ -51,7 +52,7 @@ const verify = async () => {
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
-            waitUntil: 'networkidle2',
+            waitUntil: 'domcontentloaded',
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
@@ -74,7 +75,7 @@ const verify = async () => {
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
-            waitUntil: 'networkidle2',
+            waitUntil: 'domcontentloaded',
             timeout: 0
         });
         await page.screenshot({
@@ -95,7 +96,7 @@ const verify = async () => {
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
-            waitUntil: 'networkidle2',
+            waitUntil: 'domcontentloaded',
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
@@ -118,7 +119,7 @@ const verify = async () => {
         const page = await browser.newPage();
         await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
-            waitUntil: 'networkidle2',
+            waitUntil: 'domcontentloaded',
             timeout: 0
         });
         await page.screenshot({
