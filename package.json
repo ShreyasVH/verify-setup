@@ -9,11 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "amqplib": "^0.10.9",
-    "axios": "^1.13.6",
-    "mysql2": "^3.19.1",
-    "postgres": "^3.4.8",
-    "puppeteer": "^24.39.1",
-    "redis": "^5.11.0"
+    "amqplib": "^2.0.1",
+    "axios": "^1.16.1",
+    "mysql2": "^3.22.3",
+    "postgres": "^3.4.9",
+    "puppeteer": "^24.43.1",
+    "redis": "^5.12.1"
   }
 }
