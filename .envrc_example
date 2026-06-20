@@ -1,4 +1,4 @@
-# node 25.8.1 path
+# node 26.3.0 path
 export PATH=
 
 export MYSQL_VERSION=
@@ -62,3 +62,5 @@ export MYSQL_USERNAME=
 export MYSQL_PASSWORD=
 
 export PROCESS_COUNT=
+
+export PUPPETEER_EXECUTABLE_PATH=
