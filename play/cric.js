@@ -5,12 +5,12 @@ const framework = 'play';
 const repoName = 'play-cric';
 const domain = 'https://cric.playframework.com';
 
-const start = async () => {
-    await backend.start(language, framework, repoName, domain);
+const start = async (repoType) => {
+    await backend.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async () => {
-    await backend.stop(language, framework, repoName);
+const stop = async (repoType) => {
+    await backend.stop(repoType, language, framework, repoName);
 };
 
 exports.start = start;

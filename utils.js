@@ -67,7 +67,18 @@ const waitForHttpPort = async (url, interval = 1000, timeout = 60000) => {
     }
 };
 
+const getFolderForRepoType = repoType => {
+    const repoTypeMap = {
+        github: 'myProjects',
+        gitlab: 'myProjectsGitlab',
+        bitBucket: 'myProjectsBitbucket',
+    };
+
+    return repoTypeMap.hasOwnProperty(repoType) ? repoTypeMap[repoType] : '';
+};
+
 exports.waitForPort = waitForPort;
 exports.sleep = sleep;
 exports.getCamelCaseForRepoName = getCamelCaseForRepoName;
 exports.waitForHttpPort = waitForHttpPort;
+exports.getFolderForRepoType = getFolderForRepoType;

@@ -1,0 +1,397 @@
+const verifySkeleton  = require('./angular/skeleton').verify;
+const verifyRouter  = require('./angular/router').verify;
+const verifyMaterial  = require('./angular/material').verify;
+const verifyAngularHttpClient  = require('./angular/httpClient').verify;
+const verifyAngularCharts  = require('./angular/charts').verify;
+const verifyDotnetCoreSkeleton = require('./dotnet-core/skeleton').verify;
+const verifyDotnetCoreCors = require('./dotnet-core/cors').verify;
+const verifyDotnetCoreMssql = require('./dotnet-core/mssql').verify;
+const verifyDotnetCoreMigrations = require('./dotnet-core/migrations').verify;
+const verifyDotnetCoreErrors = require('./dotnet-core/errors').verify;
+const verifyDotnetCoreResponse = require('./dotnet-core/response').verify;
+const verifyMySiteReact = require('./react/mySite').verify;
+const verifyMySitePhp = require('./phalcon/mySite').verify;
+const verifyHouseExpensesReact = require('./react/houseExpenses').verify;
+const verifyReactCric = require('./react/cric').verify;
+const verifyVueCric = require('./vue/cric').verify;
+const verifyAngularCric = require('./angular/cric').verify;
+const verifySolidCric = require('./solid/cric').verify;
+const verifySvelteKitCric = require('./svelte-kit/cric').verify;
+const verifyKibana = require('./kiabana').verify;
+const verifyLogstash = require('./logstash').verify;
+const verifyLangfuse = require('./langfuse/client').verify;
+const verifyExpressSkeleton = require('./express/skeleton').verify;
+const verifyExpressCors = require('./express/cors').verify;
+const verifyExpressMongoDb = require('./express/mongodb').verify;
+const verifyExpressMigrations = require('./express/migrations').verify;
+const verifyExpressResponse = require('./express/response').verify;
+const verifyExpressErrors = require('./express/errors').verify;
+const verifyExpressSwagger = require('./express/swagger').verify;
+
+const verifyPhalconSkeleton = require('./phalcon/skeleton').verify;
+const verifyPhalconMysql = require('./phalcon/mysql').verify;
+const verifyPhalconMigrations = require('./phalcon/migrations').verify;
+const verifyPhalconResponse = require('./phalcon/response').verify;
+const verifyPhalconErrors = require('./phalcon/errors').verify;
+const verifyPhalconSwagger = require('./phalcon/swagger').verify;
+
+const verifySpringbootSkeleton = require('./spring-boot/skeleton').verify;
+const verifySpringbootSwagger = require('./spring-boot/swagger').verify;
+const verifySpringbootPostgres = require('./spring-boot/postgres').verify;
+const verifySpringbootMysql = require('./spring-boot/mysql').verify;
+const verifySpringbootMigrations = require('./spring-boot/migrations').verify;
+const verifySpringbootResponse = require('./spring-boot/response').verify;
+const verifySpringbootErrors = require('./spring-boot/errors').verify;
+const verifySpringbootHttps = require('./spring-boot/https').verify;
+const verifySpringbootDocker = require('./spring-boot/docker').verify;
+const verifySpringbootHttpClient = require('./spring-boot/httpClient').verify;
+const verifySpringbootSentry = require('./spring-boot/sentry').verify;
+const verifySpringbootElasticsearch = require('./spring-boot/elasticsearch').verify;
+const verifySpringbootPostgresAuditLog = require('./spring-boot/postgresAuditLog').verify;
+const verifySpringbootRmq = require('./spring-boot/rmq').verify;
+const verifySpringbootSheetsDataSync = require('./spring-boot/sheetsDataSync').verify;
+const verifySpringbootMvc = require('./spring-boot/mvc').verify;
+const verifySpringbootDebug = require('./spring-boot/debug').verify;
+const verifySpringbootOracle = require('./spring-boot/oracle').verify;
+const verifySpringbootKubernates = require('./spring-boot/kubernates').verify;
+const verifySpringbootMigrationsOracle = require('./spring-boot/migrationsOracle').verify;
+
+const springbootCors = require('./spring-boot/cors');
+const playCors = require('./play/cors');
+const phalconCors = require('./phalcon/cors');
+const expressCors = require('./express/cors');
+const dotnetCoreCors = require('./dotnet-core/cors');
+
+const verifySolidSkeleton  = require('./solid/skeleton').verify;
+const verifySolidRouter  = require('./solid/router').verify;
+const verifySolidMaterial  = require('./solid/material').verify;
+const verifySolidHttpClient  = require('./solid/httpClient').verify;
+const verifySolidCharts  = require('./solid/charts').verify;
+
+const verifySvelteKitSkeleton  = require('./svelte-kit/skeleton').verify;
+const verifySvelteKitRouter  = require('./svelte-kit/router').verify;
+const verifySvelteKitMaterial  = require('./svelte-kit/material').verify;
+const verifySvelteKitHttpClient  = require('./svelte-kit/httpClient').verify;
+const verifySvelteKitCharts  = require('./svelte-kit/charts').verify;
+
+const verifyReactSkeleton  = require('./react/skeleton').verify;
+const verifyReactHttpClient  = require('./react/httpClient').verify;
+const verifyReactRouter  = require('./react/router').verify;
+const verifyReactMaterial = require('./react/material').verify;
+const verifyReactHttps = require('./react/https').verify;
+const verifyReactCharts = require('./react/charts').verify;
+const verifyReactDocker = require('./react/docker').verify;
+const verifyReactRedux = require('./react/redux').verify;
+
+const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
+
+const verifyVueSkeleton  = require('./vue/skeleton').verify;
+const verifyVueRouter  = require('./vue/router').verify;
+const verifyVueHttpClient  = require('./vue/httpClient').verify;
+const verifyVueMaterial  = require('./vue/material').verify;
+const verifyVueHttps  = require('./vue/https').verify;
+const verifyVueDocker  = require('./vue/docker').verify;
+const verifyVueCharts  = require('./vue/charts').verify;
+
+const verifyPlaySkeleton  = require('./play/skeleton').verify;
+const verifyPlaySwagger  = require('./play/swagger').verify;
+const verifyPlayMysql  = require('./play/mysql').verify;
+const verifyPlayMigrations  = require('./play/migrations').verify;
+const verifyPlayResponse  = require('./play/response').verify;
+const verifyPlayErrors  = require('./play/errors').verify;
+const verifyPlayHttpClient  = require('./play/httpClient').verify;
+const verifyPlayHttps  = require('./play/https').verify;
+const verifyPlayPostgres  = require('./play/postgres').verify;
+const verifyPlaySentry  = require('./play/sentry').verify;
+const verifyPlayElasticsearch  = require('./play/elasticsearch').verify;
+const verifyPlayRmq  = require('./play/rmq').verify;
+const verifyPlayRedis  = require('./play/redis').verify;
+const verifyPlayWebHook  = require('./play/webHook').verify;
+const verifyPlayAsync  = require('./play/async').verify;
+const verifyPlayMvc  = require('./play/mvc').verify;
+const verifyPlayDebug  = require('./play/debug').verify;
+const verifyPlayDocker  = require('./play/docker').verify;
+
+const { start: startMinikube, stop: stopMinikube } = require('./minikube');
+
+const myApiJava = require('./play/myApi');
+
+const { exec } = require('child_process');
+const util = require('util');
+const execPromise = util.promisify(exec);
+const { waitForPort, waitForHttpPort } = require('./utils');
+const fs = require('fs');
+
+const verifyInternal = async (repoType) => {
+    const responses = {};
+    const haproxyPort = 80;
+    const haproxyVersion = process.env.HAPROXY_VERSION;
+    const mysqlVersion = process.env.MYSQL_VERSION;
+    const elasticSearchVersion = process.env.ELASTICSEARCH_VERSION;
+    const postgresVersion = process.env.POSTGRES_VERSION;
+    const mongoVersion = process.env.MONGO_VERSION;
+    const rmqVersion = process.env.RMQ_VERSION;
+    const redisVersion = process.env.REDIS_VERSION;
+    const apacheVersion = process.env.APACHE_VERSION;
+    const minikubeVersion = process.env.MINIKUBE_VERSION;
+    const promiseBatchSize = parseInt(process.env.PROCESS_COUNT);
+
+    let portResponse = '';
+    // await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
+    const haproxyDeployResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for haproxy startup');
+    await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
+
+    await startMinikube();
+
+    // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+    portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
+    const elasticsearchPort = parseInt(portResponse.stdout);
+    const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for elasticsearch startup');
+    await waitForPort(elasticsearchPort, '127.0.0.1', 120000, 10);
+    const username = process.env.ELASTIC_USERNAME;
+    const password = process.env.ELASTIC_PASSWORD;
+    await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10, 300000);
+
+    // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
+    let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/programs/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
+    const mysqlPort = parseInt(stdout);
+    const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for mysql startup');
+    await waitForPort(mysqlPort, '127.0.0.1', 30000, 10);
+
+    // await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
+    portResponse = await execPromise(`grep 'port = ' $HOME/programs/postgres/${postgresVersion}/data/postgresql.conf | awk '{print $3}'`);
+    const postgresPort = parseInt(portResponse.stdout);
+    const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for postgres startup');
+    await waitForPort(postgresPort, '127.0.0.1', 30000, 10);
+
+    // await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
+    portResponse = await execPromise(`grep 'port: ' $HOME/programs/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
+    const mongoPort = parseInt(portResponse.stdout);
+    const mongoDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for mongo startup');
+    await waitForPort(mongoPort, '127.0.0.1', 30000, 10);
+
+    const mssqlPort = process.env.MSSQL_PORT;
+    const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
+    console.log('Waiting for mssql startup');
+    await waitForPort(mssqlPort, '127.0.0.1', 30000, 10);
+
+    // await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
+    portResponse = await execPromise(`grep 'listeners.tcp.default = ' $HOME/programs/rmq/${rmqVersion}/etc/rabbitmq/rabbitmq.conf | awk '{print $3}'`);
+    const rmqPort = parseInt(portResponse.stdout);
+    const rmqDeployResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for rmq startup');
+    await waitForPort(rmqPort, '127.0.0.1', 30000, 10);
+
+    portResponse = await execPromise(`grep 'port ' $HOME/programs/redis/${redisVersion}/redis.conf | awk '{print $2}'`);
+    const redisPort = parseInt(portResponse.stdout);
+    const redisDeployResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for redis startup');
+    await waitForPort(redisPort, '127.0.0.1', 30000, 10);
+
+    portResponse = await execPromise(`grep 'Listen ' $HOME/programs/apache/${apacheVersion}/conf/httpd.conf | awk '{print $2}'`);
+    const apachePort = parseInt(portResponse.stdout);
+    const apacheDeployResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash start.sh"`);
+    console.log('Waiting for apache startup');
+    await waitForPort(apachePort, '127.0.0.1', 30000, 10);
+
+    const oraclePort = process.env.ORACLE_PORT;
+    const oracleDeployResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash start.sh"`);
+    console.log('Waiting for oracle startup');
+    await waitForPort(oraclePort, '127.0.0.1', 30000, 10);
+
+    const startTime = (new Date()).getTime();
+
+    const promises = [];
+
+    promises.push(() => verifyLogstash().then(isSuccess => ({ key: 'logstash', isSuccess })));
+    promises.push(() => verifyKibana().then(isSuccess => ({ key: 'kibana', isSuccess })));
+    promises.push(() => verifyLangfuse(repoType).then(isSuccess => ({ key: 'langfuse', isSuccess })));
+
+    promises.push(() => verifySkeleton(repoType).then(isSuccess => ({ key: 'angular-skeleton', isSuccess })));
+    promises.push(() => verifyRouter(repoType).then(isSuccess => ({ key: 'angular-router', isSuccess })));
+    promises.push(() => verifyMaterial(repoType).then(isSuccess => ({ key: 'angular-material-ui', isSuccess })));
+    promises.push(() => verifyAngularCharts(repoType).then(isSuccess => ({ key: 'angular-charts-2', isSuccess })));
+
+    promises.push(() => verifyDotnetCoreSkeleton(repoType).then(isSuccess => ({ key: 'dotnet-core-skeleton', isSuccess })));
+    promises.push(() => verifyDotnetCoreCors(repoType).then(isSuccess => ({ key: 'dotnet-core-cors', isSuccess })));
+    promises.push(() => verifyDotnetCoreMssql(repoType).then(isSuccess => ({ key: 'dotnet-core-mssql', isSuccess })));
+    promises.push(() => verifyDotnetCoreMigrations(repoType).then(isSuccess => ({ key: 'dotnet-core-migrations', isSuccess })));
+    promises.push(() => verifyDotnetCoreErrors(repoType).then(isSuccess => ({ key: 'dotnet-core-error-handling', isSuccess })));
+    promises.push(() => verifyDotnetCoreResponse(repoType).then(isSuccess => ({ key: 'dotnet-core-response-handling', isSuccess })));
+
+    promises.push(() => verifyExpressSkeleton(repoType).then(isSuccess => ({ key: 'express-skeleton', isSuccess })));
+    promises.push(() => verifyExpressCors(repoType).then(isSuccess => ({ key: 'express-cors', isSuccess })));
+    promises.push(() => verifyExpressMongoDb(repoType).then(isSuccess => ({ key: 'express-mongodb', isSuccess })));
+    promises.push(() => verifyExpressMigrations(repoType).then(isSuccess => ({ key: 'express-migrations', isSuccess })));
+    promises.push(() => verifyExpressResponse(repoType).then(isSuccess => ({ key: 'express-response-handling', isSuccess })));
+    promises.push(() => verifyExpressErrors(repoType).then(isSuccess => ({ key: 'express-error-handling', isSuccess })));
+    promises.push(() => verifyExpressSwagger(repoType).then(isSuccess => ({ key: 'express-swagger', isSuccess })));
+
+    promises.push(() => verifyHouseExpensesReact(repoType).then(isSuccess => ({ key: 'house-expenses-react', isSuccess })));
+
+    promises.push(() => verifyReactCric(repoType).then(isSuccess => ({ key: 'react-cric', isSuccess})));
+    promises.push(() => verifyVueCric(repoType).then(isSuccess => ({ key: 'vue-cric', isSuccess})));
+    promises.push(() => verifyAngularCric(repoType).then(isSuccess => ({ key: 'angular-cric', isSuccess})));
+    promises.push(() => verifySolidCric(repoType).then(isSuccess => ({ key: 'solid-cric', isSuccess})));
+    promises.push(() => verifySvelteKitCric(repoType).then(isSuccess => ({ key: 'svelte-kit-cric', isSuccess})));
+
+    promises.push(() => verifyPlaySkeleton(repoType).then(isSuccess => ({ key: 'play-skeleton', isSuccess})));
+    promises.push(() => verifyPlaySwagger(repoType).then(isSuccess => ({ key: 'play-swagger', isSuccess})));
+    promises.push(() => verifyPlayMysql(repoType).then(isSuccess => ({ key: 'play-mysql', isSuccess})));
+    promises.push(() => verifyPlayMigrations(repoType).then(isSuccess => ({ key: 'play-migrations', isSuccess})));
+    promises.push(() => verifyPlayResponse(repoType).then(isSuccess => ({ key: 'play-response-handling', isSuccess})));
+    promises.push(() => verifyPlayErrors(repoType).then(isSuccess => ({ key: 'play-error-handling', isSuccess})));
+    promises.push(() => verifyPlayHttps(repoType).then(isSuccess => ({ key: 'play-https', isSuccess})));
+    promises.push(() => verifyPlayPostgres(repoType).then(isSuccess => ({ key: 'play-postgres', isSuccess})));
+    promises.push(() => verifyPlaySentry(repoType).then(isSuccess => ({ key: 'play-sentry', isSuccess})));
+    promises.push(() => verifyPlayElasticsearch(repoType).then(isSuccess => ({ key: 'play-elasticsearch', isSuccess})));
+    promises.push(() => verifyPlayRmq(repoType).then(isSuccess => ({ key: 'play-rmq', isSuccess})));
+    promises.push(() => verifyPlayRedis(repoType).then(isSuccess => ({ key: 'play-redis', isSuccess})));
+    promises.push(() => verifyPlayWebHook(repoType).then(isSuccess => ({ key: 'play-web-hook', isSuccess})));
+    promises.push(() => verifyPlayAsync(repoType).then(isSuccess => ({ key: 'play-asynchronous', isSuccess})));
+    promises.push(() => verifyPlayMvc(repoType).then(isSuccess => ({ key: 'play-mvc', isSuccess})));
+    promises.push(() => verifyPlayDebug(repoType).then(isSuccess => ({ key: 'play-debug', isSuccess})));
+    promises.push(() => verifyPlayDocker(repoType).then(isSuccess => ({ key: 'play-docker', isSuccess})));
+
+    promises.push(() => verifyPhalconSkeleton(repoType).then(isSuccess => ({ key: 'phalcon-skeleton', isSuccess})));
+    promises.push(() => verifyPhalconMysql(repoType).then(isSuccess => ({ key: 'phalcon-mysql', isSuccess})));
+    promises.push(() => verifyPhalconMigrations(repoType).then(isSuccess => ({ key: 'phalcon-migrations', isSuccess})));
+    promises.push(() => verifyPhalconResponse(repoType).then(isSuccess => ({ key: 'phalcon-response-handling', isSuccess})));
+    promises.push(() => verifyPhalconErrors(repoType).then(isSuccess => ({ key: 'phalcon-error-handling', isSuccess})));
+    promises.push(() => verifyPhalconSwagger(repoType).then(isSuccess => ({ key: 'phalcon-swagger', isSuccess})));
+
+    promises.push(() => verifyReactSkeleton(repoType).then(isSuccess => ({ key: 'react-skeleton', isSuccess })));
+    promises.push(() => verifyReactRouter(repoType).then(isSuccess => ({ key: 'react-router', isSuccess })));
+    promises.push(() => verifyReactMaterial(repoType).then(isSuccess => ({ key: 'react-material-ui', isSuccess })));
+    promises.push(() => verifyReactHttps(repoType).then(isSuccess => ({ key: 'react-https', isSuccess })));
+    promises.push(() => verifyReactCharts(repoType).then(isSuccess => ({ key: 'react-charts-2', isSuccess })));
+    promises.push(() => verifyReactDocker(repoType).then(isSuccess => ({ key: 'react-docker', isSuccess })));
+    promises.push(() => verifyReactRedux(repoType).then(isSuccess => ({ key: 'react-redux', isSuccess })));
+
+    promises.push(() => verifyReactNativeSkeleton(repoType).then(isSuccess => ({ key: 'react-native-skeleton', isSuccess })));
+
+    promises.push(() => verifySolidSkeleton(repoType).then(isSuccess => ({ key: 'solid-skeleton', isSuccess })));
+    promises.push(() => verifySolidRouter(repoType).then(isSuccess => ({ key: 'solid-router', isSuccess })));
+    promises.push(() => verifySolidMaterial(repoType).then(isSuccess => ({ key: 'solid-material-ui', isSuccess })));
+    promises.push(() => verifySolidCharts(repoType).then(isSuccess => ({ key: 'solid-charts-2', isSuccess })));
+
+    promises.push(() => verifySpringbootSkeleton(repoType).then(isSuccess => ({ key: 'spring-boot-skeleton', isSuccess })));
+    promises.push(() => verifySpringbootSwagger(repoType).then(isSuccess => ({ key: 'spring-boot-swagger', isSuccess })));
+    promises.push(() => verifySpringbootPostgres(repoType).then(isSuccess => ({ key: 'spring-boot-postgres', isSuccess })));
+    promises.push(() => verifySpringbootMysql(repoType).then(isSuccess => ({ key: 'spring-boot-mysql', isSuccess })));
+    promises.push(() => verifySpringbootMigrations(repoType).then(isSuccess => ({ key: 'spring-boot-migrations', isSuccess })));
+    promises.push(() => verifySpringbootResponse(repoType).then(isSuccess => ({ key: 'spring-boot-response-handling', isSuccess })));
+    promises.push(() => verifySpringbootErrors(repoType).then(isSuccess => ({ key: 'spring-boot-error-handling', isSuccess })));
+    promises.push(() => verifySpringbootHttps(repoType).then(isSuccess => ({ key: 'spring-boot-https', isSuccess })));
+    promises.push(() => verifySpringbootDocker(repoType).then(isSuccess => ({ key: 'spring-boot-docker', isSuccess })));
+    promises.push(() => verifySpringbootSentry(repoType).then(isSuccess => ({ key: 'spring-boot-sentry', isSuccess })));
+    promises.push(() => verifySpringbootElasticsearch(repoType).then(isSuccess => ({ key: 'spring-boot-elasticsearch', isSuccess })));
+    promises.push(() => verifySpringbootPostgresAuditLog(repoType).then(isSuccess => ({ key: 'spring-boot-postgres-audit-log', isSuccess })));
+    promises.push(() => verifySpringbootRmq(repoType).then(isSuccess => ({ key: 'spring-boot-rmq', isSuccess })));
+    promises.push(() => verifySpringbootSheetsDataSync(repoType).then(isSuccess => ({ key: 'spring-boot-sheets-data-sync', isSuccess })));
+    promises.push(() => verifySpringbootMvc(repoType).then(isSuccess => ({ key: 'spring-boot-mvc', isSuccess })));
+    promises.push(() => verifySpringbootDebug(repoType).then(isSuccess => ({ key: 'spring-boot-debug', isSuccess })));
+    promises.push(() => verifySpringbootOracle(repoType).then(isSuccess => ({ key: 'spring-boot-oracle', isSuccess })));
+    promises.push(() => verifySpringbootKubernates(repoType).then(isSuccess => ({ key: 'spring-boot-kubernates', isSuccess })));
+    promises.push(() => verifySpringbootMigrationsOracle(repoType).then(isSuccess => ({ key: 'spring-boot-migrations-oracle', isSuccess })));
+
+    promises.push(() => verifySvelteKitSkeleton(repoType).then(isSuccess => ({ key: 'svelte-kit-skeleton', isSuccess})));
+    promises.push(() => verifySvelteKitRouter(repoType).then(isSuccess => ({ key: 'svelte-kit-router', isSuccess})));
+    promises.push(() => verifySvelteKitMaterial(repoType).then(isSuccess => ({ key: 'svelte-kit-material-ui', isSuccess})));
+    promises.push(() => verifySvelteKitCharts(repoType).then(isSuccess => ({ key: 'svelte-kit-charts', isSuccess})));
+
+    promises.push(() => verifyVueSkeleton(repoType).then(isSuccess => ({ key: 'vue-skeleton', isSuccess})));
+    promises.push(() => verifyVueRouter(repoType).then(isSuccess => ({ key: 'vue-router', isSuccess})));
+    promises.push(() => verifyVueMaterial(repoType).then(isSuccess => ({ key: 'vue-material-ui', isSuccess})));
+    promises.push(() => verifyVueHttps(repoType).then(isSuccess => ({ key: 'vue-https', isSuccess})));
+    promises.push(() => verifyVueDocker(repoType).then(isSuccess => ({ key: 'vue-docker', isSuccess})));
+    promises.push(() => verifyVueCharts(repoType).then(isSuccess => ({ key: 'vue-charts-2', isSuccess})));
+
+    for (let i = 0; i < promises.length; i += promiseBatchSize) {
+        const batchPromises = promises.slice(i, i + promiseBatchSize);
+
+        const promiseResponses = await Promise.all(batchPromises.map(task => task()));
+        for (const responseObject of promiseResponses) {
+            const key = responseObject.key;
+            responses[key] = responseObject.isSuccess;
+        }
+        console.log('-----------------------------------------------------------------');
+    }
+
+    await myApiJava.start(repoType);
+
+    const moviePromises = [];
+
+    moviePromises.push(() => verifyMySiteReact(repoType).then(isSuccess => ({ key: 'my-site-react', isSuccess })));
+    moviePromises.push(() => verifyMySitePhp(repoType).then(isSuccess => ({ key: 'my-site-php', isSuccess })));
+
+    const movieResponses = await Promise.all(moviePromises.map(task => task()));
+    for (const responseObject of movieResponses) {
+        const key = responseObject.key;
+        responses[key] = responseObject.isSuccess;
+    }
+
+    await myApiJava.stop(repoType);
+
+    const corsPromises = [];
+    corsPromises.push(playCors.start(repoType));
+    corsPromises.push(springbootCors.start(repoType));
+    corsPromises.push(phalconCors.start(repoType));
+    corsPromises.push(expressCors.start(repoType));
+    corsPromises.push(dotnetCoreCors.start(repoType));
+
+    await Promise.all(corsPromises);
+
+    const httpClientPromises = [];
+    httpClientPromises.push(() => verifySpringbootHttpClient(repoType).then(isSuccess => ({ key: 'spring-boot-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyAngularHttpClient(repoType).then(isSuccess => ({ key: 'angular-http-client', isSuccess })));
+    httpClientPromises.push(() => verifySolidHttpClient(repoType).then(isSuccess => ({ key: 'solid-http-client', isSuccess })));
+    httpClientPromises.push(() => verifySvelteKitHttpClient(repoType).then(isSuccess => ({ key: 'svelte-kit-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyVueHttpClient(repoType).then(isSuccess => ({ key: 'vue-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyReactHttpClient(repoType).then(isSuccess => ({ key: 'react-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyPlayHttpClient(repoType).then(isSuccess => ({ key: 'play-http-client', isSuccess })));
+
+    const httpClientResponses = await Promise.all(httpClientPromises.map(task => task()));
+    for (const responseObject of httpClientResponses) {
+        const key = responseObject.key;
+        responses[key] = responseObject.isSuccess;
+    }
+
+    const stopPromises = [];
+    stopPromises.push(playCors.stop(repoType));
+    stopPromises.push(springbootCors.stop(repoType));
+    stopPromises.push(phalconCors.stop(repoType));
+    stopPromises.push(expressCors.stop(repoType));
+    stopPromises.push(dotnetCoreCors.stop(repoType));
+
+    Promise.all(stopPromises).then(r => r);
+
+    const endTime = (new Date()).getTime();
+    const duration = (endTime - startTime) / 1000;
+    console.log(`Duration: ${duration} seconds`);
+
+    const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
+    const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
+    const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+    const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
+    const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
+    const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
+    const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
+    const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
+    const apacheStopResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash stop.sh"`);
+    const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
+    await stopMinikube();
+
+    const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
+    // console.log(responses);
+    console.log(filteredResponses);
+    fs.writeFileSync('verifyResponses.json', JSON.stringify(responses, null, ' '));
+    fs.writeFileSync('verifyResponsesFiltered.json', JSON.stringify(filteredResponses, null, ' '));
+};
+
+exports.verifyInternal = verifyInternal;

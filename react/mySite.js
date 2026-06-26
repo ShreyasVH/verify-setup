@@ -6,12 +6,12 @@ const framework = 'react';
 const repoName = 'my-site-react';
 const domain = 'https://my-site.react.com';
 
-const start = async () => {
-    await frontend.start(language, framework, repoName, domain);
+const start = async (repoType) => {
+    await frontend.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async () => {
-    await frontend.stop(language, framework, repoName);
+const stop = async (repoType) => {
+    await frontend.stop(repoType, language, framework, repoName);
 };
 
 const verifyDashboardHTML = () => {
@@ -22,10 +22,10 @@ const verifyBrowseHTML = () => {
     return [...document.querySelectorAll('img')].length > 0;
 };
 
-const verify = async () => {
+const verify = async (repoType) => {
     let isSuccess = true;
 
-    await start();
+    await start(repoType);
 
     const browser  = await puppeteer.launch({
         headless: true,
@@ -88,7 +88,7 @@ const verify = async () => {
     }
     await browser.close();
 
-    await stop();
+    await stop(repoType);
 
     return isSuccess;
 };

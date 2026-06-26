@@ -8,19 +8,19 @@ const framework = 'angular';
 const repoName = 'angular-cric';
 const domain = 'https://cric.angular.com';
 
-const start = async () => {
-    await frontend.start(language, framework, repoName, domain);
+const start = async (repoType) => {
+    await frontend.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async () => {
-    await frontend.stop(language, framework, repoName);
+const stop = async (repoType) => {
+    await frontend.stop(repoType, language, framework, repoName);
 };
 
 const verifyHTML = () => {
     return [...document.querySelectorAll('.cols-4 button')].length > 0 && [...document.querySelectorAll('.cols-4 button')][0].innerText === String((new Date()).getFullYear());
 };
 
-const verify = async () => {
+const verify = async (repoType) => {
     let isSuccess = false;
 
     const browser  = await puppeteer.launch({
@@ -36,9 +36,9 @@ const verify = async () => {
     });
 
     try {
-        await apiStart();
+        await apiStart(repoType);
 
-        await start();
+        await start(repoType);
 
         const url = `${domain}`;
 
@@ -69,9 +69,9 @@ const verify = async () => {
 
     await browser.close();
 
-    await stop();
+    await stop(repoType);
 
-    await apiStop();
+    await apiStop(repoType);
 
     return isSuccess;
 };

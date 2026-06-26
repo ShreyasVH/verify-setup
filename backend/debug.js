@@ -7,28 +7,28 @@ const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
 
-const start = async (language, framework, repoName, domain) => {
-    await common.start(language, framework, repoName, domain);
+const start = async (repoType, language, framework, repoName, domain) => {
+    await common.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async (language, framework, repoName) => {
-    await common.stop(language, framework, repoName);
+const stop = async (repoType, language, framework, repoName) => {
+    await common.stop(repoType, language, framework, repoName);
 };
 
-const verify = async (domain, language, framework, repoName) => {
+const verify = async (repoType, domain, language, framework, repoName) => {
     let isSuccess = false;
 
     try {
-        await start(language, framework, repoName, domain);
+        await start(repoType, language, framework, repoName, domain);
 
         const inputValue = 'abc';
         const url = `${domain}/api?input=${inputValue}`;
         const response = await get(url);
-        const port = await common.getPort(language, framework, repoName);
+        const port = await common.getPort(repoType, language, framework, repoName);
         const portResponse = await execPromise(`lsof -i:${port} -t`);
         const portPids = portResponse.stdout.trimEnd().split('\n');
 
-        const debugPort = await common.getDebugPort(language, framework, repoName);
+        const debugPort = await common.getDebugPort(repoType, language, framework, repoName);
         const debugPortResponse = await execPromise(`lsof -i:${debugPort} -t`);
         const debugPortPids = debugPortResponse.stdout.trimEnd().split('\n');
 
@@ -41,7 +41,7 @@ const verify = async (domain, language, framework, repoName) => {
         };
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
-        await stop(language, framework, repoName);
+        await stop(repoType, language, framework, repoName);
     } catch (e) {
         console.log(e);
     }

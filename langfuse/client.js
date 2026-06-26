@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
-const { sleep } = require('../utils');
+const { sleep, getFolderForRepoType } = require('../utils');
 
 const getTraceCountHTML = () => {
     let count = 0;
@@ -16,7 +16,7 @@ const getTraceCountHTML = () => {
     return count;
 };
 
-const verify = async () => {
+const verify = async (repoType) => {
     let isSuccess = false;
 
     await start();
@@ -87,7 +87,7 @@ const verify = async () => {
 
             const traceCountBefore = await tracesPage.evaluate(getTraceCountHTML);
 
-            const clientResponse = await execPromise('bash -c "cd $HOME/workspace/myProjects/js/node/node-langfuse-client && source .envrc && bash sendTrace.sh"');
+            const clientResponse = await execPromise(`bash -c "cd $HOME/workspace/${getFolderForRepoType(repoType)}/js/node/node-langfuse-client && source .envrc && bash sendTrace.sh"`);
 
             let tries = 0;
             const maxTries = 40;

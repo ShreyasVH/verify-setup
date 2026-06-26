@@ -4,19 +4,19 @@ const fs = require('fs');
 const path = require('path');
 const common = require('./common');
 
-const start = async (language, framework, repoName, domain) => {
-    await common.start(language, framework, repoName, domain);
+const start = async (repoType, language, framework, repoName, domain) => {
+    await common.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async (language, framework, repoName) => {
-    await common.stop(language, framework, repoName);
+const stop = async (repoType, language, framework, repoName) => {
+    await common.stop(repoType, language, framework, repoName);
 };
 
-const verify = async (domain, language, framework, repoName) => {
+const verify = async (repoType, domain, language, framework, repoName) => {
     let isSuccess = false;
 
     try {
-        await start(language, framework, repoName, domain);
+        await start(repoType, language, framework, repoName, domain);
 
         const url = `${domain}`;
         const response = await get(url);
@@ -29,7 +29,7 @@ const verify = async (domain, language, framework, repoName) => {
         };
         fs.writeFileSync(proofFilePath, JSON.stringify(payloadForProof, null, ' '));
 
-        await stop(language, framework, repoName);
+        await stop(repoType, language, framework, repoName);
     } catch (e) {
         console.log(e);
     }

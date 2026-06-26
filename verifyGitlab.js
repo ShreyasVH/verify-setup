@@ -1,5 +1,5 @@
 const { verifyInternal } = require('./verifyInternal');
 
 (async () => {
-    await verifyInternal('github');
+    await verifyInternal('gitlab');
 })();

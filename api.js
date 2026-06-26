@@ -2,10 +2,10 @@ const axios = require('axios');
 const https = require('https');
 const fs = require('fs');
 
-const cert = fs.readFileSync(`${process.env.HOME}/workspace/myProjects/ssl/rootCA.crt`);
+// const cert = fs.readFileSync(`${process.env.HOME}/workspace/myProjects/ssl/rootCA.crt`);
 
 const httpsAgent = new https.Agent({
-    ca: cert, // Trust this cert
+    // ca: cert, // Trust this cert
     rejectUnauthorized: false
 });
 

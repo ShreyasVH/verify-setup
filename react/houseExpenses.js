@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
-const { waitForPort, sleep } = require('../utils');
+const { waitForPort, sleep, getFolderForRepoType } = require('../utils');
 const houseExpensesStart = require('../spring-boot/houseExpenses').start;
 const houseExpensesStop = require('../spring-boot/houseExpenses').stop;
 const myFileUploadStart = require('../phalcon/myFileUpload').start;
@@ -17,27 +17,27 @@ const framework = 'react';
 const repoName = 'house-expenses-react';
 const domain = 'https://house-expenses.react.com';
 
-const start = async () => {
-    await frontend.start(language, framework, repoName, domain);
+const start = async (repoType) => {
+    await frontend.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async () => {
-    await frontend.stop(language, framework, repoName);
+const stop = async (repoType) => {
+    await frontend.stop(repoType, language, framework, repoName);
 };
 
 const verifyHTML = () => {
     return [...document.querySelectorAll('table tbody tr')].length > 0;
 };
 
-const verify = async () => {
+const verify = async (repoType) => {
     let isSuccess = true;
 
     try {
-        await houseExpensesStart();
+        await houseExpensesStart(repoType);
 
-        await myFileUploadStart();
+        await myFileUploadStart(repoType);
 
-        await start();
+        await start(repoType);
 
         const browser  = await puppeteer.launch({
             headless: true,
@@ -76,7 +76,7 @@ const verify = async () => {
 
         await browser.close();
 
-        const filePath = process.env.HOME + '/workspace/myProjects/php/phalcon/my-file-upload/public/images/bills';
+        const filePath = process.env.HOME + `/workspace/${getFolderForRepoType(repoType)}/php/phalcon/my-file-upload/public/images/bills`;
         const files = fs.readdirSync(filePath);
         const filteredFiles = files.filter(file => !['.DS_Store'].includes(file))
 
@@ -88,9 +88,9 @@ const verify = async () => {
             isSuccess = isSuccess && isFileAccessible;
         }
 
-        await stop();
-        await houseExpensesStop();
-        await myFileUploadStop();
+        await stop(repoType);
+        await houseExpensesStop(repoType);
+        await myFileUploadStop(repoType);
     } catch (err) {
         console.error('Error:', err);
     }
