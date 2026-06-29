@@ -7,3 +7,7 @@ verifyResponses.json
 verifyResponsesFiltered.json
 outputProofs
 test.js
+verifyResponsesGitlab.json
+verifyResponsesFilteredGitlab.json
+verifyResponsesBitbucket.json
+verifyResponsesFilteredBitbucket.json

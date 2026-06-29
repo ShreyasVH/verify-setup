@@ -10,16 +10,16 @@ const framework = 'springboot';
 const repoName = 'spring-boot-postgres-audit-log';
 const domain = 'https://audit.springboot.com';
 
-const start = async () => {
-    await backend.start(language, framework, repoName, domain);
+const start = async (repoType) => {
+    await backend.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async () => {
-    await backend.stop(language, framework, repoName);
+const stop = async (repoType) => {
+    await backend.stop(repoType, language, framework, repoName);
 };
 
-const verify = async () => {
-    await start();
+const verify = async (repoType) => {
+    await start(repoType);
     let isSuccess = false;
 
     try {
@@ -71,11 +71,9 @@ const verify = async () => {
         console.log(e);
     }
 
-    await stop();
+    await stop(repoType);
 
     return isSuccess;
 }
 
-exports.start = start;
-exports.stop = stop;
 exports.verify = verify;

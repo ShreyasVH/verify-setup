@@ -2,23 +2,23 @@ const puppeteer = require('puppeteer');
 const common = require('./common');
 const { getCamelCaseForRepoName } = require('../utils');
 
-const start = async (language, framework, repoName, domain, waitTimeout = 60000) => {
-    await common.start(language, framework, repoName, domain, waitTimeout);
+const start = async (repoType, language, framework, repoName, domain, waitTimeout = 60000) => {
+    await common.start(repoType, language, framework, repoName, domain, waitTimeout);
 };
 
-const stop = async (language, framework, repoName) => {
-    await common.stop(language, framework, repoName);
+const stop = async (repoType, language, framework, repoName) => {
+    await common.stop(repoType, language, framework, repoName);
 };
 
 const verifyHTML = (buttonClass) => {
     return [...document.querySelectorAll(buttonClass)].length > 0;
 };
 
-const verify = async (domain, language, framework, repoName, buttonClass, waitTimeout = 60000) => {
+const verify = async (repoType, domain, language, framework, repoName, buttonClass, waitTimeout = 60000) => {
     let isSuccess = false;
 
     try {
-        await start(language, framework, repoName, domain, waitTimeout);
+        await start(repoType, language, framework, repoName, domain, waitTimeout);
 
         const browser  = await puppeteer.launch({
             headless: true,
@@ -51,7 +51,7 @@ const verify = async (domain, language, framework, repoName, buttonClass, waitTi
 
         await browser.close();
 
-        await stop(language, framework, repoName);
+        await stop(repoType, language, framework, repoName);
     } catch (err) {
         console.error('Error:', err);
     }

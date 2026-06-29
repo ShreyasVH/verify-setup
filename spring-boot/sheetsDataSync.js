@@ -10,26 +10,21 @@ const framework = 'springboot';
 const repoName = 'spring-boot-sheets-data-sync';
 const domain = 'https://sheets-data-sync-jobrunr.springboot.com';
 
-const start = async () => {
-    await backend.start(language, framework, repoName, domain, 90000);
+const start = async (repoType) => {
+    await backend.start(repoType, language, framework, repoName, domain, 90000);
 };
 
-const stop = async () => {
-    await backend.stop(language, framework, repoName);
+const stop = async (repoType) => {
+    await backend.stop(repoType, language, framework, repoName);
 };
-
-const getDebugPort = async () => {
-    let { stdout, stderr } = await execPromise('bash -c "cd $HOME/workspace/myProjects/java/springboot/spring-boot-sheets-data-sync && source .envrc && (grep \'JOB_RUNNER_PORT=\' .envrc | awk -F= \'{print $2}\')"');
-    return parseInt(stdout);
-}
 
 const verifyHTML = () => {
     return [...document.querySelectorAll('table tbody tr')].length === 2;
 };
 
-const verify = async () => {
+const verify = async (repoType) => {
     let isSuccess = false;
-    await start();
+    await start(repoType);
 
     const browser  = await puppeteer.launch({
         headless: true,
@@ -69,11 +64,9 @@ const verify = async () => {
     }
     await browser.close();
 
-    await stop();
+    await stop(repoType);
 
     return isSuccess;
 }
 
-exports.start = start;
-exports.stop = stop;
 exports.verify = verify;

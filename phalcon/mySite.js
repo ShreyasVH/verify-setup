@@ -6,12 +6,12 @@ const framework = 'phalcon';
 const repoName = 'my-site-php';
 const domain = 'https://my-site-php.phalcon.com';
 
-const start = async () => {
-    await frontend.start(language, framework, repoName, domain);
+const start = async (repoType) => {
+    await frontend.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async () => {
-    await frontend.stop(language, framework, repoName);
+const stop = async (repoType) => {
+    await frontend.stop(repoType, language, framework, repoName);
 };
 
 const verifyMovieDashboardHTML = () => {
@@ -30,10 +30,10 @@ const verifySongsBrowseHTML = () => {
     return [...document.querySelectorAll('.card')].length > 0;
 };
 
-const verify = async () => {
+const verify = async (repoType) => {
     let isSuccess = true;
 
-    await start();
+    await start(repoType);
 
     const browser  = await puppeteer.launch({
         headless: true,
@@ -136,7 +136,7 @@ const verify = async () => {
     }
     await browser.close();
 
-    await stop();
+    await stop(repoType);
 
     return isSuccess;
 };

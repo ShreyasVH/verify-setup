@@ -8,24 +8,24 @@ const framework = 'react';
 const repoName = 'react-cric';
 const domain = 'https://cric.react.com';
 
-const start = async () => {
-    await frontend.start(language, framework, repoName, domain);
+const start = async (repoType) => {
+    await frontend.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async () => {
-    await frontend.stop(language, framework, repoName);
+const stop = async (repoType) => {
+    await frontend.stop(repoType, language, framework, repoName);
 };
 
 const verifyHTML = () => {
     return [...document.querySelectorAll('.MuiGrid-grid-md-4 button')].length > 0 && [...document.querySelectorAll('.MuiGrid-grid-md-4 button')][0].innerText === String((new Date()).getFullYear());
 };
 
-const verify = async () => {
+const verify = async (repoType) => {
     let isSuccess = false;
 
-    await apiStart();
+    await apiStart(repoType);
 
-    await start();
+    await start(repoType);
 
     const browser  = await puppeteer.launch({
         headless: true,
@@ -61,9 +61,9 @@ const verify = async () => {
     }
     await browser.close();
 
-    await stop();
+    await stop(repoType);
 
-    await apiStop();
+    await apiStop(repoType);
 
     return isSuccess;
 };

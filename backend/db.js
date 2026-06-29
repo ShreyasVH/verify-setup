@@ -6,19 +6,19 @@ const path = require('path');
 const common = require('./common');
 const { sleep } = require('../utils');
 
-const start = async (language, framework, repoName, domain, waitTimeout = 60000) => {
-    await common.start(language, framework, repoName, domain, waitTimeout);
+const start = async (repoType, language, framework, repoName, domain, waitTimeout = 60000) => {
+    await common.start(repoType, language, framework, repoName, domain, waitTimeout);
 };
 
-const stop = async (language, framework, repoName) => {
-    await common.stop(language, framework, repoName);
+const stop = async (repoType, language, framework, repoName) => {
+    await common.stop(repoType, language, framework, repoName);
 };
 
-const verify = async (domain, language, framework, repoName, waitTimeout = 60000) => {
+const verify = async (repoType, domain, language, framework, repoName, waitTimeout = 60000) => {
     let isSuccess = false;
 
     try {
-        await start(language, framework, repoName, domain, waitTimeout);
+        await start(repoType, language, framework, repoName, domain, waitTimeout);
 
         const url = `${domain}/v1/books`;
         let response = await get(url);
@@ -62,7 +62,7 @@ const verify = async (domain, language, framework, repoName, waitTimeout = 60000
             tries++;
         }
 
-        await stop(language, framework, repoName);
+        await stop(repoType, language, framework, repoName);
     } catch (e) {
         console.log(e);
     }

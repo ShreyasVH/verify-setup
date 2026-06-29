@@ -4,16 +4,16 @@ const { sleep, getCamelCaseForRepoName } = require('../utils');
 const fs = require('fs');
 const path = require('path');
 
-const start = async (language, framework, repoName, domain) => {
-    await backend.start(language, framework, repoName, domain);
+const start = async (repoType, language, framework, repoName, domain) => {
+    await backend.start(repoType, language, framework, repoName, domain);
 };
 
-const stop = async (language, framework, repoName) => {
-    await backend.stop(language, framework, repoName);
+const stop = async (repoType, language, framework, repoName) => {
+    await backend.stop(repoType, language, framework, repoName);
 };
 
-const verify = async (domain, language, framework, repoName, projectId) => {
-    await start(language, framework, repoName, domain);
+const verify = async (repoType, domain, language, framework, repoName, projectId) => {
+    await start(repoType, language, framework, repoName, domain);
     let isSuccess = false;
 
     try {
@@ -66,7 +66,7 @@ const verify = async (domain, language, framework, repoName, projectId) => {
         console.log(e);
     }
 
-    await stop(language, framework, repoName);
+    await stop(repoType, language, framework, repoName);
 
     return isSuccess;
 }
