@@ -119,7 +119,7 @@ const myApiJava = require('./play/myApi');
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
-const { waitForPort, waitForHttpPort } = require('./utils');
+const { waitForPort, waitForHttpPort, getFolderForRepoType} = require('./utils');
 const fs = require('fs');
 
 const verifyInternal = async (repoType) => {
@@ -390,8 +390,9 @@ const verifyInternal = async (repoType) => {
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
     console.log(filteredResponses);
-    fs.writeFileSync('verifyResponses.json', JSON.stringify(responses, null, ' '));
-    fs.writeFileSync('verifyResponsesFiltered.json', JSON.stringify(filteredResponses, null, ' '));
+    const suffix = getFolderForRepoType(repoType).replace('myProjects', '');
+    fs.writeFileSync(`verifyResponses${suffix}.json`, JSON.stringify(responses, null, ' '));
+    fs.writeFileSync(`verifyResponsesFiltered${suffix}.json`, JSON.stringify(filteredResponses, null, ' '));
 };
 
 exports.verifyInternal = verifyInternal;
