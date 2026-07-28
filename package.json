@@ -11,9 +11,9 @@
   "dependencies": {
     "amqplib": "^2.0.1",
     "axios": "^1.18.1",
-    "mysql2": "^3.23.1",
+    "mysql2": "^3.23.2",
     "postgres": "^3.4.9",
-    "puppeteer": "^25.3.0",
+    "puppeteer": "^25.4.0",
     "redis": "^6.1.0"
   },
   "allowScripts": {
