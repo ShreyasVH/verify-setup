@@ -10,11 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "amqplib": "^2.0.1",
-    "axios": "^1.18.1",
+    "axios": "^1.19.0",
     "mysql2": "^3.23.2",
     "postgres": "^3.4.9",
     "puppeteer": "^25.4.0",
-    "redis": "^6.1.0"
+    "redis": "^6.2.0"
   },
   "allowScripts": {
     "puppeteer@24.43.1": true
