@@ -111,6 +111,7 @@ const verifyPlayAsync  = require('./play/async').verify;
 const verifyPlayMvc  = require('./play/mvc').verify;
 const verifyPlayDebug  = require('./play/debug').verify;
 const verifyPlayDocker  = require('./play/docker').verify;
+const verifyPlayMigrationsPostgres  = require('./play/migrationsPostgres').verify;
 
 const { start: startMinikube, stop: stopMinikube } = require('./minikube');
 
@@ -257,6 +258,7 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyPlayMvc(repoType).then(isSuccess => ({ key: 'play-mvc', isSuccess})));
     promises.push(() => verifyPlayDebug(repoType).then(isSuccess => ({ key: 'play-debug', isSuccess})));
     promises.push(() => verifyPlayDocker(repoType).then(isSuccess => ({ key: 'play-docker', isSuccess})));
+    promises.push(() => verifyPlayMigrationsPostgres(repoType).then(isSuccess => ({ key: 'play-migrations-postgres', isSuccess})));
 
     promises.push(() => verifyPhalconSkeleton(repoType).then(isSuccess => ({ key: 'phalcon-skeleton', isSuccess})));
     promises.push(() => verifyPhalconMysql(repoType).then(isSuccess => ({ key: 'phalcon-mysql', isSuccess})));
