@@ -22,7 +22,7 @@ const verifyHTML = () => {
     let isSuccess = true;
     if (servers.length === expectedBackends.length) {
         for (const server of servers) {
-            if ([...server.querySelectorAll('[data-class="server"]')].length !== 4) {
+            if ([...server.querySelectorAll('[data-class="verb"]')].length !== 4) {
                 isSuccess = false;
                 break;
             }
