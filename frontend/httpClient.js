@@ -10,12 +10,19 @@ const stop = async (repoType, language, framework, repoName) => {
 };
 
 const verifyHTML = () => {
-    let servers = [...document.querySelectorAll('section.server')];
+    const servers = [...document.querySelectorAll('[data-class="server"]')];
+    const expectedBackends = [
+        'play',
+        'springboot',
+        'dotnetcore',
+        'phalcon',
+        'express'
+    ];
 
     let isSuccess = true;
-    if (servers.length === 5) {
+    if (servers.length === expectedBackends.length) {
         for (const server of servers) {
-            if ([...server.querySelectorAll('section.verb')].length !== 4) {
+            if ([...server.querySelectorAll('[data-class="server"]')].length !== 4) {
                 isSuccess = false;
                 break;
             }
