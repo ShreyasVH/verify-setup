@@ -10,7 +10,7 @@ const stop = async (repoType, language, framework, repoName) => {
 };
 
 const verifyHTML = () => {
-    return [...document.querySelectorAll('ul li')].length === 2;
+    return [...document.querySelectorAll('a')].length === 2;
 };
 
 const verify = async (repoType, domain, language, framework, repoName) => {
