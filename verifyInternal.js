@@ -85,6 +85,8 @@ const verifyReactRedux = require('./react/redux').verify;
 
 const verifyReactNativeSkeleton  = require('./react-native/skeleton').verify;
 const verifyReactNativeHttpClient  = require('./react-native/httpClient').verify;
+const verifyReactNativeMaterial  = require('./react-native/material').verify;
+const verifyReactNativeRouter  = require('./react-native/router').verify;
 
 const verifyVueSkeleton  = require('./vue/skeleton').verify;
 const verifyVueRouter  = require('./vue/router').verify;
@@ -145,7 +147,7 @@ const verifyInternal = async (repoType) => {
     await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
 
     await startMinikube();
-    
+
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
     const elasticsearchPort = parseInt(portResponse.stdout);
@@ -155,52 +157,52 @@ const verifyInternal = async (repoType) => {
     const username = process.env.ELASTIC_USERNAME;
     const password = process.env.ELASTIC_PASSWORD;
     await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10, 300000);
-    
+
     // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
     let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/programs/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
     const mysqlPort = parseInt(stdout);
     const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for mysql startup');
     await waitForPort(mysqlPort, '127.0.0.1', 30000, 10);
-    
+
     // await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'port = ' $HOME/programs/postgres/${postgresVersion}/data/postgresql.conf | awk '{print $3}'`);
     const postgresPort = parseInt(portResponse.stdout);
     const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for postgres startup');
     await waitForPort(postgresPort, '127.0.0.1', 30000, 10);
-    
+
     // await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'port: ' $HOME/programs/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
     const mongoPort = parseInt(portResponse.stdout);
     const mongoDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for mongo startup');
     await waitForPort(mongoPort, '127.0.0.1', 30000, 10);
-    
+
     const mssqlPort = process.env.MSSQL_PORT;
     const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
     console.log('Waiting for mssql startup');
     await waitForPort(mssqlPort, '127.0.0.1', 30000, 10);
-    
+
     // await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'listeners.tcp.default = ' $HOME/programs/rmq/${rmqVersion}/etc/rabbitmq/rabbitmq.conf | awk '{print $3}'`);
     const rmqPort = parseInt(portResponse.stdout);
     const rmqDeployResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for rmq startup');
     await waitForPort(rmqPort, '127.0.0.1', 30000, 10);
-    
+
     portResponse = await execPromise(`grep 'port ' $HOME/programs/redis/${redisVersion}/redis.conf | awk '{print $2}'`);
     const redisPort = parseInt(portResponse.stdout);
     const redisDeployResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for redis startup');
     await waitForPort(redisPort, '127.0.0.1', 30000, 10);
-    
+
     portResponse = await execPromise(`grep 'Listen ' $HOME/programs/apache/${apacheVersion}/conf/httpd.conf | awk '{print $2}'`);
     const apachePort = parseInt(portResponse.stdout);
     const apacheDeployResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for apache startup');
     await waitForPort(apachePort, '127.0.0.1', 30000, 10);
-    
+
     const oraclePort = process.env.ORACLE_PORT;
     const oracleDeployResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash start.sh"`);
     console.log('Waiting for oracle startup');
@@ -213,19 +215,19 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyLogstash().then(isSuccess => ({ key: 'logstash', isSuccess })));
     promises.push(() => verifyKibana().then(isSuccess => ({ key: 'kibana', isSuccess })));
     promises.push(() => verifyLangfuse(repoType).then(isSuccess => ({ key: 'langfuse', isSuccess })));
-    
+
     promises.push(() => verifySkeleton(repoType).then(isSuccess => ({ key: 'angular-skeleton', isSuccess })));
     promises.push(() => verifyRouter(repoType).then(isSuccess => ({ key: 'angular-router', isSuccess })));
     promises.push(() => verifyMaterial(repoType).then(isSuccess => ({ key: 'angular-material-ui', isSuccess })));
     promises.push(() => verifyAngularCharts(repoType).then(isSuccess => ({ key: 'angular-charts-2', isSuccess })));
-    
+
     promises.push(() => verifyDotnetCoreSkeleton(repoType).then(isSuccess => ({ key: 'dotnet-core-skeleton', isSuccess })));
     promises.push(() => verifyDotnetCoreCors(repoType).then(isSuccess => ({ key: 'dotnet-core-cors', isSuccess })));
     promises.push(() => verifyDotnetCoreMssql(repoType).then(isSuccess => ({ key: 'dotnet-core-mssql', isSuccess })));
     promises.push(() => verifyDotnetCoreMigrations(repoType).then(isSuccess => ({ key: 'dotnet-core-migrations', isSuccess })));
     promises.push(() => verifyDotnetCoreErrors(repoType).then(isSuccess => ({ key: 'dotnet-core-error-handling', isSuccess })));
     promises.push(() => verifyDotnetCoreResponse(repoType).then(isSuccess => ({ key: 'dotnet-core-response-handling', isSuccess })));
-    
+
     promises.push(() => verifyExpressSkeleton(repoType).then(isSuccess => ({ key: 'express-skeleton', isSuccess })));
     promises.push(() => verifyExpressCors(repoType).then(isSuccess => ({ key: 'express-cors', isSuccess })));
     promises.push(() => verifyExpressMongoDb(repoType).then(isSuccess => ({ key: 'express-mongodb', isSuccess })));
@@ -233,15 +235,15 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyExpressResponse(repoType).then(isSuccess => ({ key: 'express-response-handling', isSuccess })));
     promises.push(() => verifyExpressErrors(repoType).then(isSuccess => ({ key: 'express-error-handling', isSuccess })));
     promises.push(() => verifyExpressSwagger(repoType).then(isSuccess => ({ key: 'express-swagger', isSuccess })));
-    
+
     promises.push(() => verifyHouseExpensesReact(repoType).then(isSuccess => ({ key: 'house-expenses-react', isSuccess })));
-    
+
     promises.push(() => verifyReactCric(repoType).then(isSuccess => ({ key: 'react-cric', isSuccess})));
     promises.push(() => verifyVueCric(repoType).then(isSuccess => ({ key: 'vue-cric', isSuccess})));
     promises.push(() => verifyAngularCric(repoType).then(isSuccess => ({ key: 'angular-cric', isSuccess})));
     promises.push(() => verifySolidCric(repoType).then(isSuccess => ({ key: 'solid-cric', isSuccess})));
     promises.push(() => verifySvelteKitCric(repoType).then(isSuccess => ({ key: 'svelte-kit-cric', isSuccess})));
-    
+
     promises.push(() => verifyPlaySkeleton(repoType).then(isSuccess => ({ key: 'play-skeleton', isSuccess})));
     promises.push(() => verifyPlaySwagger(repoType).then(isSuccess => ({ key: 'play-swagger', isSuccess})));
     promises.push(() => verifyPlayMysql(repoType).then(isSuccess => ({ key: 'play-mysql', isSuccess})));
@@ -260,14 +262,14 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyPlayDebug(repoType).then(isSuccess => ({ key: 'play-debug', isSuccess})));
     promises.push(() => verifyPlayDocker(repoType).then(isSuccess => ({ key: 'play-docker', isSuccess})));
     promises.push(() => verifyPlayMigrationsPostgres(repoType).then(isSuccess => ({ key: 'play-migrations-postgres', isSuccess})));
-    
+
     promises.push(() => verifyPhalconSkeleton(repoType).then(isSuccess => ({ key: 'phalcon-skeleton', isSuccess})));
     promises.push(() => verifyPhalconMysql(repoType).then(isSuccess => ({ key: 'phalcon-mysql', isSuccess})));
     promises.push(() => verifyPhalconMigrations(repoType).then(isSuccess => ({ key: 'phalcon-migrations', isSuccess})));
     promises.push(() => verifyPhalconResponse(repoType).then(isSuccess => ({ key: 'phalcon-response-handling', isSuccess})));
     promises.push(() => verifyPhalconErrors(repoType).then(isSuccess => ({ key: 'phalcon-error-handling', isSuccess})));
     promises.push(() => verifyPhalconSwagger(repoType).then(isSuccess => ({ key: 'phalcon-swagger', isSuccess})));
-    
+
     promises.push(() => verifyReactSkeleton(repoType).then(isSuccess => ({ key: 'react-skeleton', isSuccess })));
     promises.push(() => verifyReactRouter(repoType).then(isSuccess => ({ key: 'react-router', isSuccess })));
     promises.push(() => verifyReactMaterial(repoType).then(isSuccess => ({ key: 'react-material-ui', isSuccess })));
@@ -277,12 +279,14 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyReactRedux(repoType).then(isSuccess => ({ key: 'react-redux', isSuccess })));
     
     promises.push(() => verifyReactNativeSkeleton(repoType).then(isSuccess => ({ key: 'react-native-skeleton', isSuccess })));
+    promises.push(() => verifyReactNativeMaterial(repoType).then(isSuccess => ({ key: 'react-native-material-ui', isSuccess })));
+    promises.push(() => verifyReactNativeRouter(repoType).then(isSuccess => ({ key: 'react-native-router', isSuccess })));
     
     promises.push(() => verifySolidSkeleton(repoType).then(isSuccess => ({ key: 'solid-skeleton', isSuccess })));
     promises.push(() => verifySolidRouter(repoType).then(isSuccess => ({ key: 'solid-router', isSuccess })));
     promises.push(() => verifySolidMaterial(repoType).then(isSuccess => ({ key: 'solid-material-ui', isSuccess })));
     promises.push(() => verifySolidCharts(repoType).then(isSuccess => ({ key: 'solid-charts-2', isSuccess })));
-    
+
     promises.push(() => verifySpringbootSkeleton(repoType).then(isSuccess => ({ key: 'spring-boot-skeleton', isSuccess })));
     promises.push(() => verifySpringbootSwagger(repoType).then(isSuccess => ({ key: 'spring-boot-swagger', isSuccess })));
     promises.push(() => verifySpringbootPostgres(repoType).then(isSuccess => ({ key: 'spring-boot-postgres', isSuccess })));
@@ -302,12 +306,12 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifySpringbootOracle(repoType).then(isSuccess => ({ key: 'spring-boot-oracle', isSuccess })));
     promises.push(() => verifySpringbootKubernates(repoType).then(isSuccess => ({ key: 'spring-boot-kubernates', isSuccess })));
     promises.push(() => verifySpringbootMigrationsOracle(repoType).then(isSuccess => ({ key: 'spring-boot-migrations-oracle', isSuccess })));
-    
+
     promises.push(() => verifySvelteKitSkeleton(repoType).then(isSuccess => ({ key: 'svelte-kit-skeleton', isSuccess})));
     promises.push(() => verifySvelteKitRouter(repoType).then(isSuccess => ({ key: 'svelte-kit-router', isSuccess})));
     promises.push(() => verifySvelteKitMaterial(repoType).then(isSuccess => ({ key: 'svelte-kit-material-ui', isSuccess})));
     promises.push(() => verifySvelteKitCharts(repoType).then(isSuccess => ({ key: 'svelte-kit-charts', isSuccess})));
-    
+
     promises.push(() => verifyVueSkeleton(repoType).then(isSuccess => ({ key: 'vue-skeleton', isSuccess})));
     promises.push(() => verifyVueRouter(repoType).then(isSuccess => ({ key: 'vue-router', isSuccess})));
     promises.push(() => verifyVueMaterial(repoType).then(isSuccess => ({ key: 'vue-material-ui', isSuccess})));
@@ -327,18 +331,18 @@ const verifyInternal = async (repoType) => {
     }
 
     await myApiJava.start(repoType);
-    
+
     const moviePromises = [];
-    
+
     moviePromises.push(() => verifyMySiteReact(repoType).then(isSuccess => ({ key: 'my-site-react', isSuccess })));
     moviePromises.push(() => verifyMySitePhp(repoType).then(isSuccess => ({ key: 'my-site-php', isSuccess })));
-    
+
     const movieResponses = await Promise.all(moviePromises.map(task => task()));
     for (const responseObject of movieResponses) {
         const key = responseObject.key;
         responses[key] = responseObject.isSuccess;
     }
-    
+
     await myApiJava.stop(repoType);
 
     const corsPromises = [];
