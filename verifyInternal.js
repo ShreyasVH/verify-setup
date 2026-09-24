@@ -146,17 +146,17 @@ const verifyInternal = async (repoType) => {
     console.log('Waiting for haproxy startup');
     await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
 
-    await startMinikube();
+    // await startMinikube();
 
-    // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
-    portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
-    const elasticsearchPort = parseInt(portResponse.stdout);
-    const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
-    console.log('Waiting for elasticsearch startup');
-    await waitForPort(elasticsearchPort, '127.0.0.1', 120000, 10);
-    const username = process.env.ELASTIC_USERNAME;
-    const password = process.env.ELASTIC_PASSWORD;
-    await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10, 300000);
+    // // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+    // portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
+    // const elasticsearchPort = parseInt(portResponse.stdout);
+    // const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
+    // console.log('Waiting for elasticsearch startup');
+    // await waitForPort(elasticsearchPort, '127.0.0.1', 120000, 10);
+    // const username = process.env.ELASTIC_USERNAME;
+    // const password = process.env.ELASTIC_PASSWORD;
+    // await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10, 300000);
 
     // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
     let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/programs/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
@@ -221,13 +221,13 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyMaterial(repoType).then(isSuccess => ({ key: 'angular-material-ui', isSuccess })));
     promises.push(() => verifyAngularCharts(repoType).then(isSuccess => ({ key: 'angular-charts-2', isSuccess })));
 
-    // promises.push(() => verifyDotnetCoreSkeleton(repoType).then(isSuccess => ({ key: 'dotnet-core-skeleton', isSuccess })));
-    // promises.push(() => verifyDotnetCoreCors(repoType).then(isSuccess => ({ key: 'dotnet-core-cors', isSuccess })));
-    // promises.push(() => verifyDotnetCoreMssql(repoType).then(isSuccess => ({ key: 'dotnet-core-mssql', isSuccess })));
-    // promises.push(() => verifyDotnetCoreMigrations(repoType).then(isSuccess => ({ key: 'dotnet-core-migrations', isSuccess })));
-    // promises.push(() => verifyDotnetCoreErrors(repoType).then(isSuccess => ({ key: 'dotnet-core-error-handling', isSuccess })));
-    // promises.push(() => verifyDotnetCoreResponse(repoType).then(isSuccess => ({ key: 'dotnet-core-response-handling', isSuccess })));
-    //
+    promises.push(() => verifyDotnetCoreSkeleton(repoType).then(isSuccess => ({ key: 'dotnet-core-skeleton', isSuccess })));
+    promises.push(() => verifyDotnetCoreCors(repoType).then(isSuccess => ({ key: 'dotnet-core-cors', isSuccess })));
+    promises.push(() => verifyDotnetCoreMssql(repoType).then(isSuccess => ({ key: 'dotnet-core-mssql', isSuccess })));
+    promises.push(() => verifyDotnetCoreMigrations(repoType).then(isSuccess => ({ key: 'dotnet-core-migrations', isSuccess })));
+    promises.push(() => verifyDotnetCoreErrors(repoType).then(isSuccess => ({ key: 'dotnet-core-error-handling', isSuccess })));
+    promises.push(() => verifyDotnetCoreResponse(repoType).then(isSuccess => ({ key: 'dotnet-core-response-handling', isSuccess })));
+
     // promises.push(() => verifyExpressSkeleton(repoType).then(isSuccess => ({ key: 'express-skeleton', isSuccess })));
     // promises.push(() => verifyExpressCors(repoType).then(isSuccess => ({ key: 'express-cors', isSuccess })));
     // promises.push(() => verifyExpressMongoDb(repoType).then(isSuccess => ({ key: 'express-mongodb', isSuccess })));
@@ -385,7 +385,7 @@ const verifyInternal = async (repoType) => {
 
     const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
     const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
-    const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+    // const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
     const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
     const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
     const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
@@ -393,7 +393,7 @@ const verifyInternal = async (repoType) => {
     const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
     const apacheStopResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash stop.sh"`);
     const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
-    await stopMinikube();
+    // await stopMinikube();
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
