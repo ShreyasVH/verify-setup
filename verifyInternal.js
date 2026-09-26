@@ -228,13 +228,13 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyDotnetCoreErrors(repoType).then(isSuccess => ({ key: 'dotnet-core-error-handling', isSuccess })));
     promises.push(() => verifyDotnetCoreResponse(repoType).then(isSuccess => ({ key: 'dotnet-core-response-handling', isSuccess })));
 
-    // promises.push(() => verifyExpressSkeleton(repoType).then(isSuccess => ({ key: 'express-skeleton', isSuccess })));
-    // promises.push(() => verifyExpressCors(repoType).then(isSuccess => ({ key: 'express-cors', isSuccess })));
-    // promises.push(() => verifyExpressMongoDb(repoType).then(isSuccess => ({ key: 'express-mongodb', isSuccess })));
-    // promises.push(() => verifyExpressMigrations(repoType).then(isSuccess => ({ key: 'express-migrations', isSuccess })));
-    // promises.push(() => verifyExpressResponse(repoType).then(isSuccess => ({ key: 'express-response-handling', isSuccess })));
-    // promises.push(() => verifyExpressErrors(repoType).then(isSuccess => ({ key: 'express-error-handling', isSuccess })));
-    // promises.push(() => verifyExpressSwagger(repoType).then(isSuccess => ({ key: 'express-swagger', isSuccess })));
+    promises.push(() => verifyExpressSkeleton(repoType).then(isSuccess => ({ key: 'express-skeleton', isSuccess })));
+    promises.push(() => verifyExpressCors(repoType).then(isSuccess => ({ key: 'express-cors', isSuccess })));
+    promises.push(() => verifyExpressMongoDb(repoType).then(isSuccess => ({ key: 'express-mongodb', isSuccess })));
+    promises.push(() => verifyExpressMigrations(repoType).then(isSuccess => ({ key: 'express-migrations', isSuccess })));
+    promises.push(() => verifyExpressResponse(repoType).then(isSuccess => ({ key: 'express-response-handling', isSuccess })));
+    promises.push(() => verifyExpressErrors(repoType).then(isSuccess => ({ key: 'express-error-handling', isSuccess })));
+    promises.push(() => verifyExpressSwagger(repoType).then(isSuccess => ({ key: 'express-swagger', isSuccess })));
     //
     // promises.push(() => verifyHouseExpensesReact(repoType).then(isSuccess => ({ key: 'house-expenses-react', isSuccess })));
     //
@@ -262,14 +262,14 @@ const verifyInternal = async (repoType) => {
     // promises.push(() => verifyPlayDebug(repoType).then(isSuccess => ({ key: 'play-debug', isSuccess})));
     // promises.push(() => verifyPlayDocker(repoType).then(isSuccess => ({ key: 'play-docker', isSuccess})));
     // promises.push(() => verifyPlayMigrationsPostgres(repoType).then(isSuccess => ({ key: 'play-migrations-postgres', isSuccess})));
-    //
-    // promises.push(() => verifyPhalconSkeleton(repoType).then(isSuccess => ({ key: 'phalcon-skeleton', isSuccess})));
-    // promises.push(() => verifyPhalconMysql(repoType).then(isSuccess => ({ key: 'phalcon-mysql', isSuccess})));
-    // promises.push(() => verifyPhalconMigrations(repoType).then(isSuccess => ({ key: 'phalcon-migrations', isSuccess})));
-    // promises.push(() => verifyPhalconResponse(repoType).then(isSuccess => ({ key: 'phalcon-response-handling', isSuccess})));
-    // promises.push(() => verifyPhalconErrors(repoType).then(isSuccess => ({ key: 'phalcon-error-handling', isSuccess})));
-    // promises.push(() => verifyPhalconSwagger(repoType).then(isSuccess => ({ key: 'phalcon-swagger', isSuccess})));
-    //
+    
+    promises.push(() => verifyPhalconSkeleton(repoType).then(isSuccess => ({ key: 'phalcon-skeleton', isSuccess})));
+    promises.push(() => verifyPhalconMysql(repoType).then(isSuccess => ({ key: 'phalcon-mysql', isSuccess})));
+    promises.push(() => verifyPhalconMigrations(repoType).then(isSuccess => ({ key: 'phalcon-migrations', isSuccess})));
+    promises.push(() => verifyPhalconResponse(repoType).then(isSuccess => ({ key: 'phalcon-response-handling', isSuccess})));
+    promises.push(() => verifyPhalconErrors(repoType).then(isSuccess => ({ key: 'phalcon-error-handling', isSuccess})));
+    promises.push(() => verifyPhalconSwagger(repoType).then(isSuccess => ({ key: 'phalcon-swagger', isSuccess})));
+    
     // promises.push(() => verifyReactSkeleton(repoType).then(isSuccess => ({ key: 'react-skeleton', isSuccess })));
     // promises.push(() => verifyReactRouter(repoType).then(isSuccess => ({ key: 'react-router', isSuccess })));
     // promises.push(() => verifyReactMaterial(repoType).then(isSuccess => ({ key: 'react-material-ui', isSuccess })));
