@@ -270,17 +270,17 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyPhalconErrors(repoType).then(isSuccess => ({ key: 'phalcon-error-handling', isSuccess})));
     promises.push(() => verifyPhalconSwagger(repoType).then(isSuccess => ({ key: 'phalcon-swagger', isSuccess})));
     
-    // promises.push(() => verifyReactSkeleton(repoType).then(isSuccess => ({ key: 'react-skeleton', isSuccess })));
-    // promises.push(() => verifyReactRouter(repoType).then(isSuccess => ({ key: 'react-router', isSuccess })));
-    // promises.push(() => verifyReactMaterial(repoType).then(isSuccess => ({ key: 'react-material-ui', isSuccess })));
-    // promises.push(() => verifyReactHttps(repoType).then(isSuccess => ({ key: 'react-https', isSuccess })));
-    // promises.push(() => verifyReactCharts(repoType).then(isSuccess => ({ key: 'react-charts-2', isSuccess })));
-    // promises.push(() => verifyReactDocker(repoType).then(isSuccess => ({ key: 'react-docker', isSuccess })));
-    // promises.push(() => verifyReactRedux(repoType).then(isSuccess => ({ key: 'react-redux', isSuccess })));
-    //
-    // promises.push(() => verifyReactNativeSkeleton(repoType).then(isSuccess => ({ key: 'react-native-skeleton', isSuccess })));
-    // promises.push(() => verifyReactNativeMaterial(repoType).then(isSuccess => ({ key: 'react-native-material-ui', isSuccess })));
-    // promises.push(() => verifyReactNativeRouter(repoType).then(isSuccess => ({ key: 'react-native-router', isSuccess })));
+    promises.push(() => verifyReactSkeleton(repoType).then(isSuccess => ({ key: 'react-skeleton', isSuccess })));
+    promises.push(() => verifyReactRouter(repoType).then(isSuccess => ({ key: 'react-router', isSuccess })));
+    promises.push(() => verifyReactMaterial(repoType).then(isSuccess => ({ key: 'react-material-ui', isSuccess })));
+    promises.push(() => verifyReactHttps(repoType).then(isSuccess => ({ key: 'react-https', isSuccess })));
+    promises.push(() => verifyReactCharts(repoType).then(isSuccess => ({ key: 'react-charts-2', isSuccess })));
+    promises.push(() => verifyReactDocker(repoType).then(isSuccess => ({ key: 'react-docker', isSuccess })));
+    promises.push(() => verifyReactRedux(repoType).then(isSuccess => ({ key: 'react-redux', isSuccess })));
+    
+    promises.push(() => verifyReactNativeSkeleton(repoType).then(isSuccess => ({ key: 'react-native-skeleton', isSuccess })));
+    promises.push(() => verifyReactNativeMaterial(repoType).then(isSuccess => ({ key: 'react-native-material-ui', isSuccess })));
+    promises.push(() => verifyReactNativeRouter(repoType).then(isSuccess => ({ key: 'react-native-router', isSuccess })));
     //
     promises.push(() => verifySolidSkeleton(repoType).then(isSuccess => ({ key: 'solid-skeleton', isSuccess })));
     promises.push(() => verifySolidRouter(repoType).then(isSuccess => ({ key: 'solid-router', isSuccess })));
@@ -312,12 +312,12 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifySvelteKitMaterial(repoType).then(isSuccess => ({ key: 'svelte-kit-material-ui', isSuccess})));
     promises.push(() => verifySvelteKitCharts(repoType).then(isSuccess => ({ key: 'svelte-kit-charts', isSuccess})));
     
-    // promises.push(() => verifyVueSkeleton(repoType).then(isSuccess => ({ key: 'vue-skeleton', isSuccess})));
-    // promises.push(() => verifyVueRouter(repoType).then(isSuccess => ({ key: 'vue-router', isSuccess})));
-    // promises.push(() => verifyVueMaterial(repoType).then(isSuccess => ({ key: 'vue-material-ui', isSuccess})));
-    // promises.push(() => verifyVueHttps(repoType).then(isSuccess => ({ key: 'vue-https', isSuccess})));
-    // promises.push(() => verifyVueDocker(repoType).then(isSuccess => ({ key: 'vue-docker', isSuccess})));
-    // promises.push(() => verifyVueCharts(repoType).then(isSuccess => ({ key: 'vue-charts-2', isSuccess})));
+    promises.push(() => verifyVueSkeleton(repoType).then(isSuccess => ({ key: 'vue-skeleton', isSuccess})));
+    promises.push(() => verifyVueRouter(repoType).then(isSuccess => ({ key: 'vue-router', isSuccess})));
+    promises.push(() => verifyVueMaterial(repoType).then(isSuccess => ({ key: 'vue-material-ui', isSuccess})));
+    promises.push(() => verifyVueHttps(repoType).then(isSuccess => ({ key: 'vue-https', isSuccess})));
+    promises.push(() => verifyVueDocker(repoType).then(isSuccess => ({ key: 'vue-docker', isSuccess})));
+    promises.push(() => verifyVueCharts(repoType).then(isSuccess => ({ key: 'vue-charts-2', isSuccess})));
     
     for (let i = 0; i < promises.length; i += promiseBatchSize) {
         const batchPromises = promises.slice(i, i + promiseBatchSize);
