@@ -282,10 +282,10 @@ const verifyInternal = async (repoType) => {
     // promises.push(() => verifyReactNativeMaterial(repoType).then(isSuccess => ({ key: 'react-native-material-ui', isSuccess })));
     // promises.push(() => verifyReactNativeRouter(repoType).then(isSuccess => ({ key: 'react-native-router', isSuccess })));
     //
-    // promises.push(() => verifySolidSkeleton(repoType).then(isSuccess => ({ key: 'solid-skeleton', isSuccess })));
-    // promises.push(() => verifySolidRouter(repoType).then(isSuccess => ({ key: 'solid-router', isSuccess })));
-    // promises.push(() => verifySolidMaterial(repoType).then(isSuccess => ({ key: 'solid-material-ui', isSuccess })));
-    // promises.push(() => verifySolidCharts(repoType).then(isSuccess => ({ key: 'solid-charts-2', isSuccess })));
+    promises.push(() => verifySolidSkeleton(repoType).then(isSuccess => ({ key: 'solid-skeleton', isSuccess })));
+    promises.push(() => verifySolidRouter(repoType).then(isSuccess => ({ key: 'solid-router', isSuccess })));
+    promises.push(() => verifySolidMaterial(repoType).then(isSuccess => ({ key: 'solid-material-ui', isSuccess })));
+    promises.push(() => verifySolidCharts(repoType).then(isSuccess => ({ key: 'solid-charts-2', isSuccess })));
     //
     // promises.push(() => verifySpringbootSkeleton(repoType).then(isSuccess => ({ key: 'spring-boot-skeleton', isSuccess })));
     // promises.push(() => verifySpringbootSwagger(repoType).then(isSuccess => ({ key: 'spring-boot-swagger', isSuccess })));
@@ -306,12 +306,12 @@ const verifyInternal = async (repoType) => {
     // promises.push(() => verifySpringbootOracle(repoType).then(isSuccess => ({ key: 'spring-boot-oracle', isSuccess })));
     // promises.push(() => verifySpringbootKubernates(repoType).then(isSuccess => ({ key: 'spring-boot-kubernates', isSuccess })));
     // promises.push(() => verifySpringbootMigrationsOracle(repoType).then(isSuccess => ({ key: 'spring-boot-migrations-oracle', isSuccess })));
-    //
-    // promises.push(() => verifySvelteKitSkeleton(repoType).then(isSuccess => ({ key: 'svelte-kit-skeleton', isSuccess})));
-    // promises.push(() => verifySvelteKitRouter(repoType).then(isSuccess => ({ key: 'svelte-kit-router', isSuccess})));
-    // promises.push(() => verifySvelteKitMaterial(repoType).then(isSuccess => ({ key: 'svelte-kit-material-ui', isSuccess})));
-    // promises.push(() => verifySvelteKitCharts(repoType).then(isSuccess => ({ key: 'svelte-kit-charts', isSuccess})));
-    //
+    
+    promises.push(() => verifySvelteKitSkeleton(repoType).then(isSuccess => ({ key: 'svelte-kit-skeleton', isSuccess})));
+    promises.push(() => verifySvelteKitRouter(repoType).then(isSuccess => ({ key: 'svelte-kit-router', isSuccess})));
+    promises.push(() => verifySvelteKitMaterial(repoType).then(isSuccess => ({ key: 'svelte-kit-material-ui', isSuccess})));
+    promises.push(() => verifySvelteKitCharts(repoType).then(isSuccess => ({ key: 'svelte-kit-charts', isSuccess})));
+    
     // promises.push(() => verifyVueSkeleton(repoType).then(isSuccess => ({ key: 'vue-skeleton', isSuccess})));
     // promises.push(() => verifyVueRouter(repoType).then(isSuccess => ({ key: 'vue-router', isSuccess})));
     // promises.push(() => verifyVueMaterial(repoType).then(isSuccess => ({ key: 'vue-material-ui', isSuccess})));
