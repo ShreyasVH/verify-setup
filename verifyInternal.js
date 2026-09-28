@@ -146,7 +146,7 @@ const verifyInternal = async (repoType) => {
     console.log('Waiting for haproxy startup');
     await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
 
-    // await startMinikube();
+    await startMinikube();
 
     // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
     portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
@@ -286,26 +286,26 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifySolidRouter(repoType).then(isSuccess => ({ key: 'solid-router', isSuccess })));
     promises.push(() => verifySolidMaterial(repoType).then(isSuccess => ({ key: 'solid-material-ui', isSuccess })));
     promises.push(() => verifySolidCharts(repoType).then(isSuccess => ({ key: 'solid-charts-2', isSuccess })));
-    //
-    // promises.push(() => verifySpringbootSkeleton(repoType).then(isSuccess => ({ key: 'spring-boot-skeleton', isSuccess })));
-    // promises.push(() => verifySpringbootSwagger(repoType).then(isSuccess => ({ key: 'spring-boot-swagger', isSuccess })));
-    // promises.push(() => verifySpringbootPostgres(repoType).then(isSuccess => ({ key: 'spring-boot-postgres', isSuccess })));
-    // promises.push(() => verifySpringbootMysql(repoType).then(isSuccess => ({ key: 'spring-boot-mysql', isSuccess })));
-    // promises.push(() => verifySpringbootMigrations(repoType).then(isSuccess => ({ key: 'spring-boot-migrations', isSuccess })));
-    // promises.push(() => verifySpringbootResponse(repoType).then(isSuccess => ({ key: 'spring-boot-response-handling', isSuccess })));
-    // promises.push(() => verifySpringbootErrors(repoType).then(isSuccess => ({ key: 'spring-boot-error-handling', isSuccess })));
-    // promises.push(() => verifySpringbootHttps(repoType).then(isSuccess => ({ key: 'spring-boot-https', isSuccess })));
-    // promises.push(() => verifySpringbootDocker(repoType).then(isSuccess => ({ key: 'spring-boot-docker', isSuccess })));
-    // promises.push(() => verifySpringbootSentry(repoType).then(isSuccess => ({ key: 'spring-boot-sentry', isSuccess })));
-    // promises.push(() => verifySpringbootElasticsearch(repoType).then(isSuccess => ({ key: 'spring-boot-elasticsearch', isSuccess })));
-    // promises.push(() => verifySpringbootPostgresAuditLog(repoType).then(isSuccess => ({ key: 'spring-boot-postgres-audit-log', isSuccess })));
-    // promises.push(() => verifySpringbootRmq(repoType).then(isSuccess => ({ key: 'spring-boot-rmq', isSuccess })));
-    // promises.push(() => verifySpringbootSheetsDataSync(repoType).then(isSuccess => ({ key: 'spring-boot-sheets-data-sync', isSuccess })));
-    // promises.push(() => verifySpringbootMvc(repoType).then(isSuccess => ({ key: 'spring-boot-mvc', isSuccess })));
-    // promises.push(() => verifySpringbootDebug(repoType).then(isSuccess => ({ key: 'spring-boot-debug', isSuccess })));
-    // promises.push(() => verifySpringbootOracle(repoType).then(isSuccess => ({ key: 'spring-boot-oracle', isSuccess })));
-    // promises.push(() => verifySpringbootKubernates(repoType).then(isSuccess => ({ key: 'spring-boot-kubernates', isSuccess })));
-    // promises.push(() => verifySpringbootMigrationsOracle(repoType).then(isSuccess => ({ key: 'spring-boot-migrations-oracle', isSuccess })));
+    
+    promises.push(() => verifySpringbootSkeleton(repoType).then(isSuccess => ({ key: 'spring-boot-skeleton', isSuccess })));
+    promises.push(() => verifySpringbootSwagger(repoType).then(isSuccess => ({ key: 'spring-boot-swagger', isSuccess })));
+    promises.push(() => verifySpringbootPostgres(repoType).then(isSuccess => ({ key: 'spring-boot-postgres', isSuccess })));
+    promises.push(() => verifySpringbootMysql(repoType).then(isSuccess => ({ key: 'spring-boot-mysql', isSuccess })));
+    promises.push(() => verifySpringbootMigrations(repoType).then(isSuccess => ({ key: 'spring-boot-migrations', isSuccess })));
+    promises.push(() => verifySpringbootResponse(repoType).then(isSuccess => ({ key: 'spring-boot-response-handling', isSuccess })));
+    promises.push(() => verifySpringbootErrors(repoType).then(isSuccess => ({ key: 'spring-boot-error-handling', isSuccess })));
+    promises.push(() => verifySpringbootHttps(repoType).then(isSuccess => ({ key: 'spring-boot-https', isSuccess })));
+    promises.push(() => verifySpringbootDocker(repoType).then(isSuccess => ({ key: 'spring-boot-docker', isSuccess })));
+    promises.push(() => verifySpringbootSentry(repoType).then(isSuccess => ({ key: 'spring-boot-sentry', isSuccess })));
+    promises.push(() => verifySpringbootElasticsearch(repoType).then(isSuccess => ({ key: 'spring-boot-elasticsearch', isSuccess })));
+    promises.push(() => verifySpringbootPostgresAuditLog(repoType).then(isSuccess => ({ key: 'spring-boot-postgres-audit-log', isSuccess })));
+    promises.push(() => verifySpringbootRmq(repoType).then(isSuccess => ({ key: 'spring-boot-rmq', isSuccess })));
+    promises.push(() => verifySpringbootSheetsDataSync(repoType).then(isSuccess => ({ key: 'spring-boot-sheets-data-sync', isSuccess })));
+    promises.push(() => verifySpringbootMvc(repoType).then(isSuccess => ({ key: 'spring-boot-mvc', isSuccess })));
+    promises.push(() => verifySpringbootDebug(repoType).then(isSuccess => ({ key: 'spring-boot-debug', isSuccess })));
+    promises.push(() => verifySpringbootOracle(repoType).then(isSuccess => ({ key: 'spring-boot-oracle', isSuccess })));
+    promises.push(() => verifySpringbootKubernates(repoType).then(isSuccess => ({ key: 'spring-boot-kubernates', isSuccess })));
+    promises.push(() => verifySpringbootMigrationsOracle(repoType).then(isSuccess => ({ key: 'spring-boot-migrations-oracle', isSuccess })));
     
     promises.push(() => verifySvelteKitSkeleton(repoType).then(isSuccess => ({ key: 'svelte-kit-skeleton', isSuccess})));
     promises.push(() => verifySvelteKitRouter(repoType).then(isSuccess => ({ key: 'svelte-kit-router', isSuccess})));
@@ -393,7 +393,7 @@ const verifyInternal = async (repoType) => {
     const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
     const apacheStopResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash stop.sh"`);
     const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
-    // await stopMinikube();
+    await stopMinikube();
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
