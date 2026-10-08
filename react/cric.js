@@ -31,7 +31,7 @@ const verify = async (repoType) => {
         browser: process.env.BROWSER,
         headless: true,
         devtools: false,
-        ignoreHTTPSErrors: true,
+        acceptInsecureCerts: true,
         defaultViewport: {
             width: 1920,
             height: 1080
