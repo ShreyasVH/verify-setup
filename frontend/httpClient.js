@@ -40,26 +40,37 @@ const verify = async (repoType, domain, language, framework, repoName) => {
         await start(repoType, language, framework, repoName, domain);
 
         const browser  = await puppeteer.launch({
+            browser: process.env.BROWSER,
             headless: true,
-            devtools: true,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--ignore-certificate-errors',
-                '--disable-dev-shm-usage'
-            ],
-            ignoreHTTPSErrors: true
+            devtools: false,
+            ignoreHTTPSErrors: true,
+            defaultViewport: {
+                width: 1920,
+                height: 1080
+            }
         });
 
         const url = `${domain}`;
 
         const page = await browser.newPage();
-        await page.setViewport({ width: 1920, height: 1080 });
         await page.goto(url, {
-            waitUntil: 'networkidle2',
+            waitUntil: 'documentloaded',
             timeout: 0
         });
-        page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+        // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+
+        try {
+            await page.waitForFunction(
+                () => document.querySelectorAll('[data-class="server"]').length === 5,
+                {
+                    timeout: 60000,
+                    polling: 500
+                }
+            );
+        } catch (e) {
+            console.log(e);
+        }
+
         await page.screenshot({
             path: `outputProofs/${framework}HttpClient.png`,
             fullPage: true
