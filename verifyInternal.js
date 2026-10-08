@@ -235,15 +235,15 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyExpressResponse(repoType).then(isSuccess => ({ key: 'express-response-handling', isSuccess })));
     promises.push(() => verifyExpressErrors(repoType).then(isSuccess => ({ key: 'express-error-handling', isSuccess })));
     promises.push(() => verifyExpressSwagger(repoType).then(isSuccess => ({ key: 'express-swagger', isSuccess })));
-    //
-    // promises.push(() => verifyHouseExpensesReact(repoType).then(isSuccess => ({ key: 'house-expenses-react', isSuccess })));
-    //
-    // promises.push(() => verifyReactCric(repoType).then(isSuccess => ({ key: 'react-cric', isSuccess})));
-    // promises.push(() => verifyVueCric(repoType).then(isSuccess => ({ key: 'vue-cric', isSuccess})));
-    // promises.push(() => verifyAngularCric(repoType).then(isSuccess => ({ key: 'angular-cric', isSuccess})));
-    // promises.push(() => verifySolidCric(repoType).then(isSuccess => ({ key: 'solid-cric', isSuccess})));
-    // promises.push(() => verifySvelteKitCric(repoType).then(isSuccess => ({ key: 'svelte-kit-cric', isSuccess})));
-    //
+    
+    promises.push(() => verifyHouseExpensesReact(repoType).then(isSuccess => ({ key: 'house-expenses-react', isSuccess })));
+    
+    promises.push(() => verifyReactCric(repoType).then(isSuccess => ({ key: 'react-cric', isSuccess})));
+    promises.push(() => verifyVueCric(repoType).then(isSuccess => ({ key: 'vue-cric', isSuccess})));
+    promises.push(() => verifyAngularCric(repoType).then(isSuccess => ({ key: 'angular-cric', isSuccess})));
+    promises.push(() => verifySolidCric(repoType).then(isSuccess => ({ key: 'solid-cric', isSuccess})));
+    promises.push(() => verifySvelteKitCric(repoType).then(isSuccess => ({ key: 'svelte-kit-cric', isSuccess})));
+    
     promises.push(() => verifyPlaySkeleton(repoType).then(isSuccess => ({ key: 'play-skeleton', isSuccess})));
     promises.push(() => verifyPlaySwagger(repoType).then(isSuccess => ({ key: 'play-swagger', isSuccess})));
     promises.push(() => verifyPlayMysql(repoType).then(isSuccess => ({ key: 'play-mysql', isSuccess})));
@@ -281,7 +281,7 @@ const verifyInternal = async (repoType) => {
     promises.push(() => verifyReactNativeSkeleton(repoType).then(isSuccess => ({ key: 'react-native-skeleton', isSuccess })));
     promises.push(() => verifyReactNativeMaterial(repoType).then(isSuccess => ({ key: 'react-native-material-ui', isSuccess })));
     promises.push(() => verifyReactNativeRouter(repoType).then(isSuccess => ({ key: 'react-native-router', isSuccess })));
-    //
+    
     promises.push(() => verifySolidSkeleton(repoType).then(isSuccess => ({ key: 'solid-skeleton', isSuccess })));
     promises.push(() => verifySolidRouter(repoType).then(isSuccess => ({ key: 'solid-router', isSuccess })));
     promises.push(() => verifySolidMaterial(repoType).then(isSuccess => ({ key: 'solid-material-ui', isSuccess })));
@@ -330,54 +330,54 @@ const verifyInternal = async (repoType) => {
         console.log('-----------------------------------------------------------------');
     }
 
-    // await myApiJava.start(repoType);
-    //
-    // const moviePromises = [];
-    //
-    // moviePromises.push(() => verifyMySiteReact(repoType).then(isSuccess => ({ key: 'my-site-react', isSuccess })));
-    // moviePromises.push(() => verifyMySitePhp(repoType).then(isSuccess => ({ key: 'my-site-php', isSuccess })));
-    //
-    // const movieResponses = await Promise.all(moviePromises.map(task => task()));
-    // for (const responseObject of movieResponses) {
-    //     const key = responseObject.key;
-    //     responses[key] = responseObject.isSuccess;
-    // }
-    //
-    // await myApiJava.stop(repoType);
-    //
-    // const corsPromises = [];
-    // corsPromises.push(playCors.start(repoType));
-    // corsPromises.push(springbootCors.start(repoType));
-    // corsPromises.push(phalconCors.start(repoType));
-    // corsPromises.push(expressCors.start(repoType));
-    // corsPromises.push(dotnetCoreCors.start(repoType));
-    //
-    // await Promise.all(corsPromises);
-    //
-    // const httpClientPromises = [];
-    // httpClientPromises.push(() => verifySpringbootHttpClient(repoType).then(isSuccess => ({ key: 'spring-boot-http-client', isSuccess })));
-    // httpClientPromises.push(() => verifyAngularHttpClient(repoType).then(isSuccess => ({ key: 'angular-http-client', isSuccess })));
-    // httpClientPromises.push(() => verifySolidHttpClient(repoType).then(isSuccess => ({ key: 'solid-http-client', isSuccess })));
-    // httpClientPromises.push(() => verifySvelteKitHttpClient(repoType).then(isSuccess => ({ key: 'svelte-kit-http-client', isSuccess })));
-    // httpClientPromises.push(() => verifyVueHttpClient(repoType).then(isSuccess => ({ key: 'vue-http-client', isSuccess })));
-    // httpClientPromises.push(() => verifyReactHttpClient(repoType).then(isSuccess => ({ key: 'react-http-client', isSuccess })));
-    // httpClientPromises.push(() => verifyPlayHttpClient(repoType).then(isSuccess => ({ key: 'play-http-client', isSuccess })));
-    // httpClientPromises.push(() => verifyReactNativeHttpClient(repoType).then(isSuccess => ({ key: 'react-native-http-client', isSuccess })));
-    //
-    // const httpClientResponses = await Promise.all(httpClientPromises.map(task => task()));
-    // for (const responseObject of httpClientResponses) {
-    //     const key = responseObject.key;
-    //     responses[key] = responseObject.isSuccess;
-    // }
-    //
-    // const stopPromises = [];
-    // stopPromises.push(playCors.stop(repoType));
-    // stopPromises.push(springbootCors.stop(repoType));
-    // stopPromises.push(phalconCors.stop(repoType));
-    // stopPromises.push(expressCors.stop(repoType));
-    // stopPromises.push(dotnetCoreCors.stop(repoType));
-    //
-    // Promise.all(stopPromises).then(r => r);
+    await myApiJava.start(repoType);
+    
+    const moviePromises = [];
+    
+    moviePromises.push(() => verifyMySiteReact(repoType).then(isSuccess => ({ key: 'my-site-react', isSuccess })));
+    moviePromises.push(() => verifyMySitePhp(repoType).then(isSuccess => ({ key: 'my-site-php', isSuccess })));
+    
+    const movieResponses = await Promise.all(moviePromises.map(task => task()));
+    for (const responseObject of movieResponses) {
+        const key = responseObject.key;
+        responses[key] = responseObject.isSuccess;
+    }
+    
+    await myApiJava.stop(repoType);
+    
+    const corsPromises = [];
+    corsPromises.push(playCors.start(repoType));
+    corsPromises.push(springbootCors.start(repoType));
+    corsPromises.push(phalconCors.start(repoType));
+    corsPromises.push(expressCors.start(repoType));
+    corsPromises.push(dotnetCoreCors.start(repoType));
+    
+    await Promise.all(corsPromises);
+    
+    const httpClientPromises = [];
+    httpClientPromises.push(() => verifySpringbootHttpClient(repoType).then(isSuccess => ({ key: 'spring-boot-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyAngularHttpClient(repoType).then(isSuccess => ({ key: 'angular-http-client', isSuccess })));
+    httpClientPromises.push(() => verifySolidHttpClient(repoType).then(isSuccess => ({ key: 'solid-http-client', isSuccess })));
+    httpClientPromises.push(() => verifySvelteKitHttpClient(repoType).then(isSuccess => ({ key: 'svelte-kit-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyVueHttpClient(repoType).then(isSuccess => ({ key: 'vue-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyReactHttpClient(repoType).then(isSuccess => ({ key: 'react-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyPlayHttpClient(repoType).then(isSuccess => ({ key: 'play-http-client', isSuccess })));
+    httpClientPromises.push(() => verifyReactNativeHttpClient(repoType).then(isSuccess => ({ key: 'react-native-http-client', isSuccess })));
+    
+    const httpClientResponses = await Promise.all(httpClientPromises.map(task => task()));
+    for (const responseObject of httpClientResponses) {
+        const key = responseObject.key;
+        responses[key] = responseObject.isSuccess;
+    }
+    
+    const stopPromises = [];
+    stopPromises.push(playCors.stop(repoType));
+    stopPromises.push(springbootCors.stop(repoType));
+    stopPromises.push(phalconCors.stop(repoType));
+    stopPromises.push(expressCors.stop(repoType));
+    stopPromises.push(dotnetCoreCors.stop(repoType));
+    
+    Promise.all(stopPromises).then(r => r);
 
     const endTime = (new Date()).getTime();
     const duration = (endTime - startTime) / 1000;
