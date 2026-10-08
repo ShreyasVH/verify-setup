@@ -54,10 +54,23 @@ const verify = async (repoType, domain, language, framework, repoName) => {
 
         const page = await browser.newPage();
         await page.goto(url, {
-            waitUntil: 'networkidle2',
+            waitUntil: 'documentloaded',
             timeout: 0
         });
-        page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+        // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+
+        try {
+            await page.waitForFunction(
+                () => document.querySelectorAll('[data-class="server"]').length === 5,
+                {
+                    timeout: 60000,
+                    polling: 500
+                }
+            );
+        } catch (e) {
+            console.log(e);
+        }
+
         await page.screenshot({
             path: `outputProofs/${framework}HttpClient.png`,
             fullPage: true
