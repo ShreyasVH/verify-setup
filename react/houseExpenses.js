@@ -74,7 +74,7 @@ const verify = async (repoType) => {
 
         await browser.close();
 
-        const filePath = process.env.HOME + `/workspace/${getFolderForRepoType(repoType)}/php/phalcon/my-file-upload/public/images/bills`;
+        const filePath =  `/data/workspace/${getFolderForRepoType(repoType)}/php/phalcon/my-file-upload/public/images/bills`;
         const files = fs.readdirSync(filePath);
         const filteredFiles = files.filter(file => !['.DS_Store'].includes(file))
 
