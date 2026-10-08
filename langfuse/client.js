@@ -23,22 +23,20 @@ const verify = async (repoType) => {
 
     try {
         const browser  = await puppeteer.launch({
+            browser: process.env.BROWSER,
             headless: true,
-            devtools: true,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--ignore-certificate-errors',
-                '--disable-dev-shm-usage'
-            ],
-            ignoreHTTPSErrors: true
+            devtools: false,
+            ignoreHTTPSErrors: true,
+            defaultViewport: {
+                width: 1920,
+                height: 1080
+            }
         });
         try {
             const baseUrl = `${domain}`
 
             const signInPage = `${baseUrl}/auth/sign-in`;
             const basePage = await browser.newPage();
-            await basePage.setViewport({ width: 1920, height: 1080 });
             await basePage.goto(signInPage, {
                 waitUntil: 'networkidle2',
                 timeout: 0
@@ -75,7 +73,6 @@ const verify = async (repoType) => {
 
             const tracesPage = await browser.newPage();
             const tracingUrl = `${baseUrl}/project/${process.env.LANGFUSE_PROJECT_ID}/traces`;
-            await tracesPage.setViewport({ width: 1920, height: 1080 });
             await tracesPage.goto(tracingUrl, {
                 waitUntil: 'networkidle2',
                 timeout: 0
