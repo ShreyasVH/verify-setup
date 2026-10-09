@@ -146,67 +146,69 @@ const verifyInternal = async (repoType) => {
     console.log('Waiting for haproxy startup');
     await waitForPort(haproxyPort, '127.0.0.1', 30000, 10);
 
-    // await startMinikube();
-
-    // // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
-    // portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
-    // const elasticsearchPort = parseInt(portResponse.stdout);
-    // const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for elasticsearch startup');
-    // await waitForPort(elasticsearchPort, '127.0.0.1', 120000, 10);
-    // const username = process.env.ELASTIC_USERNAME;
-    // const password = process.env.ELASTIC_PASSWORD;
-    // await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10, 300000);
-
-    // // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
-    // let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/programs/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
-    // const mysqlPort = parseInt(stdout);
-    // const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for mysql startup');
-    // await waitForPort(mysqlPort, '127.0.0.1', 30000, 10);
-
-    // // await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
-    // portResponse = await execPromise(`grep 'port = ' $HOME/programs/postgres/${postgresVersion}/data/postgresql.conf | awk '{print $3}'`);
-    // const postgresPort = parseInt(portResponse.stdout);
-    // const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for postgres startup');
-    // await waitForPort(postgresPort, '127.0.0.1', 30000, 10);
-
-    // // await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
-    // portResponse = await execPromise(`grep 'port: ' $HOME/programs/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
-    // const mongoPort = parseInt(portResponse.stdout);
-    // const mongoDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for mongo startup');
-    // await waitForPort(mongoPort, '127.0.0.1', 30000, 10);
-
-    // const mssqlPort = process.env.MSSQL_PORT;
-    // const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
-    // console.log('Waiting for mssql startup');
-    // await waitForPort(mssqlPort, '127.0.0.1', 30000, 10);
-
-    // // await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
-    // portResponse = await execPromise(`grep 'listeners.tcp.default = ' $HOME/programs/rmq/${rmqVersion}/etc/rabbitmq/rabbitmq.conf | awk '{print $3}'`);
-    // const rmqPort = parseInt(portResponse.stdout);
-    // const rmqDeployResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for rmq startup');
-    // await waitForPort(rmqPort, '127.0.0.1', 30000, 10);
-
-    // portResponse = await execPromise(`grep 'port ' $HOME/programs/redis/${redisVersion}/redis.conf | awk '{print $2}'`);
-    // const redisPort = parseInt(portResponse.stdout);
-    // const redisDeployResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash start.sh"`);
-    // console.log('Waiting for redis startup');
-    // await waitForPort(redisPort, '127.0.0.1', 30000, 10);
-
     portResponse = await execPromise(`grep 'Listen ' $HOME/programs/apache/${apacheVersion}/conf/httpd.conf | awk '{print $2}'`);
     const apachePort = parseInt(portResponse.stdout);
     const apacheDeployResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash start.sh"`);
     console.log('Waiting for apache startup');
     await waitForPort(apachePort, '127.0.0.1', 30000, 10);
 
-    // const oraclePort = process.env.ORACLE_PORT;
-    // const oracleDeployResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash start.sh"`);
-    // console.log('Waiting for oracle startup');
-    // await waitForPort(oraclePort, '127.0.0.1', 30000, 10);
+    if (process.env.USE_REMOTE_LOCAL !== 'Y') {
+        const mssqlPort = process.env.MSSQL_PORT;
+        const mssqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash start.sh"`);
+        console.log('Waiting for mssql startup');
+        await waitForPort(mssqlPort, '127.0.0.1', 30000, 10);
+        
+        await startMinikube();
+
+        // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+        portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
+        const elasticsearchPort = parseInt(portResponse.stdout);
+        const elasticsearchDeployResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash start.sh"`);
+        console.log('Waiting for elasticsearch startup');
+        await waitForPort(elasticsearchPort, '127.0.0.1', 120000, 10);
+        const username = process.env.ELASTIC_USERNAME;
+        const password = process.env.ELASTIC_PASSWORD;
+        await waitForHttpPort(`https://${username}:${password}@localhost:${elasticsearchPort}`, 10, 300000);
+
+        // await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
+        let { stdout, stderr } = await execPromise(`grep -E '^ *port=' $HOME/programs/mysql/${mysqlVersion}/my.cnf | awk -F= '{print $2}' | tr -d ' '`);
+        const mysqlPort = parseInt(stdout);
+        const mysqlDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash start.sh"`);
+        console.log('Waiting for mysql startup');
+        await waitForPort(mysqlPort, '127.0.0.1', 30000, 10);
+
+        // await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
+        portResponse = await execPromise(`grep 'port = ' $HOME/programs/postgres/${postgresVersion}/data/postgresql.conf | awk '{print $3}'`);
+        const postgresPort = parseInt(portResponse.stdout);
+        const postgresDeployResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash start.sh"`);
+        console.log('Waiting for postgres startup');
+        await waitForPort(postgresPort, '127.0.0.1', 30000, 10);
+
+        // await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
+        portResponse = await execPromise(`grep 'port: ' $HOME/programs/mongo/${mongoVersion}/mongod.conf | awk '{print $2}'`);
+        const mongoPort = parseInt(portResponse.stdout);
+        const mongoDeployResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash start.sh"`);
+        console.log('Waiting for mongo startup');
+        await waitForPort(mongoPort, '127.0.0.1', 30000, 10);
+
+        // await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
+        portResponse = await execPromise(`grep 'listeners.tcp.default = ' $HOME/programs/rmq/${rmqVersion}/etc/rabbitmq/rabbitmq.conf | awk '{print $3}'`);
+        const rmqPort = parseInt(portResponse.stdout);
+        const rmqDeployResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash start.sh"`);
+        console.log('Waiting for rmq startup');
+        await waitForPort(rmqPort, '127.0.0.1', 30000, 10);
+
+        portResponse = await execPromise(`grep 'port ' $HOME/programs/redis/${redisVersion}/redis.conf | awk '{print $2}'`);
+        const redisPort = parseInt(portResponse.stdout);
+        const redisDeployResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash start.sh"`);
+        console.log('Waiting for redis startup');
+        await waitForPort(redisPort, '127.0.0.1', 30000, 10);
+
+        const oraclePort = process.env.ORACLE_PORT;
+        const oracleDeployResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash start.sh"`);
+        console.log('Waiting for oracle startup');
+        await waitForPort(oraclePort, '127.0.0.1', 30000, 10);
+    }
 
     const startTime = (new Date()).getTime();
 
@@ -384,16 +386,18 @@ const verifyInternal = async (repoType) => {
     console.log(`Duration: ${duration} seconds`);
 
     const haproxyStopResponse = await execPromise(`bash -c "cd $HOME/programs/haproxy/${haproxyVersion} && source .envrc && bash stop.sh"`);
-    // const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
-    // const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
-    // const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
-    // const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
-    // const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
-    // const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
-    // const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
     const apacheStopResponse = await execPromise(`bash -c "cd $HOME/programs/apache/${apacheVersion} && source .envrc && bash stop.sh"`);
-    // const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
-    // await stopMinikube();
+    if (process.env.USE_REMOTE_LOCAL !== 'Y') {
+        const mysqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mysql/${mysqlVersion} && source .envrc && bash stop.sh"`);
+        const elasticSearchStopResponse = await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
+        const postgresStopResponse = await execPromise(`bash -c "cd $HOME/programs/postgres/${postgresVersion} && source .envrc && bash stop.sh"`);
+        const mongoStopResponse = await execPromise(`bash -c "cd $HOME/programs/mongo/${mongoVersion} && source .envrc && bash stop.sh"`);
+        const mssqlStopResponse = await execPromise(`bash -c "cd $HOME/programs/mssql && bash stop.sh"`);
+        const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
+        const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
+        const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
+        await stopMinikube();
+    }
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
     // console.log(responses);
