@@ -6,7 +6,7 @@ const { waitForPort, waitForHttpPort, getFolderForRepoType } = require('../utils
 const start = async (repoType, language, framework, repoName, domain, waitTimeout = 60000) => {
     const port = await getPort(repoType, language, framework, repoName);
 
-    const deployResponse = await execPromise(`bash -c "cd $HOME/workspace/${getFolderForRepoType(repoType)}/${language}/${framework}/${repoName} && source .envrc && bash deploy.sh"`);
+    const deployResponse = await execPromise(`bash -c "cd /data/workspace/${getFolderForRepoType(repoType)}/${language}/${framework}/${repoName} && source .envrc && bash deploy.sh"`);
 
     console.log(`Waiting for ${repoName} startup for ${waitTimeout/ 1000} seconds`);
     const isRunning = await waitForPort(port, '127.0.0.1', 30000, 10);
@@ -18,16 +18,16 @@ const start = async (repoType, language, framework, repoName, domain, waitTimeou
 };
 
 const stop = async (repoType, language, framework, repoName) => {
-    const stopResponse = await execPromise(`bash -c "cd $HOME/workspace/${getFolderForRepoType(repoType)}/${language}/${framework}/${repoName} && source .envrc && bash stop.sh"`);
+    const stopResponse = await execPromise(`bash -c "cd /data/workspace/${getFolderForRepoType(repoType)}/${language}/${framework}/${repoName} && source .envrc && bash stop.sh"`);
 };
 
 const getPort = async (repoType, language, framework, repoName) => {
-    let { stdout, stderr } = await execPromise(`grep ' PORT=' $HOME/workspace/${getFolderForRepoType(repoType)}/${language}/${framework}/${repoName}/.envrc | awk -F= '{print $2}'`);
+    let { stdout, stderr } = await execPromise(`grep ' PORT=' /data/workspace/${getFolderForRepoType(repoType)}/${language}/${framework}/${repoName}/.envrc | awk -F= '{print $2}'`);
     return parseInt(stdout);
 };
 
 const getDebugPort = async (repoType, language, framework, repoName) => {
-    let { stdout, stderr } = await execPromise(`grep ' DEBUG_PORT=' $HOME/workspace/${getFolderForRepoType(repoType)}/${language}/${framework}/${repoName}/.envrc | awk -F= '{print $2}'`);
+    let { stdout, stderr } = await execPromise(`grep ' DEBUG_PORT=' /data/workspace/${getFolderForRepoType(repoType)}/${language}/${framework}/${repoName}/.envrc | awk -F= '{print $2}'`);
     return parseInt(stdout);
 };
 
