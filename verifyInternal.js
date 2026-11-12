@@ -158,7 +158,7 @@ const verifyInternal = async (repoType) => {
         console.log('Waiting for mssql startup');
         await waitForPort(mssqlPort, '127.0.0.1', 30000, 10);
         
-        await startMinikube();
+        // await startMinikube();
 
         // await execPromise(`bash -c "cd $HOME/programs/elasticsearch/${elasticSearchVersion} && source .envrc && bash stop.sh"`);
         portResponse = await execPromise(`grep 'http.port: ' $HOME/programs/elasticsearch/${elasticSearchVersion}/config/elasticsearch.yml | awk '{print $2}'`);
@@ -396,7 +396,7 @@ const verifyInternal = async (repoType) => {
         const rmqStopResponse = await execPromise(`bash -c "cd $HOME/programs/rmq/${rmqVersion} && source .envrc && bash stop.sh"`);
         const redisStopResponse = await execPromise(`bash -c "cd $HOME/programs/redis/${redisVersion} && source .envrc && bash stop.sh"`);
         const oracleStopResponse = await execPromise(`bash -c "cd $HOME/programs/oracle && bash stop.sh"`);
-        await stopMinikube();
+        // await stopMinikube();
     }
 
     const filteredResponses = Object.fromEntries(Object.entries(responses).filter(([key, value]) => value === false));
