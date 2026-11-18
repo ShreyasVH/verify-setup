@@ -35,7 +35,7 @@ const verify = async (repoType, domain, language, framework, repoName) => {
 
         const page = await browser.newPage();
         await page.goto(url, {
-            waitUntil: 'domcontentloaded',
+            waitUntil: 'networkidle0',
             timeout: 0
         });
         page.on('console', msg => console.log('PAGE LOG:', msg.text()));
